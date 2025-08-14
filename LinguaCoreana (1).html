@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impara il Coreano - App Completa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        .korean-font { font-family: 'Noto Sans KR', sans-serif; }
+        .main-font { font-family: 'Inter', sans-serif; }
+        
+        .lesson-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .lesson-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .lesson-card.locked:hover {
+            transform: none;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            transition: width 0.5s ease;
+        }
+        
+        .exercise-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .grammar-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .writing-practice {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .audio-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .korean-char {
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .lesson-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .exercise-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .exercise-option:hover {
+            background-color: #e0e7ff;
+            transform: translateX(5px);
+        }
+        
+        .exercise-option.correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+        }
+        
+        .exercise-option.incorrect {
+            background-color: #fef2f2;
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="main-font bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-lg korean-font">한</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Impara il Coreano</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-green-100 px-4 py-2 rounded-full">
+                        <span class="text-green-800 font-semibold">Livello: Principiante</span>
+                    </div>
+                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <span class="text-sm text-gray-600 progress-text">0% completato</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-t">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8 overflow-x-auto py-4">
+                <button class="nav-tab active px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('lessons')">
+                    📚 Lezioni
+                </button>
+                <button class="nav-tab px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('exercises')">
+                    ✏️ Esercizi
+                </button>
+                <button class="nav-tab px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('grammar')">
+                    📖 Grammatica
+                </button>
+                <button class="nav-tab px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('writing')">
+                    ✍️ Scrittura
+                </button>
+                <button class="nav-tab px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('vocabulary')">
+                    📝 Vocabolario
+                </button>
+                <button class="nav-tab px-6 py-2 rounded-full font-medium whitespace-nowrap" onclick="showSection('progress')">
+                    📊 Progressi
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Lessons Section -->
+        <div id="lessons" class="section">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Lezioni Complete</h2>
+                <p class="text-gray-600">Impara il coreano passo dopo passo con le nostre lezioni interattive</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Lesson 1 -->
+                <div class="lesson-card rounded-xl p-6 text-white cursor-pointer" onclick="openLesson(1)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 1</h3>
+                        <span class="lesson-status bg-blue-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">Disponibile</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Alfabeto Coreano (한글)</h4>
+                    <p class="text-sm opacity-90 mb-4">Impara le consonanti e vocali dell'Hangul</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">ㄱ ㄴ ㄷ ㅏ ㅓ ㅗ</span>
+                        <span class="text-sm">30 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(2)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 2</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Saluti e Presentazioni</h4>
+                    <p class="text-sm opacity-90 mb-4">Come salutare e presentarsi in coreano</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">안녕하세요</span>
+                        <span class="text-sm">25 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(3)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 3</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Numeri e Conteggio</h4>
+                    <p class="text-sm opacity-90 mb-4">Numeri coreani e cinesi</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">하나 둘 셋</span>
+                        <span class="text-sm">35 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(4)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 4</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Famiglia e Relazioni</h4>
+                    <p class="text-sm opacity-90 mb-4">Vocabolario per descrivere la famiglia</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">가족</span>
+                        <span class="text-sm">30 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 5 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(5)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 5</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Cibo e Ristoranti</h4>
+                    <p class="text-sm opacity-90 mb-4">Ordinare cibo e parlare di cucina coreana</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">음식</span>
+                        <span class="text-sm">40 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 6 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(6)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 6</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Tempo e Date</h4>
+                    <p class="text-sm opacity-90 mb-4">Esprimere tempo, ore e date</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">시간</span>
+                        <span class="text-sm">25 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 7 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(7)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 7</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Shopping e Denaro</h4>
+                    <p class="text-sm opacity-90 mb-4">Fare acquisti e parlare di prezzi</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">쇼핑</span>
+                        <span class="text-sm">35 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 8 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(8)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 8</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Trasporti e Direzioni</h4>
+                    <p class="text-sm opacity-90 mb-4">Muoversi in città e chiedere indicazioni</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">교통</span>
+                        <span class="text-sm">30 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 9 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(9)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 9</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Hobby e Tempo Libero</h4>
+                    <p class="text-sm opacity-90 mb-4">Parlare di interessi e attività</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">취미</span>
+                        <span class="text-sm">35 min</span>
+                    </div>
+                </div>
+
+                <!-- Lesson 10 -->
+                <div class="lesson-card locked rounded-xl p-6 text-white cursor-not-allowed" onclick="openLesson(10)">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">Lezione 10</h3>
+                        <span class="lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white">🔒 Bloccata</span>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-2">Conversazione Avanzata</h4>
+                    <p class="text-sm opacity-90 mb-4">Dialoghi complessi e espressioni idiomatiche</p>
+                    <div class="flex justify-between items-center">
+                        <span class="korean-font text-2xl">대화</span>
+                        <span class="text-sm">45 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercises Section -->
+        <div id="exercises" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Esercizi Interattivi</h2>
+                <p class="text-gray-600">Metti alla prova le tue conoscenze con esercizi pratici</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="exercise-card rounded-xl p-6 text-white cursor-pointer" onclick="startExercise('hangul')">
+                    <h3 class="text-xl font-bold mb-2">Quiz Hangul</h3>
+                    <p class="text-sm opacity-90 mb-4">Riconosci le lettere dell'alfabeto coreano</p>
+                    <div class="text-4xl korean-font">ㄱ</div>
+                </div>
+                
+                <div class="exercise-card rounded-xl p-6 text-white cursor-pointer" onclick="startExercise('vocabulary')">
+                    <h3 class="text-xl font-bold mb-2">Vocabolario</h3>
+                    <p class="text-sm opacity-90 mb-4">Abbina parole coreane e italiane</p>
+                    <div class="text-4xl korean-font">단어</div>
+                </div>
+                
+                <div class="exercise-card rounded-xl p-6 text-white cursor-pointer" onclick="startExercise('listening')">
+                    <h3 class="text-xl font-bold mb-2">Ascolto</h3>
+                    <p class="text-sm opacity-90 mb-4">Ascolta e scegli la risposta corretta</p>
+                    <div class="text-3xl">🎧</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grammar Section -->
+        <div id="grammar" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Grammatica Coreana</h2>
+                <p class="text-gray-600">Comprendi le regole grammaticali fondamentali</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="grammar-card rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-bold mb-4">Particelle (조사)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">은/는 (Soggetto)</h4>
+                            <p class="text-sm korean-font">저는 학생입니다</p>
+                            <p class="text-xs opacity-90">Io sono uno studente</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">이/가 (Soggetto)</h4>
+                            <p class="text-sm korean-font">누가 왔어요?</p>
+                            <p class="text-xs opacity-90">Chi è venuto?</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grammar-card rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-bold mb-4">Livelli di Cortesia</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">Formale (합니다체)</h4>
+                            <p class="text-sm korean-font">안녕하십니까?</p>
+                            <p class="text-xs opacity-90">Come sta? (molto formale)</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">Cortese (해요체)</h4>
+                            <p class="text-sm korean-font">안녕하세요?</p>
+                            <p class="text-xs opacity-90">Ciao (cortese)</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">Informale (해체)</h4>
+                            <p class="text-sm korean-font">안녕?</p>
+                            <p class="text-xs opacity-90">Ciao (informale)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Writing Section -->
+        <div id="writing" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Pratica di Scrittura</h2>
+                <p class="text-gray-600">Impara a scrivere i caratteri Hangul</p>
+            </div>
+            
+            <div class="writing-practice rounded-xl p-6 text-white">
+                <h3 class="text-xl font-bold mb-4">Pratica Hangul</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center cursor-pointer" onclick="practiceCharacter('ㄱ')">
+                        <div class="text-4xl korean-font text-white">ㄱ</div>
+                        <p class="text-sm">g/k</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center cursor-pointer" onclick="practiceCharacter('ㄴ')">
+                        <div class="text-4xl korean-font text-white">ㄴ</div>
+                        <p class="text-sm">n</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center cursor-pointer" onclick="practiceCharacter('ㄷ')">
+                        <div class="text-4xl korean-font text-white">ㄷ</div>
+                        <p class="text-sm">d/t</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center cursor-pointer" onclick="practiceCharacter('ㅏ')">
+                        <div class="text-4xl korean-font text-white">ㅏ</div>
+                        <p class="text-sm">a</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6">
+                    <h4 class="text-gray-800 font-semibold mb-4">Area di Pratica</h4>
+                    <canvas id="writingCanvas" width="400" height="200" class="border-2 border-gray-300 rounded-lg cursor-crosshair"></canvas>
+                    <div class="mt-4 space-x-4">
+                        <button onclick="clearCanvas()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Cancella</button>
+                        <button onclick="checkWriting()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Verifica</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vocabulary Section -->
+        <div id="vocabulary" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Vocabolario</h2>
+                <p class="text-gray-600">Espandi il tuo vocabolario coreano</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Saluti</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">안녕하세요</p>
+                                <p class="text-sm text-gray-600">Ciao (formale)</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('annyeonghaseyo')">🔊</button>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">감사합니다</p>
+                                <p class="text-sm text-gray-600">Grazie</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('gamsahamnida')">🔊</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Famiglia</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">아버지</p>
+                                <p class="text-sm text-gray-600">Padre</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('abeoji')">🔊</button>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">어머니</p>
+                                <p class="text-sm text-gray-600">Madre</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('eomeoni')">🔊</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Numeri</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">하나</p>
+                                <p class="text-sm text-gray-600">Uno</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('hana')">🔊</button>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="korean-font text-lg">둘</p>
+                                <p class="text-sm text-gray-600">Due</p>
+                            </div>
+                            <button class="audio-btn w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" onclick="playAudio('dul')">🔊</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progress" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">I Tuoi Progressi</h2>
+                <p class="text-gray-600">Monitora i tuoi miglioramenti nell'apprendimento</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Lezioni Completate</h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-purple-600 mb-2 completed-lessons">0/10</div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-purple-600 h-3 rounded-full progress-lessons" style="width: 0%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2 progress-percentage">0% completato</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Parole Imparate</h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-green-600 mb-2">0</div>
+                        <p class="text-sm text-gray-600">Vocabolario attivo</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Streak Giornaliero</h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-orange-600 mb-2">0</div>
+                        <p class="text-sm text-gray-600">giorni consecutivi</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button onclick="resetProgress()" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors">
+                    🔄 Resetta Progressi
+                </button>
+                <p class="text-sm text-gray-500 mt-2">Questo cancellerà tutti i progressi e ricomincerà dall'inizio</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lesson Modal -->
+    <div id="lessonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="lesson-content max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-xl p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="lessonTitle" class="text-2xl font-bold text-gray-800"></h2>
+                <button onclick="closeLesson()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div id="lessonContent"></div>
+        </div>
+    </div>
+
+    <!-- Exercise Modal -->
+    <div id="exerciseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="lesson-content max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-xl p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="exerciseTitle" class="text-2xl font-bold text-gray-800"></h2>
+                <button onclick="closeExercise()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div id="exerciseContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Progress tracking
+        let completedLessons = JSON.parse(localStorage.getItem('koreanCompletedLessons') || '[]');
+        let unlockedLessons = JSON.parse(localStorage.getItem('koreanUnlockedLessons') || '[1]'); // Lesson 1 is always unlocked
+
+        // Update lesson cards based on progress
+        function updateLessonCards() {
+            const lessonCards = document.querySelectorAll('.lesson-card');
+            lessonCards.forEach((card, index) => {
+                const lessonNumber = index + 1;
+                const statusSpan = card.querySelector('.lesson-status');
+                
+                if (completedLessons.includes(lessonNumber)) {
+                    statusSpan.textContent = 'Completata ✓';
+                    statusSpan.className = 'lesson-status bg-green-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white';
+                    card.classList.remove('locked');
+                    card.style.opacity = '1';
+                    card.style.cursor = 'pointer';
+                } else if (unlockedLessons.includes(lessonNumber)) {
+                    statusSpan.textContent = 'Disponibile';
+                    statusSpan.className = 'lesson-status bg-blue-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white';
+                    card.classList.remove('locked');
+                    card.style.opacity = '1';
+                    card.style.cursor = 'pointer';
+                } else {
+                    statusSpan.textContent = '🔒 Bloccata';
+                    statusSpan.className = 'lesson-status bg-gray-500 bg-opacity-90 px-2 py-1 rounded-full text-sm text-white';
+                    card.classList.add('locked');
+                    card.style.opacity = '0.6';
+                    card.style.cursor = 'not-allowed';
+                }
+            });
+            
+            // Update progress bar
+            const progressPercentage = (completedLessons.length / 10) * 100;
+            document.querySelector('.progress-bar').style.width = progressPercentage + '%';
+            document.querySelector('.progress-text').textContent = Math.round(progressPercentage) + '% completato';
+            
+            // Update progress section
+            const completedLessonsEl = document.querySelector('.completed-lessons');
+            const progressLessonsEl = document.querySelector('.progress-lessons');
+            const progressPercentageEl = document.querySelector('.progress-percentage');
+            
+            if (completedLessonsEl) {
+                completedLessonsEl.textContent = `${completedLessons.length}/10`;
+                progressLessonsEl.style.width = progressPercentage + '%';
+                progressPercentageEl.textContent = Math.round(progressPercentage) + '% completato';
+            }
+        }
+
+        // Lesson content data
+        const lessons = {
+            1: {
+                title: "Lezione 1: Alfabeto Coreano (한글)",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Introduzione all'Hangul (한글)</h3>
+                            <p class="mb-4">L'Hangul è l'alfabeto coreano creato nel 1443 dal Re Sejong il Grande. È considerato uno degli alfabeti più scientifici e logici al mondo.</p>
+                            
+                            <h4 class="font-bold mb-3">Consonanti di Base (자음):</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㄱ</div>
+                                    <p class="text-sm font-semibold">[g/k]</p>
+                                    <p class="text-xs text-gray-500">giyeok</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('giyeok')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㄴ</div>
+                                    <p class="text-sm font-semibold">[n]</p>
+                                    <p class="text-xs text-gray-500">nieun</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('nieun')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㄷ</div>
+                                    <p class="text-sm font-semibold">[d/t]</p>
+                                    <p class="text-xs text-gray-500">digeut</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('digeut')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㄹ</div>
+                                    <p class="text-sm font-semibold">[r/l]</p>
+                                    <p class="text-xs text-gray-500">rieul</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('rieul')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅁ</div>
+                                    <p class="text-sm font-semibold">[m]</p>
+                                    <p class="text-xs text-gray-500">mieum</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('mieum')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅂ</div>
+                                    <p class="text-sm font-semibold">[b/p]</p>
+                                    <p class="text-xs text-gray-500">bieup</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('bieup')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅅ</div>
+                                    <p class="text-sm font-semibold">[s]</p>
+                                    <p class="text-xs text-gray-500">siot</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('siot')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅇ</div>
+                                    <p class="text-sm font-semibold">[ng/∅]</p>
+                                    <p class="text-xs text-gray-500">ieung</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('ieung')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅈ</div>
+                                    <p class="text-sm font-semibold">[j/ch]</p>
+                                    <p class="text-xs text-gray-500">jieut</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('jieut')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅊ</div>
+                                    <p class="text-sm font-semibold">[ch]</p>
+                                    <p class="text-xs text-gray-500">chieut</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('chieut')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅋ</div>
+                                    <p class="text-sm font-semibold">[k]</p>
+                                    <p class="text-xs text-gray-500">kieuk</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('kieuk')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅌ</div>
+                                    <p class="text-sm font-semibold">[t]</p>
+                                    <p class="text-xs text-gray-500">tieut</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('tieut')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅍ</div>
+                                    <p class="text-sm font-semibold">[p]</p>
+                                    <p class="text-xs text-gray-500">pieup</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('pieup')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅎ</div>
+                                    <p class="text-sm font-semibold">[h]</p>
+                                    <p class="text-xs text-gray-500">hieut</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('hieut')">🔊</button>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-bold mb-3">Vocali di Base (모음):</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅏ</div>
+                                    <p class="text-sm font-semibold">[a]</p>
+                                    <p class="text-xs text-gray-500">a</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('a')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅓ</div>
+                                    <p class="text-sm font-semibold">[eo]</p>
+                                    <p class="text-xs text-gray-500">eo</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('eo')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅗ</div>
+                                    <p class="text-sm font-semibold">[o]</p>
+                                    <p class="text-xs text-gray-500">o</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('o')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅜ</div>
+                                    <p class="text-sm font-semibold">[u]</p>
+                                    <p class="text-xs text-gray-500">u</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('u')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅡ</div>
+                                    <p class="text-sm font-semibold">[eu]</p>
+                                    <p class="text-xs text-gray-500">eu</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('eu')">🔊</button>
+                                </div>
+                                <div class="text-center p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-3xl mb-2">ㅣ</div>
+                                    <p class="text-sm font-semibold">[i]</p>
+                                    <p class="text-xs text-gray-500">i</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('i')">🔊</button>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-bold mb-3">Come Formare le Sillabe:</h4>
+                            <div class="bg-yellow-50 p-4 rounded-lg mb-6">
+                                <p class="text-sm mb-3">Le lettere Hangul si combinano per formare blocchi sillabici. Ogni sillaba deve contenere almeno una consonante e una vocale.</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <div class="text-center p-3 bg-white rounded-lg">
+                                        <div class="korean-font text-2xl mb-1">가</div>
+                                        <p class="text-xs">ㄱ + ㅏ = ga</p>
+                                    </div>
+                                    <div class="text-center p-3 bg-white rounded-lg">
+                                        <div class="korean-font text-2xl mb-1">나</div>
+                                        <p class="text-xs">ㄴ + ㅏ = na</p>
+                                    </div>
+                                    <div class="text-center p-3 bg-white rounded-lg">
+                                        <div class="korean-font text-2xl mb-1">다</div>
+                                        <p class="text-xs">ㄷ + ㅏ = da</p>
+                                    </div>
+                                    <div class="text-center p-3 bg-white rounded-lg">
+                                        <div class="korean-font text-2xl mb-1">라</div>
+                                        <p class="text-xs">ㄹ + ㅏ = ra</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-bold mb-3">Esempi di Parole Semplici:</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                                <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-purple-500">
+                                    <div class="korean-font text-2xl mb-2">나</div>
+                                    <p class="text-sm font-semibold">io</p>
+                                    <p class="text-xs text-gray-500">[na]</p>
+                                    <button class="audio-btn mt-2 px-2 py-1 rounded text-white text-xs" onclick="playAudio('na')">🔊</button>
+                                </div>
+                                <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-purple-500">
+                                    <div class="korean-font text-2xl mb-2">너</div>
+                                    <p class="text-sm font-semibold">tu</p>
+                                    <p class="text-xs text-gray-500">[neo]</p>
+                                    <button class="audio-btn mt-2 px-2 py-1 rounded text-white text-xs" onclick="playAudio('neo')">🔊</button>
+                                </div>
+                                <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-blue-500">
+                                    <div class="korean-font text-2xl mb-2">물</div>
+                                    <p class="text-sm font-semibold">acqua</p>
+                                    <p class="text-xs text-gray-500">[mul]</p>
+                                    <button class="audio-btn mt-2 px-2 py-1 rounded text-white text-xs" onclick="playAudio('mul')">🔊</button>
+                                </div>
+                                <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-blue-500">
+                                    <div class="korean-font text-2xl mb-2">불</div>
+                                    <p class="text-sm font-semibold">fuoco</p>
+                                    <p class="text-xs text-gray-500">[bul]</p>
+                                    <button class="audio-btn mt-2 px-2 py-1 rounded text-white text-xs" onclick="playAudio('bul')">🔊</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Esercizio Pratico</h3>
+                            <p class="mb-4">Prova a leggere queste sillabe:</p>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center p-4 bg-white rounded-lg cursor-pointer hover:bg-gray-50" onclick="checkReading('고', 'go')">
+                                    <div class="korean-font text-3xl">고</div>
+                                </div>
+                                <div class="text-center p-4 bg-white rounded-lg cursor-pointer hover:bg-gray-50" onclick="checkReading('누', 'nu')">
+                                    <div class="korean-font text-3xl">누</div>
+                                </div>
+                                <div class="text-center p-4 bg-white rounded-lg cursor-pointer hover:bg-gray-50" onclick="checkReading('도', 'do')">
+                                    <div class="korean-font text-3xl">도</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button onclick="closeLesson()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Chiudi</button>
+                            <button onclick="completeLesson(1)" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600">Completa Lezione</button>
+                        </div>
+                    </div>
+                `
+            },
+            2: {
+                title: "Lezione 2: Saluti e Presentazioni",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-purple-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Saluti Quotidiani</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">안녕하세요</div>
+                                        <p class="text-gray-600 font-semibold">Ciao - saluto formale</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">an-nyeong-ha-se-yo</span></p>
+                                        <p class="text-xs text-blue-600">Usato con persone che non conosci bene</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('annyeonghaseyo')">🔊 Ascolta</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">안녕히 가세요</div>
+                                        <p class="text-gray-600 font-semibold">Arrivederci (a chi va via)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">an-nyeong-hi ga-se-yo</span></p>
+                                        <p class="text-xs text-blue-600">Letteralmente: "Andate in pace"</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('annyeonghigaseyo')">🔊 Ascolta</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">안녕히 계세요</div>
+                                        <p class="text-gray-600 font-semibold">Arrivederci (a chi resta)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">an-nyeong-hi gye-se-yo</span></p>
+                                        <p class="text-xs text-blue-600">Letteralmente: "Rimanete in pace"</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('annyeonghigyeseyo')">🔊 Ascolta</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">좋은 아침입니다</div>
+                                        <p class="text-gray-600 font-semibold">Buongiorno (molto formale)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jo-eun a-chim-im-ni-da</span></p>
+                                        <p class="text-xs text-blue-600">Usato raramente nella conversazione quotidiana</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('joeunachimimnida')">🔊 Ascolta</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-pink-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Saluti Informali (친근한 인사)</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">안녕</div>
+                                        <p class="text-gray-600 font-semibold">Ciao (informale)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">an-nyeong</span></p>
+                                        <p class="text-xs text-blue-600">Usato con amici e persone della stessa età</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('annyeong')">🔊 Ascolta</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">잘 가</div>
+                                        <p class="text-gray-600 font-semibold">Ciao (informale, a chi va)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jal ga</span></p>
+                                        <p class="text-xs text-blue-600">Letteralmente: "Va bene"</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('jalga')">🔊 Ascolta</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                                    <div>
+                                        <div class="korean-font text-2xl mb-1">잘 있어</div>
+                                        <p class="text-gray-600 font-semibold">Ciao (informale, a chi resta)</p>
+                                        <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jal is-seo</span></p>
+                                        <p class="text-xs text-blue-600">Letteralmente: "Stai bene"</p>
+                                    </div>
+                                    <button class="audio-btn px-4 py-2 rounded text-white" onclick="playAudio('jalisseo')">🔊 Ascolta</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Presentarsi (자기소개)</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">저는 [nome]입니다</div>
+                                    <p class="text-gray-600 font-semibold">Io sono [nome] (formale)</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jeo-neun [nome] im-ni-da</span></p>
+                                    <p class="text-xs text-blue-600">Esempio: 저는 마르코입니다 (jeo-neun ma-reu-ko im-ni-da)</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('jeoneunimnida')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">제 이름은 [nome]예요</div>
+                                    <p class="text-gray-600 font-semibold">Il mio nome è [nome] (informale cortese)</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">je i-reum-eun [nome] ye-yo</span></p>
+                                    <p class="text-xs text-blue-600">Più naturale nella conversazione quotidiana</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('jeireumeun')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">만나서 반갑습니다</div>
+                                    <p class="text-gray-600 font-semibold">Piacere di conoscerti (formale)</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">man-na-seo ban-gap-seum-ni-da</span></p>
+                                    <p class="text-xs text-blue-600">Letteralmente: "Incontrando [te], sono felice"</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('mannaseobangapseumnida')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">만나서 반가워요</div>
+                                    <p class="text-gray-600 font-semibold">Piacere di conoscerti (informale cortese)</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">man-na-seo ban-ga-wo-yo</span></p>
+                                    <p class="text-xs text-blue-600">Versione più casual e amichevole</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('mannaseobangawoyo')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">잘 부탁드립니다</div>
+                                    <p class="text-gray-600 font-semibold">Vi prego di trattarmi bene</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jal bu-tak-deu-rim-ni-da</span></p>
+                                    <p class="text-xs text-blue-600">Espressione di cortesia dopo le presentazioni</p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('jalbutakdeurimnida')">🔊</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Domande Utili (유용한 질문)</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">이름이 뭐예요?</div>
+                                    <p class="text-gray-600 font-semibold">Come ti chiami?</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">i-reum-i mwo-ye-yo?</span></p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('ireumimwoyeyo')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">어디서 왔어요?</div>
+                                    <p class="text-gray-600 font-semibold">Da dove vieni?</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">eo-di-seo wa-sseo-yo?</span></p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('eodiseowasseyo')">🔊</button>
+                                </div>
+                                
+                                <div class="p-4 bg-white rounded-lg shadow-sm">
+                                    <div class="korean-font text-xl mb-2">저는 이탈리아에서 왔어요</div>
+                                    <p class="text-gray-600 font-semibold">Vengo dall'Italia</p>
+                                    <p class="text-sm text-gray-500">Pronuncia: <span class="font-mono">jeo-neun i-tal-li-a-e-seo wa-sseo-yo</span></p>
+                                    <button class="audio-btn mt-2 px-3 py-1 rounded text-white text-xs" onclick="playAudio('jeoneuniitalliaeseowasseyo')">🔊</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Dialogo di Esempio</h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-blue-500">
+                                    <p class="korean-font text-lg">A: 안녕하세요!</p>
+                                    <p class="text-sm text-gray-600">A: Ciao!</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-green-500">
+                                    <p class="korean-font text-lg">B: 안녕하세요! 저는 김민수입니다.</p>
+                                    <p class="text-sm text-gray-600">B: Ciao! Io sono Kim Minsu.</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-blue-500">
+                                    <p class="korean-font text-lg">A: 만나서 반갑습니다!</p>
+                                    <p class="text-sm text-gray-600">A: Piacere di conoscerti!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button onclick="closeLesson()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Chiudi</button>
+                            <button onclick="completeLesson(2)" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600">Completa Lezione</button>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Exercise data
+        const exercises = {
+            hangul: {
+                title: "Quiz Hangul",
+                questions: [
+                    {
+                        question: "Quale suono rappresenta questo carattere?",
+                        character: "ㄱ",
+                        options: ["g/k", "n", "d/t", "r/l"],
+                        correct: 0
+                    },
+                    {
+                        question: "Come si legge questa sillaba?",
+                        character: "가",
+                        options: ["na", "ga", "da", "ra"],
+                        correct: 1
+                    },
+                    {
+                        question: "Quale vocale è questa?",
+                        character: "ㅏ",
+                        options: ["eo", "o", "a", "u"],
+                        correct: 2
+                    }
+                ]
+            },
+            vocabulary: {
+                title: "Quiz Vocabolario",
+                questions: [
+                    {
+                        question: "Cosa significa '안녕하세요'?",
+                        character: "안녕하세요",
+                        options: ["Grazie", "Ciao", "Scusa", "Prego"],
+                        correct: 1
+                    },
+                    {
+                        question: "Come si dice 'famiglia' in coreano?",
+                        character: "?",
+                        options: ["음식", "가족", "시간", "학교"],
+                        correct: 1
+                    }
+                ]
+            }
+        };
+
+        let currentExercise = null;
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Functions
+        function openLesson(lessonNumber) {
+            // Check if lesson is unlocked
+            if (!unlockedLessons.includes(lessonNumber)) {
+                alert('🔒 Questa lezione è bloccata! Completa prima le lezioni precedenti per sbloccarla.');
+                return;
+            }
+            
+            const lesson = lessons[lessonNumber];
+            if (lesson) {
+                document.getElementById('lessonTitle').textContent = lesson.title;
+                document.getElementById('lessonContent').innerHTML = lesson.content;
+                document.getElementById('lessonModal').classList.remove('hidden');
+            }
+        }
+
+        function closeLesson() {
+            document.getElementById('lessonModal').classList.add('hidden');
+        }
+
+        function completeLesson(lessonNumber) {
+            // Mark lesson as completed
+            if (!completedLessons.includes(lessonNumber)) {
+                completedLessons.push(lessonNumber);
+                localStorage.setItem('koreanCompletedLessons', JSON.stringify(completedLessons));
+                
+                // Unlock next lesson
+                const nextLesson = lessonNumber + 1;
+                if (nextLesson <= 10 && !unlockedLessons.includes(nextLesson)) {
+                    unlockedLessons.push(nextLesson);
+                    localStorage.setItem('koreanUnlockedLessons', JSON.stringify(unlockedLessons));
+                }
+                
+                // Update UI
+                updateLessonCards();
+                
+                // Show completion message
+                const nextLessonMessage = nextLesson <= 10 ? `\n🎉 Hai sbloccato la Lezione ${nextLesson}!` : '\n🏆 Hai completato tutte le lezioni disponibili!';
+                alert(`Congratulazioni! Hai completato la Lezione ${lessonNumber}!${nextLessonMessage}`);
+            } else {
+                alert(`Hai già completato la Lezione ${lessonNumber}!`);
+            }
+            
+            closeLesson();
+        }
+
+        function startExercise(exerciseType) {
+            currentExercise = exercises[exerciseType];
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            if (currentExercise) {
+                document.getElementById('exerciseTitle').textContent = currentExercise.title;
+                showQuestion();
+                document.getElementById('exerciseModal').classList.remove('hidden');
+            }
+        }
+
+        function showQuestion() {
+            const question = currentExercise.questions[currentQuestionIndex];
+            const content = `
+                <div class="text-center mb-8">
+                    <div class="korean-font text-6xl mb-4">${question.character}</div>
+                    <h3 class="text-xl font-semibold mb-6">${question.question}</h3>
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => `
+                            <div class="exercise-option p-4 border-2 border-gray-200 rounded-lg" onclick="selectAnswer(${index})">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <p class="text-gray-600">Domanda ${currentQuestionIndex + 1} di ${currentExercise.questions.length}</p>
+                </div>
+            `;
+            document.getElementById('exerciseContent').innerHTML = content;
+        }
+
+        function selectAnswer(selectedIndex) {
+            const question = currentExercise.questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.exercise-option');
+            
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            if (selectedIndex === question.correct) {
+                score++;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentExercise.questions.length) {
+                    showQuestion();
+                } else {
+                    showExerciseResults();
+                }
+            }, 1500);
+        }
+
+        function showExerciseResults() {
+            const percentage = Math.round((score / currentExercise.questions.length) * 100);
+            const content = `
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Risultati</h3>
+                    <div class="text-6xl mb-4">${percentage >= 70 ? '🎉' : '📚'}</div>
+                    <p class="text-xl mb-2">Hai risposto correttamente a ${score} su ${currentExercise.questions.length} domande</p>
+                    <p class="text-lg text-gray-600 mb-6">${percentage}% di accuratezza</p>
+                    <div class="space-x-4">
+                        <button onclick="closeExercise()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Chiudi</button>
+                        <button onclick="startExercise('${Object.keys(exercises).find(key => exercises[key] === currentExercise)}')" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Riprova</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('exerciseContent').innerHTML = content;
+        }
+
+        function closeExercise() {
+            document.getElementById('exerciseModal').classList.add('hidden');
+        }
+
+        function playAudio(word) {
+            // Simulate audio playback
+            console.log(`Playing audio for: ${word}`);
+            alert(`🔊 Audio simulato per: ${word}\n(Nota: L'audio non è supportato in questa demo)`);
+        }
+
+        function practiceCharacter(char) {
+            alert(`Pratica il carattere: ${char}\nUsa l'area di disegno qui sotto per esercitarti!`);
+        }
+
+        function checkReading(char, reading) {
+            alert(`Carattere: ${char}\nLettura: ${reading}\nBravo! 👏`);
+        }
+
+        // Canvas for writing practice
+        let canvas, ctx, isDrawing = false;
+
+        window.onload = function() {
+            // Initialize lesson cards
+            updateLessonCards();
+            
+            // Initialize canvas
+            canvas = document.getElementById('writingCanvas');
+            if (canvas) {
+                ctx = canvas.getContext('2d');
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+            }
+        };
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function checkWriting() {
+            alert('Ottimo lavoro! Continua a praticare la scrittura! ✍️');
+        }
+
+        function resetProgress() {
+            if (confirm('Sei sicuro di voler resettare tutti i progressi? Questa azione non può essere annullata.')) {
+                localStorage.removeItem('koreanCompletedLessons');
+                localStorage.removeItem('koreanUnlockedLessons');
+                completedLessons = [];
+                unlockedLessons = [1];
+                updateLessonCards();
+                alert('✅ Progressi resettati! Ora puoi ricominciare dall\'inizio.');
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f2af38112a599b',t:'MTc1NTE5NzkxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
