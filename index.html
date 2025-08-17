@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,11 @@
         }
         
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #1e40af 50%, #ffffff 100%);
+        }
+        
+        .korean-bg {
+            background: linear-gradient(135deg, #dc2626 0%, #ffffff 25%, #1e40af 50%, #ffffff 75%, #dc2626 100%);
         }
         
         .card-hover {
@@ -48,32 +52,60 @@
             70% { transform: scale(0.9); }
             100% { transform: scale(1); opacity: 1; }
         }
+        
+        .floating-tiger {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(8deg); }
+        }
+        
+        .golden-text {
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .header-title {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #ffffff;
+        }
+        
+        .korean-pattern {
+            background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                              radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+            background-size: 45px 45px;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen">
+<body class="bg-gradient-to-br from-red-50 to-blue-50 min-h-screen">
     <div id="app" class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-12">
-            <div class="gradient-bg text-white rounded-3xl p-8 mb-8">
-                <h1 class="text-4xl font-bold mb-4">🇰🇷 한국어 배우기</h1>
-                <p class="text-xl opacity-90">Impara il Coreano con Lezioni Interattive</p>
+            <div class="gradient-bg text-white rounded-3xl p-8 mb-8 relative overflow-hidden korean-pattern">
+                <div class="absolute top-4 right-4 text-4xl floating-tiger golden-text">🐅</div>
+                <div class="absolute bottom-4 left-4 text-3xl floating-tiger golden-text" style="animation-delay: -2s;">🏯</div>
+                <h1 class="text-5xl font-bold mb-4 korean-text header-title">🇰🇷 한국어 배우기</h1>
+                <p class="text-xl opacity-95 header-title font-medium">Impara il Coreano con Lezioni Interattive</p>
+                <p class="text-base opacity-85 mt-3 korean-text header-title">안녕하세요! 환영합니다!</p>
             </div>
         </header>
 
         <!-- Navigation -->
         <nav class="flex justify-center mb-8">
             <div class="bg-white rounded-full p-2 shadow-lg">
-                <button onclick="showSection('home')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 bg-purple-500 text-white">
-                    🏠 Home
+                <button onclick="showSection('home')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 bg-red-600 text-white">
+                    🏠 홈
                 </button>
-                <button onclick="showSection('lessons')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-purple-100">
-                    📚 Lezioni
+                <button onclick="showSection('lessons')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100">
+                    📚 수업
                 </button>
-                <button onclick="showSection('exercises')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-purple-100">
-                    🎯 Esercizi
+                <button onclick="showSection('exercises')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100">
+                    🎯 연습
                 </button>
-                <button onclick="showSection('progress')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-purple-100">
-                    📊 Progressi
+                <button onclick="showSection('progress')" class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100">
+                    📊 진도
                 </button>
             </div>
         </nav>
@@ -84,74 +116,74 @@
                 <!-- Quick Start Card -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
                     <div class="text-4xl mb-4">🚀</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Inizia Subito</h3>
-                    <p class="text-gray-600 mb-4">Comincia con le basi del Hangul</p>
-                    <button onclick="startLesson(1)" class="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all">
-                        Inizia Ora
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">지금 시작하기</h3>
+                    <p class="text-gray-600 mb-4">한글 알파벳 배우기</p>
+                    <button onclick="startLesson(1)" class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all">
+                        시작
                     </button>
                 </div>
 
                 <!-- Progress Card -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
                     <div class="text-4xl mb-4">📈</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">I Tuoi Progressi</h3>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">진도 현황</h3>
                     <div class="mb-4">
                         <div class="flex justify-between text-sm text-gray-600 mb-1">
-                            <span>Completato</span>
-                            <span id="progress-percent">25%</span>
+                            <span>완료</span>
+                            <span id="progress-percent">35%</span>
                         </div>
                         <div class="bg-gray-200 rounded-full h-2">
-                            <div id="progress-bar" class="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: 25%"></div>
+                            <div id="progress-bar" class="bg-gradient-to-r from-red-500 to-blue-600 h-2 rounded-full" style="width: 35%"></div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600">3 lezioni completate</p>
+                    <p class="text-sm text-gray-600">3개 수업 완료</p>
                 </div>
 
                 <!-- Daily Goal Card -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
                     <div class="text-4xl mb-4">🎯</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Obiettivo Giornaliero</h3>
-                    <p class="text-gray-600 mb-4">15 minuti di studio</p>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">일일 목표</h3>
+                    <p class="text-gray-600 mb-4">20분 학습</p>
                     <div class="flex items-center">
                         <div class="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-2">7</div>
-                        <span class="text-sm text-gray-600">giorni di fila! 🔥</span>
+                        <span class="text-sm text-gray-600">일 연속! 🔥</span>
                     </div>
                 </div>
             </div>
 
             <!-- Featured Lessons -->
             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800">Lezioni in Evidenza</h2>
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">추천 수업</h2>
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="border-2 border-purple-200 rounded-xl p-6 hover:border-purple-400 transition-all cursor-pointer" onclick="startLesson(1)">
+                    <div class="border-2 border-red-200 rounded-xl p-6 hover:border-red-400 transition-all cursor-pointer" onclick="startLesson(1)">
                         <div class="flex items-center mb-4">
-                            <div class="bg-purple-100 rounded-full p-3 mr-4">
-                                <span class="text-2xl">ㄱ</span>
+                            <div class="bg-red-100 rounded-full p-3 mr-4">
+                                <span class="text-2xl korean-text">ㄱ</span>
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg">Consonanti Base</h3>
-                                <p class="text-gray-600 text-sm">Impara le prime consonanti Hangul</p>
+                                <h3 class="font-bold text-lg">한글 알파벳</h3>
+                                <p class="text-gray-600 text-sm">기본 한글 자음과 모음 배우기</p>
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Principiante</span>
-                            <span class="text-purple-600 font-medium">15 min</span>
+                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">초급</span>
+                            <span class="text-red-600 font-medium">30분</span>
                         </div>
                     </div>
 
-                    <div class="border-2 border-pink-200 rounded-xl p-6 hover:border-pink-400 transition-all cursor-pointer" onclick="startLesson(2)">
+                    <div class="border-2 border-blue-200 rounded-xl p-6 hover:border-blue-400 transition-all cursor-pointer" onclick="startLesson(2)">
                         <div class="flex items-center mb-4">
-                            <div class="bg-pink-100 rounded-full p-3 mr-4">
-                                <span class="text-2xl">ㅏ</span>
+                            <div class="bg-blue-100 rounded-full p-3 mr-4">
+                                <span class="text-2xl korean-text">안녕</span>
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg">Vocali Base</h3>
-                                <p class="text-gray-600 text-sm">Scopri le vocali fondamentali</p>
+                                <h3 class="font-bold text-lg">첫 단어들</h3>
+                                <p class="text-gray-600 text-sm">기본 한국어 단어와 인사말</p>
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Principiante</span>
-                            <span class="text-pink-600 font-medium">12 min</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">중급</span>
+                            <span class="text-blue-600 font-medium">25분</span>
                         </div>
                     </div>
                 </div>
@@ -161,94 +193,110 @@
         <!-- Lessons Section -->
         <div id="lessons-section" class="section hidden">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📚 Lezioni di Coreano</h2>
+                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📚 한국어 수업</h2>
                 
                 <div class="grid gap-6">
-                    <!-- LEZIONI ESISTENTI - Puoi modificare queste o usarle come template -->
-                    
                     <!-- Lesson 1 -->
-                    <div class="border-2 border-purple-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(1)">
+                    <div class="border-2 border-red-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(1)">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">1</div>
+                                <div class="bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">1</div>
                                 <div>
-                                    <h3 class="text-xl font-bold korean-text">기본 자음 - Consonanti Base</h3>
-                                    <p class="text-gray-600">ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ</p>
+                                    <h3 class="text-xl font-bold korean-text">한글 알파벳 - Alfabeto Hangul</h3>
+                                    <p class="text-gray-600">ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ + ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-2">Completata ✓</div>
-                                <span class="text-purple-600 font-medium">15 min</span>
+                                <div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm mb-2">완료 ✓</div>
+                                <span class="text-red-600 font-medium">30분</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Lesson 2 -->
-                    <div class="border-2 border-pink-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(2)">
+                    <div class="border-2 border-blue-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(2)">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="bg-pink-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">2</div>
+                                <div class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">2</div>
                                 <div>
-                                    <h3 class="text-xl font-bold korean-text">기본 모음 - Vocali Base</h3>
-                                    <p class="text-gray-600">ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ</p>
+                                    <h3 class="text-xl font-bold korean-text">첫 단어들 - Prime Parole</h3>
+                                    <p class="text-gray-600">안녕하세요, 감사합니다, 네, 아니요, 죄송합니다</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mb-2">In Corso</div>
-                                <span class="text-pink-600 font-medium">12 min</span>
+                                <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mb-2">진행 중</div>
+                                <span class="text-blue-600 font-medium">25분</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Lesson 3 -->
-                    <div class="border-2 border-gray-200 rounded-xl p-6 card-hover opacity-75">
+                    <div class="border-2 border-purple-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(3)">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="bg-gray-400 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">3</div>
+                                <div class="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">3</div>
                                 <div>
-                                    <h3 class="text-xl font-bold korean-text">첫 단어 - Prime Parole</h3>
-                                    <p class="text-gray-600">안녕하세요, 감사합니다, 네, 아니요</p>
+                                    <h3 class="text-xl font-bold korean-text">숫자 - Numeri</h3>
+                                    <p class="text-gray-600">하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm mb-2">Bloccata 🔒</div>
-                                <span class="text-gray-500 font-medium">18 min</span>
+                                <div class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+                                <span class="text-purple-600 font-medium">20분</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 
-                    ========================================
-                    🎯 AGGIUNGI NUOVE LEZIONI QUI SOTTO! 
-                    ========================================
-                    
-                    TEMPLATE PER NUOVA LEZIONE:
-                    Copia questo codice e modifica:
-                    - Numero della lezione (4, 5, 6...)
-                    - Colore del bordo (border-blue-200, border-green-200...)
-                    - Colore del cerchio (bg-blue-500, bg-green-500...)
-                    - Titolo in coreano e italiano
-                    - Descrizione del contenuto
-                    - Stato (Completata, In Corso, Bloccata)
-                    - Durata stimata
-                    
-                    <div class="border-2 border-blue-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(4)">
+                    <!-- Lesson 4 -->
+                    <div class="border-2 border-orange-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(4)">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">4</div>
+                                <div class="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">4</div>
                                 <div>
-                                    <h3 class="text-xl font-bold korean-text">복합 자음 - Consonanti Doppie</h3>
-                                    <p class="text-gray-600">ㄲ, ㄸ, ㅃ, ㅆ, ㅉ</p>
+                                    <h3 class="text-xl font-bold korean-text">색깔 - Colori</h3>
+                                    <p class="text-gray-600">빨간색, 파란색, 노란색, 초록색, 검은색, 흰색</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm mb-2">Bloccata 🔒</div>
-                                <span class="text-gray-500 font-medium">20 min</span>
+                                <div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+                                <span class="text-orange-600 font-medium">15분</span>
                             </div>
                         </div>
                     </div>
-                    -->
-                    
+
+                    <!-- Lesson 5 -->
+                    <div class="border-2 border-pink-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(5)">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="bg-pink-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">5</div>
+                                <div>
+                                    <h3 class="text-xl font-bold korean-text">가족 - Famiglia</h3>
+                                    <p class="text-gray-600">아버지, 어머니, 형, 누나, 동생</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+                                <span class="text-pink-600 font-medium">18분</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 6 -->
+                    <div class="border-2 border-green-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(6)">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">6</div>
+                                <div>
+                                    <h3 class="text-xl font-bold korean-text">음식 - Cibo</h3>
+                                    <p class="text-gray-600">김치, 비빔밥, 불고기, 라면, 떡볶이</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+                                <span class="text-green-600 font-medium">22분</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,26 +304,26 @@
         <!-- Exercises Section -->
         <div id="exercises-section" class="section hidden">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">🎯 Esercizi Interattivi</h2>
+                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">🎯 대화형 연습</h2>
                 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('matching')">
+                    <div class="korean-bg rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('matching')">
                         <div class="text-4xl mb-4">🔗</div>
-                        <h3 class="text-xl font-bold mb-2">Abbina i Caratteri</h3>
-                        <p class="text-gray-600 mb-4">Collega le lettere Hangul con i loro suoni</p>
+                        <h3 class="text-xl font-bold mb-2">글자 연결</h3>
+                        <p class="text-gray-600 mb-4">한글 글자와 소리를 연결하세요</p>
                         <div class="flex justify-between items-center">
-                            <span class="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm">10 domande</span>
-                            <span class="text-purple-600 font-medium">5 min</span>
+                            <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm">18개 문제</span>
+                            <span class="text-red-600 font-medium">10분</span>
                         </div>
                     </div>
 
-                    <div class="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('pronunciation')">
+                    <div class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('pronunciation')">
                         <div class="text-4xl mb-4">🎵</div>
-                        <h3 class="text-xl font-bold mb-2">Pronuncia</h3>
-                        <p class="text-gray-600 mb-4">Ascolta e ripeti i suoni coreani</p>
+                        <h3 class="text-xl font-bold mb-2">발음 연습</h3>
+                        <p class="text-gray-600 mb-4">한국어 소리를 듣고 따라하세요</p>
                         <div class="flex justify-between items-center">
-                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">15 suoni</span>
-                            <span class="text-blue-600 font-medium">8 min</span>
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">24개 소리</span>
+                            <span class="text-blue-600 font-medium">15분</span>
                         </div>
                     </div>
                 </div>
@@ -283,33 +331,33 @@
                 <!-- Sample Exercise -->
                 <div id="exercise-area" class="bg-gray-50 rounded-xl p-8">
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold mb-6 text-gray-800">Esercizio: Riconosci il Carattere</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">연습: 글자 인식</h3>
                         <div class="bg-white rounded-xl p-8 mb-6 shadow-inner">
-                            <div class="text-8xl korean-text mb-6 pulse-animation" id="exercise-character">ㄱ</div>
-                            <p class="text-lg text-gray-600 mb-8">Quale suono rappresenta questo carattere?</p>
+                            <div class="text-8xl korean-text mb-6 pulse-animation text-red-600" id="exercise-character">ㄱ</div>
+                            <p class="text-lg text-gray-600 mb-8">이 한글 글자는 어떻게 발음하나요?</p>
                             
                             <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                                <button onclick="checkAnswer('g')" class="exercise-option bg-purple-100 hover:bg-purple-200 text-purple-800 py-4 px-6 rounded-xl font-medium transition-all">
-                                    G / K
+                                <button onclick="checkAnswer('g')" class="exercise-option bg-red-100 hover:bg-red-200 text-red-800 py-4 px-6 rounded-xl font-medium transition-all">
+                                    G/K (come "gatto")
                                 </button>
-                                <button onclick="checkAnswer('n')" class="exercise-option bg-pink-100 hover:bg-pink-200 text-pink-800 py-4 px-6 rounded-xl font-medium transition-all">
-                                    N
+                                <button onclick="checkAnswer('n')" class="exercise-option bg-blue-100 hover:bg-blue-200 text-blue-800 py-4 px-6 rounded-xl font-medium transition-all">
+                                    N (come "naso")
                                 </button>
-                                <button onclick="checkAnswer('d')" class="exercise-option bg-blue-100 hover:bg-blue-200 text-blue-800 py-4 px-6 rounded-xl font-medium transition-all">
-                                    D / T
+                                <button onclick="checkAnswer('d')" class="exercise-option bg-green-100 hover:bg-green-200 text-green-800 py-4 px-6 rounded-xl font-medium transition-all">
+                                    D/T (come "dado")
                                 </button>
-                                <button onclick="checkAnswer('r')" class="exercise-option bg-green-100 hover:bg-green-200 text-green-800 py-4 px-6 rounded-xl font-medium transition-all">
-                                    R / L
+                                <button onclick="checkAnswer('m')" class="exercise-option bg-purple-100 hover:bg-purple-200 text-purple-800 py-4 px-6 rounded-xl font-medium transition-all">
+                                    M (come "mamma")
                                 </button>
                             </div>
                         </div>
                         
                         <div id="exercise-feedback" class="hidden">
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4">
-                                <strong>Corretto! 🎉</strong> ㄱ si pronuncia come G o K
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4">
+                                <strong>정답! 🎉</strong> ㄱ si pronuncia "G/K" (come in "gatto")
                             </div>
-                            <button onclick="nextExercise()" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                                Prossima Domanda →
+                            <button onclick="nextExercise()" class="bg-gradient-to-r from-red-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
+                                다음 문제 →
                             </button>
                         </div>
                     </div>
@@ -320,51 +368,51 @@
         <!-- Progress Section -->
         <div id="progress-section" class="section hidden">
             <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📊 I Tuoi Progressi</h2>
+                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📊 진도 상황</h2>
                 
                 <div class="grid md:grid-cols-3 gap-6 mb-8">
                     <div class="text-center">
-                        <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl p-6">
+                        <div class="bg-gradient-to-br from-red-600 to-red-500 text-white rounded-2xl p-6">
                             <div class="text-3xl font-bold">3</div>
-                            <div class="text-sm opacity-90">Lezioni Completate</div>
+                            <div class="text-sm opacity-90">완료된 수업</div>
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-2xl p-6">
-                            <div class="text-3xl font-bold">47</div>
-                            <div class="text-sm opacity-90">Esercizi Risolti</div>
+                        <div class="bg-gradient-to-br from-blue-500 to-indigo-500 text-white rounded-2xl p-6">
+                            <div class="text-3xl font-bold">24</div>
+                            <div class="text-sm opacity-90">배운 글자</div>
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="bg-gradient-to-br from-green-500 to-teal-500 text-white rounded-2xl p-6">
+                        <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl p-6">
                             <div class="text-3xl font-bold">7</div>
-                            <div class="text-sm opacity-90">Giorni di Fila</div>
+                            <div class="text-sm opacity-90">연속 일수</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 rounded-xl p-6">
-                    <h3 class="text-xl font-bold mb-4">Caratteri Hangul Appresi</h3>
-                    <div class="grid grid-cols-7 gap-3">
-                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 text-center">
+                <div class="bg-gradient-to-br from-red-50 to-blue-50 rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-red-700">배운 한글 자음</h3>
+                    <div class="grid grid-cols-7 gap-3 mb-6">
+                        <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
                             <div class="text-2xl korean-text">ㄱ</div>
-                            <div class="text-xs text-green-700 mt-1">✓</div>
+                            <div class="text-xs text-red-700 mt-1">✓</div>
                         </div>
-                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 text-center">
+                        <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
                             <div class="text-2xl korean-text">ㄴ</div>
-                            <div class="text-xs text-green-700 mt-1">✓</div>
+                            <div class="text-xs text-red-700 mt-1">✓</div>
                         </div>
-                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 text-center">
+                        <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
                             <div class="text-2xl korean-text">ㄷ</div>
-                            <div class="text-xs text-green-700 mt-1">✓</div>
+                            <div class="text-xs text-red-700 mt-1">✓</div>
+                        </div>
+                        <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㄹ</div>
+                            <div class="text-xs text-red-700 mt-1">✓</div>
                         </div>
                         <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 text-center">
-                            <div class="text-2xl korean-text">ㄹ</div>
-                            <div class="text-xs text-yellow-700 mt-1">~</div>
-                        </div>
-                        <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
                             <div class="text-2xl korean-text">ㅁ</div>
-                            <div class="text-xs text-gray-500 mt-1">○</div>
+                            <div class="text-xs text-yellow-700 mt-1">~</div>
                         </div>
                         <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
                             <div class="text-2xl korean-text">ㅂ</div>
@@ -375,10 +423,35 @@
                             <div class="text-xs text-gray-500 mt-1">○</div>
                         </div>
                     </div>
+                    
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">배운 한글 모음</h3>
+                    <div class="grid grid-cols-5 gap-3 mb-4">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㅏ</div>
+                            <div class="text-xs text-blue-700 mt-1">✓</div>
+                        </div>
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㅑ</div>
+                            <div class="text-xs text-blue-700 mt-1">✓</div>
+                        </div>
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㅓ</div>
+                            <div class="text-xs text-blue-700 mt-1">✓</div>
+                        </div>
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㅕ</div>
+                            <div class="text-xs text-yellow-700 mt-1">~</div>
+                        </div>
+                        <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
+                            <div class="text-2xl korean-text">ㅗ</div>
+                            <div class="text-xs text-gray-500 mt-1">○</div>
+                        </div>
+                    </div>
+                    
                     <div class="mt-4 text-sm text-gray-600">
-                        <span class="inline-block w-3 h-3 bg-green-400 rounded-full mr-2"></span>Appreso
-                        <span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2 ml-4"></span>In Corso
-                        <span class="inline-block w-3 h-3 bg-gray-300 rounded-full mr-2 ml-4"></span>Da Imparare
+                        <span class="inline-block w-3 h-3 bg-red-400 rounded-full mr-2"></span>배움 완료
+                        <span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2 ml-4"></span>학습 중
+                        <span class="inline-block w-3 h-3 bg-gray-300 rounded-full mr-2 ml-4"></span>학습 예정
                     </div>
                 </div>
             </div>
@@ -398,8 +471,8 @@
             
             // Update navigation buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-purple-500', 'text-white');
-                btn.classList.add('text-gray-600', 'hover:bg-purple-100');
+                btn.classList.remove('bg-red-600', 'text-white');
+                btn.classList.add('text-gray-600', 'hover:bg-red-100');
             });
             
             // Find and update the clicked button
@@ -408,56 +481,99 @@
             );
             
             if (clickedButton) {
-                clickedButton.classList.add('bg-purple-500', 'text-white');
-                clickedButton.classList.remove('text-gray-600', 'hover:bg-purple-100');
+                clickedButton.classList.add('bg-red-600', 'text-white');
+                clickedButton.classList.remove('text-gray-600', 'hover:bg-red-100');
             }
         }
 
         // Lesson functions
         function startLesson(lessonNumber) {
-            // Show lesson content based on lesson number
-            
-            /* 
-            ========================================
-            🎯 AGGIUNGI NUOVE LEZIONI QUI SOTTO!
-            ========================================
-            
-            Per aggiungere una nuova lezione:
-            1. Aggiungi un nuovo "else if" con il numero della lezione
-            2. Chiama showLessonContent() con:
-               - Titolo della lezione
-               - Descrizione breve
-               - Array di caratteri con: char, sound, example
-            
-            Esempio per Lezione 4:
-            } else if (lessonNumber === 4) {
-                showLessonContent('Consonanti Doppie', 'ㄲ, ㄸ, ㅃ, ㅆ, ㅉ', [
-                    {char: 'ㄲ', sound: 'KK', example: '까 (kka)'},
-                    {char: 'ㄸ', sound: 'TT', example: '따 (tta)'},
-                    {char: 'ㅃ', sound: 'PP', example: '빠 (ppa)'},
-                    {char: 'ㅆ', sound: 'SS', example: '싸 (ssa)'},
-                    {char: 'ㅉ', sound: 'JJ', example: '짜 (jja)'}
-                ]);
-            */
-            
             if (lessonNumber === 1) {
-                showLessonContent('Consonanti Base', 'ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ', [
-                    {char: 'ㄱ', sound: 'G/K', example: '가 (ga)'},
-                    {char: 'ㄴ', sound: 'N', example: '나 (na)'},
-                    {char: 'ㄷ', sound: 'D/T', example: '다 (da)'},
-                    {char: 'ㄹ', sound: 'R/L', example: '라 (ra)'},
-                    {char: 'ㅁ', sound: 'M', example: '마 (ma)'}
+                showLessonContent('한글 알파벳', 'ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ + ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ', [
+                    {char: 'ㄱ', sound: 'G/K', example: '가방 (borsa)'},
+                    {char: 'ㄴ', sound: 'N', example: '나무 (albero)'},
+                    {char: 'ㄷ', sound: 'D/T', example: '다리 (gamba)'},
+                    {char: 'ㄹ', sound: 'R/L', example: '라면 (ramen)'},
+                    {char: 'ㅁ', sound: 'M', example: '마음 (cuore)'},
+                    {char: 'ㅂ', sound: 'B/P', example: '바다 (mare)'},
+                    {char: 'ㅅ', sound: 'S', example: '사과 (mela)'},
+                    {char: 'ㅇ', sound: 'NG/silenzioso', example: '아이 (bambino)'},
+                    {char: 'ㅈ', sound: 'J/CH', example: '자동차 (auto)'},
+                    {char: 'ㅊ', sound: 'CH', example: '차 (tè)'},
+                    {char: 'ㅋ', sound: 'K', example: '코 (naso)'},
+                    {char: 'ㅌ', sound: 'T', example: '토끼 (coniglio)'},
+                    {char: 'ㅍ', sound: 'P', example: '파도 (onda)'},
+                    {char: 'ㅎ', sound: 'H', example: '하늘 (cielo)'},
+                    {char: 'ㅏ', sound: 'A', example: '아버지 (padre)'},
+                    {char: 'ㅑ', sound: 'YA', example: '야구 (baseball)'},
+                    {char: 'ㅓ', sound: 'EO', example: '어머니 (madre)'},
+                    {char: 'ㅕ', sound: 'YEO', example: '여름 (estate)'},
+                    {char: 'ㅗ', sound: 'O', example: '오늘 (oggi)'},
+                    {char: 'ㅛ', sound: 'YO', example: '요리 (cucina)'},
+                    {char: 'ㅜ', sound: 'U', example: '우유 (latte)'},
+                    {char: 'ㅠ', sound: 'YU', example: '유리 (vetro)'},
+                    {char: 'ㅡ', sound: 'EU', example: '그림 (disegno)'},
+                    {char: 'ㅣ', sound: 'I', example: '이름 (nome)'}
                 ]);
             } else if (lessonNumber === 2) {
-                showLessonContent('Vocali Base', 'ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ', [
-                    {char: 'ㅏ', sound: 'A', example: '아 (a)'},
-                    {char: 'ㅓ', sound: 'EO', example: '어 (eo)'},
-                    {char: 'ㅗ', sound: 'O', example: '오 (o)'},
-                    {char: 'ㅜ', sound: 'U', example: '우 (u)'},
-                    {char: 'ㅣ', sound: 'I', example: '이 (i)'}
+                showLessonContent('첫 단어들', '안녕하세요, 감사합니다, 네, 아니요, 죄송합니다', [
+                    {char: '안녕하세요', sound: 'an-nyeong-ha-se-yo', example: '안녕하세요 (Salve/Ciao formale)'},
+                    {char: '감사합니다', sound: 'gam-sa-ham-ni-da', example: '감사합니다 (Grazie formale)'},
+                    {char: '네', sound: 'ne', example: '네 (Sì)'},
+                    {char: '아니요', sound: 'a-ni-yo', example: '아니요 (No)'},
+                    {char: '죄송합니다', sound: 'joe-song-ham-ni-da', example: '죄송합니다 (Mi dispiace)'},
+                    {char: '안녕', sound: 'an-nyeong', example: '안녕 (Ciao informale)'},
+                    {char: '고마워', sound: 'go-ma-wo', example: '고마워 (Grazie informale)'},
+                    {char: '괜찮아요', sound: 'gwaen-chan-a-yo', example: '괜찮아요 (Va bene)'}
+                ]);
+            } else if (lessonNumber === 3) {
+                showLessonContent('숫자', '하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열', [
+                    {char: '하나', sound: 'ha-na', example: '하나 (uno)'},
+                    {char: '둘', sound: 'dul', example: '둘 (due)'},
+                    {char: '셋', sound: 'set', example: '셋 (tre)'},
+                    {char: '넷', sound: 'net', example: '넷 (quattro)'},
+                    {char: '다섯', sound: 'da-seot', example: '다섯 (cinque)'},
+                    {char: '여섯', sound: 'yeo-seot', example: '여섯 (sei)'},
+                    {char: '일곱', sound: 'il-gop', example: '일곱 (sette)'},
+                    {char: '여덟', sound: 'yeo-deol', example: '여덟 (otto)'},
+                    {char: '아홉', sound: 'a-hop', example: '아홉 (nove)'},
+                    {char: '열', sound: 'yeol', example: '열 (dieci)'}
+                ]);
+            } else if (lessonNumber === 4) {
+                showLessonContent('색깔', '빨간색, 파란색, 노란색, 초록색, 검은색, 흰색', [
+                    {char: '빨간색', sound: 'ppal-gan-saek', example: '빨간색 (rosso)'},
+                    {char: '파란색', sound: 'pa-ran-saek', example: '파란색 (blu)'},
+                    {char: '노란색', sound: 'no-ran-saek', example: '노란색 (giallo)'},
+                    {char: '초록색', sound: 'cho-rok-saek', example: '초록색 (verde)'},
+                    {char: '검은색', sound: 'geom-eun-saek', example: '검은색 (nero)'},
+                    {char: '흰색', sound: 'huin-saek', example: '흰색 (bianco)'},
+                    {char: '보라색', sound: 'bo-ra-saek', example: '보라색 (viola)'},
+                    {char: '분홍색', sound: 'bun-hong-saek', example: '분홍색 (rosa)'}
+                ]);
+            } else if (lessonNumber === 5) {
+                showLessonContent('가족', '아버지, 어머니, 형, 누나, 동생', [
+                    {char: '아버지', sound: 'a-beo-ji', example: '아버지 (padre)'},
+                    {char: '어머니', sound: 'eo-meo-ni', example: '어머니 (madre)'},
+                    {char: '형', sound: 'hyeong', example: '형 (fratello maggiore - per maschi)'},
+                    {char: '누나', sound: 'nu-na', example: '누나 (sorella maggiore - per maschi)'},
+                    {char: '동생', sound: 'dong-saeng', example: '동생 (fratello/sorella minore)'},
+                    {char: '할아버지', sound: 'hal-a-beo-ji', example: '할아버지 (nonno)'},
+                    {char: '할머니', sound: 'hal-meo-ni', example: '할머니 (nonna)'},
+                    {char: '가족', sound: 'ga-jok', example: '가족 (famiglia)'}
+                ]);
+            } else if (lessonNumber === 6) {
+                showLessonContent('음식', '김치, 비빔밥, 불고기, 라면, 떡볶이', [
+                    {char: '김치', sound: 'gim-chi', example: '김치 (kimchi)'},
+                    {char: '비빔밥', sound: 'bi-bim-bap', example: '비빔밥 (bibimbap)'},
+                    {char: '불고기', sound: 'bul-go-gi', example: '불고기 (bulgogi)'},
+                    {char: '라면', sound: 'ra-myeon', example: '라면 (ramen)'},
+                    {char: '떡볶이', sound: 'tteok-bo-kki', example: '떡볶이 (tteokbokki)'},
+                    {char: '밥', sound: 'bap', example: '밥 (riso)'},
+                    {char: '물', sound: 'mul', example: '물 (acqua)'},
+                    {char: '맥주', sound: 'maek-ju', example: '맥주 (birra)'}
                 ]);
             } else {
-                alert(`🔒 La Lezione ${lessonNumber} sarà disponibile presto! Completa prima le lezioni precedenti.`);
+                alert(`🎉 축하합니다! 모든 수업이 열려있습니다. 수업 ${lessonNumber}을 선택하셨습니다!`);
             }
         }
 
@@ -466,30 +582,30 @@
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
             modal.innerHTML = `
-                <div class="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-bold text-gray-800">${title}</h2>
                         <button onclick="closeLessonModal()" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
                     </div>
                     
-                    <p class="text-gray-600 mb-8">${description}</p>
+                    <p class="text-gray-600 mb-8 korean-text">${description}</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                         ${characters.map(char => `
-                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 text-center card-hover">
-                                <div class="text-6xl korean-text mb-4 text-purple-600">${char.char}</div>
-                                <div class="text-xl font-bold mb-2">${char.sound}</div>
-                                <div class="text-gray-600 korean-text">${char.example}</div>
+                            <div class="bg-gradient-to-br from-red-50 to-blue-50 rounded-xl p-6 text-center card-hover">
+                                <div class="text-4xl korean-text mb-4 text-red-600">${char.char}</div>
+                                <div class="text-lg font-bold mb-2">${char.sound}</div>
+                                <div class="text-gray-600 korean-text text-sm">${char.example}</div>
                             </div>
                         `).join('')}
                     </div>
                     
                     <div class="flex gap-4 justify-center">
-                        <button onclick="startLessonQuiz('${title}')" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                            🎯 Fai il Quiz
+                        <button onclick="startLessonQuiz('${title}')" class="bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
+                            🎯 테스트
                         </button>
                         <button onclick="closeLessonModal()" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-300 transition-all">
-                            ✓ Completato
+                            ✓ 완료
                         </button>
                     </div>
                 </div>
@@ -508,7 +624,7 @@
         function startLessonQuiz(lessonTitle) {
             closeLessonModal();
             showSection('exercises');
-            alert(`🎯 Ottimo! Ora prova il quiz per ${lessonTitle}. Vai alla sezione Esercizi per testare quello che hai imparato!`);
+            alert(`🎯 훌륭합니다! 이제 ${lessonTitle}에 대한 테스트를 해보세요. 연습 섹션으로 가서 배운 것을 테스트해보세요!`);
         }
 
         // Exercise functions
@@ -520,7 +636,10 @@
                 {char: 'ㄴ', answer: 'n', sound: 'N'},
                 {char: 'ㄷ', answer: 'd', sound: 'D/T'},
                 {char: 'ㄹ', answer: 'r', sound: 'R/L'},
-                {char: 'ㅁ', answer: 'm', sound: 'M'}
+                {char: 'ㅁ', answer: 'm', sound: 'M'},
+                {char: 'ㅂ', answer: 'b', sound: 'B/P'},
+                {char: 'ㅅ', answer: 's', sound: 'S'},
+                {char: 'ㅇ', answer: 'ng', sound: 'NG'}
             ],
             currentIndex: 0
         };
@@ -530,7 +649,7 @@
                 document.getElementById('exercises-section').scrollIntoView({behavior: 'smooth'});
                 document.getElementById('exercise-area').scrollIntoView({behavior: 'smooth'});
             } else {
-                alert(`🎵 Esercizio di pronuncia! In una vera app, qui useresti il microfono per praticare la pronuncia dei caratteri coreani.`);
+                alert(`🎵 발음 연습! 실제 앱에서는 마이크를 사용해서 한국어 글자 발음을 연습할 수 있습니다.`);
             }
         }
 
@@ -540,20 +659,20 @@
             
             if (answer === character.answer) {
                 feedback.innerHTML = `
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4 bounce-in">
-                        <strong>Corretto! 🎉</strong> ${character.char} si pronuncia come ${character.sound}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 bounce-in">
+                        <strong>정답! 🎉</strong> ${character.char} si pronuncia "${character.sound}"
                     </div>
-                    <button onclick="nextExercise()" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                        Prossima Domanda →
+                    <button onclick="nextExercise()" class="bg-gradient-to-r from-red-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
+                        다음 문제 →
                     </button>
                 `;
             } else {
                 feedback.innerHTML = `
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 bounce-in">
-                        <strong>Riprova! 🤔</strong> ${character.char} non si pronuncia così...
+                    <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-xl mb-4 bounce-in">
+                        <strong>다시 시도해보세요! 🤔</strong> ${character.char}는 그렇게 발음하지 않아요...
                     </div>
                     <button onclick="nextExercise()" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                        Mostra Risposta
+                        정답 보기
                     </button>
                 `;
             }
@@ -592,8 +711,8 @@
                     progressBar.style.width = newWidth + '%';
                     document.getElementById('progress-percent').textContent = Math.round(newWidth) + '%';
                 }
-            }, 5000);
+            }, 8000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97015cd495e6edb3',t:'MTc1NTM1MTgyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'970abc0846fbedce',t:'MTc1NTQ1MDA5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
