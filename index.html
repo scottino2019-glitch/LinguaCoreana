@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>í•œêµ­ì–´ ë°°ìš°ê¸° - Impara il Coreano</title>
+<title>한국어 배우기 - Impara il Coreano</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -85,27 +85,27 @@
 <!-- Header -->
 <header class="text-center mb-12">
 <div class="gradient-bg text-white rounded-3xl p-8 mb-8 relative overflow-hidden korean-pattern">
-<div class="absolute top-4 right-4 text-4xl floating-tiger golden-text">ðŸ…</div>
-<div class="absolute bottom-4 left-4 text-3xl floating-tiger golden-text" style="animation-delay: -2s;">ðŸ¯</div>
-<h1 class="text-5xl font-bold mb-4 korean-text header-title">ðŸ‡°ðŸ‡· í•œêµ­ì–´ ë°°ìš°ê¸°</h1>
+<div class="absolute top-4 right-4 text-4xl floating-tiger golden-text">🐅</div>
+<div class="absolute bottom-4 left-4 text-3xl floating-tiger golden-text" style="animation-delay: -2s;">🏯</div>
+<h1 class="text-5xl font-bold mb-4 korean-text header-title">🇰🇷 한국어 배우기</h1>
 <p class="text-xl opacity-95 header-title font-medium">Impara il Coreano con Lezioni Interattive</p>
-<p class="text-base opacity-85 mt-3 korean-text header-title">ì•ˆë…•í•˜ì„¸ìš”! í™˜ì˜í•©ë‹ˆë‹¤!</p>
+<p class="text-base opacity-85 mt-3 korean-text header-title">안녕하세요! 환영합니다!</p>
 </div>
 </header>
 <!-- Navigation -->
 <nav class="flex justify-center mb-8">
 <div class="bg-white rounded-full p-2 shadow-lg">
 <button class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 bg-red-600 text-white" onclick="showSection('home')">
-                    ðŸ  í™ˆ
+                    🏠 홈
                 </button>
 <button class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100" onclick="showSection('lessons')">
-                    ðŸ“š ìˆ˜ì—…
+                    📚 수업
                 </button>
 <button class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100" onclick="showSection('exercises')">
-                    ðŸŽ¯ ì—°ìŠµ
+                    🎯 연습
                 </button>
 <button class="nav-btn px-6 py-3 rounded-full font-medium transition-all duration-300 text-gray-600 hover:bg-red-100" onclick="showSection('progress')">
-                    ðŸ“Š ì§„ë„
+                    📊 진도
                 </button>
 </div>
 </nav>
@@ -114,71 +114,71 @@
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
 <!-- Quick Start Card -->
 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
-<div class="text-4xl mb-4">ðŸš€</div>
-<h3 class="text-xl font-bold mb-2 text-gray-800">ì§€ê¸ˆ ì‹œìž‘í•˜ê¸°</h3>
-<p class="text-gray-600 mb-4">í•œê¸€ ì•ŒíŒŒë²³ ë°°ìš°ê¸°</p>
+<div class="text-4xl mb-4">🚀</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">지금 시작하기</h3>
+<p class="text-gray-600 mb-4">한글 알파벳 배우기</p>
 <button class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all" onclick="startLesson(1)">
-                        ì‹œìž‘
+                        시작
                     </button>
 </div>
 <!-- Progress Card -->
 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
-<div class="text-4xl mb-4">ðŸ“ˆ</div>
-<h3 class="text-xl font-bold mb-2 text-gray-800">ì§„ë„ í˜„í™©</h3>
+<div class="text-4xl mb-4">📈</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">진도 현황</h3>
 <div class="mb-4">
 <div class="flex justify-between text-sm text-gray-600 mb-1">
-<span>ì™„ë£Œ</span>
+<span>완료</span>
 <span id="progress-percent">35%</span>
 </div>
 <div class="bg-gray-200 rounded-full h-2">
 <div class="bg-gradient-to-r from-red-500 to-blue-600 h-2 rounded-full" id="progress-bar" style="width: 35%"></div>
 </div>
 </div>
-<p class="text-sm text-gray-600">3ê°œ ìˆ˜ì—… ì™„ë£Œ</p>
+<p class="text-sm text-gray-600">3개 수업 완료</p>
 </div>
 <!-- Daily Goal Card -->
 <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
-<div class="text-4xl mb-4">ðŸŽ¯</div>
-<h3 class="text-xl font-bold mb-2 text-gray-800">ì¼ì¼ ëª©í‘œ</h3>
-<p class="text-gray-600 mb-4">20ë¶„ í•™ìŠµ</p>
+<div class="text-4xl mb-4">🎯</div>
+<h3 class="text-xl font-bold mb-2 text-gray-800">일일 목표</h3>
+<p class="text-gray-600 mb-4">20분 학습</p>
 <div class="flex items-center">
 <div class="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold mr-2">7</div>
-<span class="text-sm text-gray-600">ì¼ ì—°ì†! ðŸ”¥</span>
+<span class="text-sm text-gray-600">일 연속! 🔥</span>
 </div>
 </div>
 </div>
 <!-- Featured Lessons -->
 <div class="bg-white rounded-2xl p-8 shadow-lg">
-<h2 class="text-2xl font-bold mb-6 text-gray-800">ì¶”ì²œ ìˆ˜ì—…</h2>
+<h2 class="text-2xl font-bold mb-6 text-gray-800">추천 수업</h2>
 <div class="grid md:grid-cols-2 gap-6">
 <div class="border-2 border-red-200 rounded-xl p-6 hover:border-red-400 transition-all cursor-pointer" onclick="startLesson(1)">
 <div class="flex items-center mb-4">
 <div class="bg-red-100 rounded-full p-3 mr-4">
-<span class="text-2xl korean-text">ã„±</span>
+<span class="text-2xl korean-text">ㄱ</span>
 </div>
 <div>
-<h3 class="font-bold text-lg">í•œê¸€ ì•ŒíŒŒë²³</h3>
-<p class="text-gray-600 text-sm">ê¸°ë³¸ í•œê¸€ ìžìŒê³¼ ëª¨ìŒ ë°°ìš°ê¸°</p>
+<h3 class="font-bold text-lg">한글 알파벳</h3>
+<p class="text-gray-600 text-sm">기본 한글 자음과 모음 배우기</p>
 </div>
 </div>
 <div class="flex justify-between items-center">
-<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">ì´ˆê¸‰</span>
-<span class="text-red-600 font-medium">30ë¶„</span>
+<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">초급</span>
+<span class="text-red-600 font-medium">30분</span>
 </div>
 </div>
 <div class="border-2 border-blue-200 rounded-xl p-6 hover:border-blue-400 transition-all cursor-pointer" onclick="startLesson(2)">
 <div class="flex items-center mb-4">
 <div class="bg-blue-100 rounded-full p-3 mr-4">
-<span class="text-2xl korean-text">ì•ˆë…•</span>
+<span class="text-2xl korean-text">안녕</span>
 </div>
 <div>
-<h3 class="font-bold text-lg">ì²« ë‹¨ì–´ë“¤</h3>
-<p class="text-gray-600 text-sm">ê¸°ë³¸ í•œêµ­ì–´ ë‹¨ì–´ì™€ ì¸ì‚¬ë§</p>
+<h3 class="font-bold text-lg">첫 단어들</h3>
+<p class="text-gray-600 text-sm">기본 한국어 단어와 인사말</p>
 </div>
 </div>
 <div class="flex justify-between items-center">
-<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">ì¤‘ê¸‰</span>
-<span class="text-blue-600 font-medium">25ë¶„</span>
+<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">중급</span>
+<span class="text-blue-600 font-medium">25분</span>
 </div>
 </div>
 </div>
@@ -187,7 +187,7 @@
 <!-- Lessons Section -->
 <div class="section hidden" id="lessons-section">
 <div class="bg-white rounded-2xl p-8 shadow-lg">
-<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">ðŸ“š í•œêµ­ì–´ ìˆ˜ì—…</h2>
+<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📚 한국어 수업</h2>
 <div class="grid gap-6">
 <!-- Lesson 1 -->
 <div class="border-2 border-red-200 rounded-xl p-6 card-hover cursor-pointer" onclick="startLesson(1)">
@@ -195,13 +195,13 @@
 <div class="flex items-center">
 <div class="bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">1</div>
 <div>
-<h3 class="text-xl font-bold korean-text">í•œê¸€ ì•ŒíŒŒë²³ - Alfabeto Hangul</h3>
-<p class="text-gray-600">ã„±, ã„´, ã„·, ã„¹, ã…, ã…‚, ã……, ã…‡, ã…ˆ, ã…Š, ã…‹, ã…Œ, ã…, ã…Ž + ã…, ã…‘, ã…“, ã…•, ã…—, ã…›, ã…œ, ã… , ã…¡, ã…£</p>
+<h3 class="text-xl font-bold korean-text">한글 알파벳 - Alfabeto Hangul</h3>
+<p class="text-gray-600">ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ + ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm mb-2">ì™„ë£Œ âœ“</div>
-<span class="text-red-600 font-medium">30ë¶„</span>
+<div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm mb-2">완료 ✓</div>
+<span class="text-red-600 font-medium">30분</span>
 </div>
 </div>
 </div>
@@ -211,13 +211,13 @@
 <div class="flex items-center">
 <div class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">2</div>
 <div>
-<h3 class="text-xl font-bold korean-text">ì²« ë‹¨ì–´ë“¤ - Prime Parole</h3>
-<p class="text-gray-600">ì•ˆë…•í•˜ì„¸ìš”, ê°ì‚¬í•©ë‹ˆë‹¤, ë„¤, ì•„ë‹ˆìš”, ì£„ì†¡í•©ë‹ˆë‹¤</p>
+<h3 class="text-xl font-bold korean-text">첫 단어들 - Prime Parole</h3>
+<p class="text-gray-600">안녕하세요, 감사합니다, 네, 아니요, 죄송합니다</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mb-2">ì§„í–‰ ì¤‘</div>
-<span class="text-blue-600 font-medium">25ë¶„</span>
+<div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mb-2">진행 중</div>
+<span class="text-blue-600 font-medium">25분</span>
 </div>
 </div>
 </div>
@@ -227,13 +227,13 @@
 <div class="flex items-center">
 <div class="bg-purple-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">3</div>
 <div>
-<h3 class="text-xl font-bold korean-text">ìˆ«ìž - Numeri</h3>
-<p class="text-gray-600">í•˜ë‚˜, ë‘˜, ì…‹, ë„·, ë‹¤ì„¯, ì—¬ì„¯, ì¼ê³±, ì—¬ëŸ, ì•„í™‰, ì—´</p>
+<h3 class="text-xl font-bold korean-text">숫자 - Numeri</h3>
+<p class="text-gray-600">하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm mb-2">ì‚¬ìš© ê°€ëŠ¥</div>
-<span class="text-purple-600 font-medium">20ë¶„</span>
+<div class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+<span class="text-purple-600 font-medium">20분</span>
 </div>
 </div>
 </div>
@@ -243,13 +243,13 @@
 <div class="flex items-center">
 <div class="bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">4</div>
 <div>
-<h3 class="text-xl font-bold korean-text">ìƒ‰ê¹” - Colori</h3>
-<p class="text-gray-600">ë¹¨ê°„ìƒ‰, íŒŒëž€ìƒ‰, ë…¸ëž€ìƒ‰, ì´ˆë¡ìƒ‰, ê²€ì€ìƒ‰, í°ìƒ‰</p>
+<h3 class="text-xl font-bold korean-text">색깔 - Colori</h3>
+<p class="text-gray-600">빨간색, 파란색, 노란색, 초록색, 검은색, 흰색</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm mb-2">ì‚¬ìš© ê°€ëŠ¥</div>
-<span class="text-orange-600 font-medium">15ë¶„</span>
+<div class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+<span class="text-orange-600 font-medium">15분</span>
 </div>
 </div>
 </div>
@@ -259,13 +259,13 @@
 <div class="flex items-center">
 <div class="bg-pink-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">5</div>
 <div>
-<h3 class="text-xl font-bold korean-text">ê°€ì¡± - Famiglia</h3>
-<p class="text-gray-600">ì•„ë²„ì§€, ì–´ë¨¸ë‹ˆ, í˜•, ëˆ„ë‚˜, ë™ìƒ</p>
+<h3 class="text-xl font-bold korean-text">가족 - Famiglia</h3>
+<p class="text-gray-600">아버지, 어머니, 형, 누나, 동생</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm mb-2">ì‚¬ìš© ê°€ëŠ¥</div>
-<span class="text-pink-600 font-medium">18ë¶„</span>
+<div class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+<span class="text-pink-600 font-medium">18분</span>
 </div>
 </div>
 </div>
@@ -275,13 +275,13 @@
 <div class="flex items-center">
 <div class="bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">6</div>
 <div>
-<h3 class="text-xl font-bold korean-text">ìŒì‹ - Cibo</h3>
-<p class="text-gray-600">ê¹€ì¹˜, ë¹„ë¹”ë°¥, ë¶ˆê³ ê¸°, ë¼ë©´, ë–¡ë³¶ì´</p>
+<h3 class="text-xl font-bold korean-text">음식 - Cibo</h3>
+<p class="text-gray-600">김치, 비빔밥, 불고기, 라면, 떡볶이</p>
 </div>
 </div>
 <div class="text-right">
-<div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-2">ì‚¬ìš© ê°€ëŠ¥</div>
-<span class="text-green-600 font-medium">22ë¶„</span>
+<div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm mb-2">사용 가능</div>
+<span class="text-green-600 font-medium">22분</span>
 </div>
 </div>
 </div>
@@ -291,42 +291,42 @@
 <!-- Exercises Section -->
 <div class="section hidden" id="exercises-section">
 <div class="bg-white rounded-2xl p-8 shadow-lg">
-<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">ðŸŽ¯ ëŒ€í™”í˜• ì—°ìŠµ</h2>
+<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">🎯 대화형 연습</h2>
 <div class="grid md:grid-cols-2 gap-6 mb-8">
 <div class="korean-bg rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('matching')">
-<div class="text-4xl mb-4">ðŸ”—</div>
-<h3 class="text-xl font-bold mb-2">ê¸€ìž ì—°ê²°</h3>
-<p class="text-gray-600 mb-4">í•œê¸€ ê¸€ìžì™€ ì†Œë¦¬ë¥¼ ì—°ê²°í•˜ì„¸ìš”</p>
+<div class="text-4xl mb-4">🔗</div>
+<h3 class="text-xl font-bold mb-2">글자 연결</h3>
+<p class="text-gray-600 mb-4">한글 글자와 소리를 연결하세요</p>
 <div class="flex justify-between items-center">
-<span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm">18ê°œ ë¬¸ì œ</span>
-<span class="text-red-600 font-medium">10ë¶„</span>
+<span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm">18개 문제</span>
+<span class="text-red-600 font-medium">10분</span>
 </div>
 </div>
 <div class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl p-6 card-hover cursor-pointer" onclick="startExercise('pronunciation')">
-<div class="text-4xl mb-4">ðŸŽµ</div>
-<h3 class="text-xl font-bold mb-2">ë°œìŒ ì—°ìŠµ</h3>
-<p class="text-gray-600 mb-4">í•œêµ­ì–´ ì†Œë¦¬ë¥¼ ë“£ê³  ë”°ë¼í•˜ì„¸ìš”</p>
+<div class="text-4xl mb-4">🎵</div>
+<h3 class="text-xl font-bold mb-2">발음 연습</h3>
+<p class="text-gray-600 mb-4">한국어 소리를 듣고 따라하세요</p>
 <div class="flex justify-between items-center">
-<span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">24ê°œ ì†Œë¦¬</span>
-<span class="text-blue-600 font-medium">15ë¶„</span>
+<span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">24개 소리</span>
+<span class="text-blue-600 font-medium">15분</span>
 </div>
 </div>
 </div>
 <!-- Sample Exercise -->
 <div class="bg-gray-50 rounded-xl p-8" id="exercise-area">
 <div class="text-center">
-<h3 class="text-2xl font-bold mb-6 text-gray-800">ì—°ìŠµ: ê¸€ìž ì¸ì‹</h3>
+<h3 class="text-2xl font-bold mb-6 text-gray-800">연습: 글자 인식</h3>
 <div class="bg-white rounded-xl p-8 mb-6 shadow-inner">
-<div class="text-8xl korean-text mb-6 pulse-animation text-red-600" id="exercise-character">ã„±</div>
-<p class="text-lg text-gray-600 mb-8">ì´ í•œê¸€ ê¸€ìžëŠ” ì–´ë–»ê²Œ ë°œìŒí•˜ë‚˜ìš”?</p>
+<div class="text-8xl korean-text mb-6 pulse-animation text-red-600" id="exercise-character">ㄱ</div>
+<p class="text-lg text-gray-600 mb-8">이 한글 글자는 어떻게 발음하나요?</p>
 <div class="grid grid-cols-2 gap-4 max-w-md mx-auto" id="exercise-options"></div>
 </div>
 <div class="hidden" id="exercise-feedback">
 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4">
-<strong>ì •ë‹µ! ðŸŽ‰</strong> ã„± si pronuncia "G/K" (come in "gatto")
+<strong>정답! 🎉</strong> ㄱ si pronuncia "G/K" (come in "gatto")
                             </div>
 <button class="bg-gradient-to-r from-red-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all" onclick="nextExercise()">
-                                ë‹¤ìŒ ë¬¸ì œ â†’
+                                다음 문제 →
                             </button>
 </div>
 </div>
@@ -336,86 +336,86 @@
 <!-- Progress Section -->
 <div class="section hidden" id="progress-section">
 <div class="bg-white rounded-2xl p-8 shadow-lg">
-<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">ðŸ“Š ì§„ë„ ìƒí™©</h2>
+<h2 class="text-3xl font-bold mb-8 text-center text-gray-800">📊 진도 상황</h2>
 <div class="grid md:grid-cols-3 gap-6 mb-8">
 <div class="text-center">
 <div class="bg-gradient-to-br from-red-600 to-red-500 text-white rounded-2xl p-6">
 <div class="text-3xl font-bold">3</div>
-<div class="text-sm opacity-90">ì™„ë£Œëœ ìˆ˜ì—…</div>
+<div class="text-sm opacity-90">완료된 수업</div>
 </div>
 </div>
 <div class="text-center">
 <div class="bg-gradient-to-br from-blue-500 to-indigo-500 text-white rounded-2xl p-6">
 <div class="text-3xl font-bold">24</div>
-<div class="text-sm opacity-90">ë°°ìš´ ê¸€ìž</div>
+<div class="text-sm opacity-90">배운 글자</div>
 </div>
 </div>
 <div class="text-center">
 <div class="bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl p-6">
 <div class="text-3xl font-bold">7</div>
-<div class="text-sm opacity-90">ì—°ì† ì¼ìˆ˜</div>
+<div class="text-sm opacity-90">연속 일수</div>
 </div>
 </div>
 </div>
 <div class="bg-gradient-to-br from-red-50 to-blue-50 rounded-xl p-6">
-<h3 class="text-xl font-bold mb-4 text-red-700">ë°°ìš´ í•œê¸€ ìžìŒ</h3>
+<h3 class="text-xl font-bold mb-4 text-red-700">배운 한글 자음</h3>
 <div class="grid grid-cols-7 gap-3 mb-6">
 <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã„±</div>
-<div class="text-xs text-red-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㄱ</div>
+<div class="text-xs text-red-700 mt-1">✓</div>
 </div>
 <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã„´</div>
-<div class="text-xs text-red-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㄴ</div>
+<div class="text-xs text-red-700 mt-1">✓</div>
 </div>
 <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã„·</div>
-<div class="text-xs text-red-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㄷ</div>
+<div class="text-xs text-red-700 mt-1">✓</div>
 </div>
 <div class="bg-red-100 border-2 border-red-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã„¹</div>
-<div class="text-xs text-red-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㄹ</div>
+<div class="text-xs text-red-700 mt-1">✓</div>
 </div>
 <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…</div>
+<div class="text-2xl korean-text">ㅁ</div>
 <div class="text-xs text-yellow-700 mt-1">~</div>
 </div>
 <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…‚</div>
-<div class="text-xs text-gray-500 mt-1">â—‹</div>
+<div class="text-2xl korean-text">ㅂ</div>
+<div class="text-xs text-gray-500 mt-1">○</div>
 </div>
 <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã……</div>
-<div class="text-xs text-gray-500 mt-1">â—‹</div>
+<div class="text-2xl korean-text">ㅅ</div>
+<div class="text-xs text-gray-500 mt-1">○</div>
 </div>
 </div>
-<h3 class="text-xl font-bold mb-4 text-blue-700">ë°°ìš´ í•œê¸€ ëª¨ìŒ</h3>
+<h3 class="text-xl font-bold mb-4 text-blue-700">배운 한글 모음</h3>
 <div class="grid grid-cols-5 gap-3 mb-4">
 <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…</div>
-<div class="text-xs text-blue-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㅏ</div>
+<div class="text-xs text-blue-700 mt-1">✓</div>
 </div>
 <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…‘</div>
-<div class="text-xs text-blue-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㅑ</div>
+<div class="text-xs text-blue-700 mt-1">✓</div>
 </div>
 <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…“</div>
-<div class="text-xs text-blue-700 mt-1">âœ“</div>
+<div class="text-2xl korean-text">ㅓ</div>
+<div class="text-xs text-blue-700 mt-1">✓</div>
 </div>
 <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…•</div>
+<div class="text-2xl korean-text">ㅕ</div>
 <div class="text-xs text-yellow-700 mt-1">~</div>
 </div>
 <div class="bg-gray-100 border-2 border-gray-300 rounded-lg p-3 text-center">
-<div class="text-2xl korean-text">ã…—</div>
-<div class="text-xs text-gray-500 mt-1">â—‹</div>
+<div class="text-2xl korean-text">ㅗ</div>
+<div class="text-xs text-gray-500 mt-1">○</div>
 </div>
 </div>
 <div class="mt-4 text-sm text-gray-600">
-<span class="inline-block w-3 h-3 bg-red-400 rounded-full mr-2"></span>ë°°ì›€ ì™„ë£Œ
-                        <span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2 ml-4"></span>í•™ìŠµ ì¤‘
-                        <span class="inline-block w-3 h-3 bg-gray-300 rounded-full mr-2 ml-4"></span>í•™ìŠµ ì˜ˆì •
+<span class="inline-block w-3 h-3 bg-red-400 rounded-full mr-2"></span>배움 완료
+                        <span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2 ml-4"></span>학습 중
+                        <span class="inline-block w-3 h-3 bg-gray-300 rounded-full mr-2 ml-4"></span>학습 예정
                     </div>
 </div>
 </div>
@@ -452,91 +452,91 @@
         // Lesson functions
         function startLesson(lessonNumber) {
             if (lessonNumber === 1) {
-                showLessonContent('í•œê¸€ ì•ŒíŒŒë²³', 'ã„±, ã„´, ã„·, ã„¹, ã…, ã…‚, ã……, ã…‡, ã…ˆ, ã…Š, ã…‹, ã…Œ, ã…, ã…Ž + ã…, ã…‘, ã…“, ã…•, ã…—, ã…›, ã…œ, ã… , ã…¡, ã…£', [
-                    {char: 'ã„±', sound: 'G/K', example: 'ê°€ë°© (borsa)'},
-                    {char: 'ã„´', sound: 'N', example: 'ë‚˜ë¬´ (albero)'},
-                    {char: 'ã„·', sound: 'D/T', example: 'ë‹¤ë¦¬ (gamba)'},
-                    {char: 'ã„¹', sound: 'R/L', example: 'ë¼ë©´ (ramen)'},
-                    {char: 'ã…', sound: 'M', example: 'ë§ˆìŒ (cuore)'},
-                    {char: 'ã…‚', sound: 'B/P', example: 'ë°”ë‹¤ (mare)'},
-                    {char: 'ã……', sound: 'S', example: 'ì‚¬ê³¼ (mela)'},
-                    {char: 'ã…‡', sound: 'NG/silenzioso', example: 'ì•„ì´ (bambino)'},
-                    {char: 'ã…ˆ', sound: 'J/CH', example: 'ìžë™ì°¨ (auto)'},
-                    {char: 'ã…Š', sound: 'CH', example: 'ì°¨ (tÃ¨)'},
-                    {char: 'ã…‹', sound: 'K', example: 'ì½” (naso)'},
-                    {char: 'ã…Œ', sound: 'T', example: 'í† ë¼ (coniglio)'},
-                    {char: 'ã…', sound: 'P', example: 'íŒŒë„ (onda)'},
-                    {char: 'ã…Ž', sound: 'H', example: 'í•˜ëŠ˜ (cielo)'},
-                    {char: 'ã…', sound: 'A', example: 'ì•„ë²„ì§€ (padre)'},
-                    {char: 'ã…‘', sound: 'YA', example: 'ì•¼êµ¬ (baseball)'},
-                    {char: 'ã…“', sound: 'EO', example: 'ì–´ë¨¸ë‹ˆ (madre)'},
-                    {char: 'ã…•', sound: 'YEO', example: 'ì—¬ë¦„ (estate)'},
-                    {char: 'ã…—', sound: 'O', example: 'ì˜¤ëŠ˜ (oggi)'},
-                    {char: 'ã…›', sound: 'YO', example: 'ìš”ë¦¬ (cucina)'},
-                    {char: 'ã…œ', sound: 'U', example: 'ìš°ìœ  (latte)'},
-                    {char: 'ã… ', sound: 'YU', example: 'ìœ ë¦¬ (vetro)'},
-                    {char: 'ã…¡', sound: 'EU', example: 'ê·¸ë¦¼ (disegno)'},
-                    {char: 'ã…£', sound: 'I', example: 'ì´ë¦„ (nome)'}
+                showLessonContent('한글 알파벳', 'ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ + ㅏ, ㅑ, ㅓ, ㅕ, ㅗ, ㅛ, ㅜ, ㅠ, ㅡ, ㅣ', [
+                    {char: 'ㄱ', sound: 'G/K', example: '가방 (borsa)'},
+                    {char: 'ㄴ', sound: 'N', example: '나무 (albero)'},
+                    {char: 'ㄷ', sound: 'D/T', example: '다리 (gamba)'},
+                    {char: 'ㄹ', sound: 'R/L', example: '라면 (ramen)'},
+                    {char: 'ㅁ', sound: 'M', example: '마음 (cuore)'},
+                    {char: 'ㅂ', sound: 'B/P', example: '바다 (mare)'},
+                    {char: 'ㅅ', sound: 'S', example: '사과 (mela)'},
+                    {char: 'ㅇ', sound: 'NG/silenzioso', example: '아이 (bambino)'},
+                    {char: 'ㅈ', sound: 'J/CH', example: '자동차 (auto)'},
+                    {char: 'ㅊ', sound: 'CH', example: '차 (tè)'},
+                    {char: 'ㅋ', sound: 'K', example: '코 (naso)'},
+                    {char: 'ㅌ', sound: 'T', example: '토끼 (coniglio)'},
+                    {char: 'ㅍ', sound: 'P', example: '파도 (onda)'},
+                    {char: 'ㅎ', sound: 'H', example: '하늘 (cielo)'},
+                    {char: 'ㅏ', sound: 'A', example: '아버지 (padre)'},
+                    {char: 'ㅑ', sound: 'YA', example: '야구 (baseball)'},
+                    {char: 'ㅓ', sound: 'EO', example: '어머니 (madre)'},
+                    {char: 'ㅕ', sound: 'YEO', example: '여름 (estate)'},
+                    {char: 'ㅗ', sound: 'O', example: '오늘 (oggi)'},
+                    {char: 'ㅛ', sound: 'YO', example: '요리 (cucina)'},
+                    {char: 'ㅜ', sound: 'U', example: '우유 (latte)'},
+                    {char: 'ㅠ', sound: 'YU', example: '유리 (vetro)'},
+                    {char: 'ㅡ', sound: 'EU', example: '그림 (disegno)'},
+                    {char: 'ㅣ', sound: 'I', example: '이름 (nome)'}
                 ]);
             } else if (lessonNumber === 2) {
-                showLessonContent('ì²« ë‹¨ì–´ë“¤', 'ì•ˆë…•í•˜ì„¸ìš”, ê°ì‚¬í•©ë‹ˆë‹¤, ë„¤, ì•„ë‹ˆìš”, ì£„ì†¡í•©ë‹ˆë‹¤', [
-                    {char: 'ì•ˆë…•í•˜ì„¸ìš”', sound: 'an-nyeong-ha-se-yo', example: 'ì•ˆë…•í•˜ì„¸ìš” (Salve/Ciao formale)'},
-                    {char: 'ê°ì‚¬í•©ë‹ˆë‹¤', sound: 'gam-sa-ham-ni-da', example: 'ê°ì‚¬í•©ë‹ˆë‹¤ (Grazie formale)'},
-                    {char: 'ë„¤', sound: 'ne', example: 'ë„¤ (SÃ¬)'},
-                    {char: 'ì•„ë‹ˆìš”', sound: 'a-ni-yo', example: 'ì•„ë‹ˆìš” (No)'},
-                    {char: 'ì£„ì†¡í•©ë‹ˆë‹¤', sound: 'joe-song-ham-ni-da', example: 'ì£„ì†¡í•©ë‹ˆë‹¤ (Mi dispiace)'},
-                    {char: 'ì•ˆë…•', sound: 'an-nyeong', example: 'ì•ˆë…• (Ciao informale)'},
-                    {char: 'ê³ ë§ˆì›Œ', sound: 'go-ma-wo', example: 'ê³ ë§ˆì›Œ (Grazie informale)'},
-                    {char: 'ê´œì°®ì•„ìš”', sound: 'gwaen-chan-a-yo', example: 'ê´œì°®ì•„ìš” (Va bene)'}
+                showLessonContent('첫 단어들', '안녕하세요, 감사합니다, 네, 아니요, 죄송합니다', [
+                    {char: '안녕하세요', sound: 'an-nyeong-ha-se-yo', example: '안녕하세요 (Salve/Ciao formale)'},
+                    {char: '감사합니다', sound: 'gam-sa-ham-ni-da', example: '감사합니다 (Grazie formale)'},
+                    {char: '네', sound: 'ne', example: '네 (Sì)'},
+                    {char: '아니요', sound: 'a-ni-yo', example: '아니요 (No)'},
+                    {char: '죄송합니다', sound: 'joe-song-ham-ni-da', example: '죄송합니다 (Mi dispiace)'},
+                    {char: '안녕', sound: 'an-nyeong', example: '안녕 (Ciao informale)'},
+                    {char: '고마워', sound: 'go-ma-wo', example: '고마워 (Grazie informale)'},
+                    {char: '괜찮아요', sound: 'gwaen-chan-a-yo', example: '괜찮아요 (Va bene)'}
                 ]);
             } else if (lessonNumber === 3) {
-                showLessonContent('ìˆ«ìž', 'í•˜ë‚˜, ë‘˜, ì…‹, ë„·, ë‹¤ì„¯, ì—¬ì„¯, ì¼ê³±, ì—¬ëŸ, ì•„í™‰, ì—´', [
-                    {char: 'í•˜ë‚˜', sound: 'ha-na', example: 'í•˜ë‚˜ (uno)'},
-                    {char: 'ë‘˜', sound: 'dul', example: 'ë‘˜ (due)'},
-                    {char: 'ì…‹', sound: 'set', example: 'ì…‹ (tre)'},
-                    {char: 'ë„·', sound: 'net', example: 'ë„· (quattro)'},
-                    {char: 'ë‹¤ì„¯', sound: 'da-seot', example: 'ë‹¤ì„¯ (cinque)'},
-                    {char: 'ì—¬ì„¯', sound: 'yeo-seot', example: 'ì—¬ì„¯ (sei)'},
-                    {char: 'ì¼ê³±', sound: 'il-gop', example: 'ì¼ê³± (sette)'},
-                    {char: 'ì—¬ëŸ', sound: 'yeo-deol', example: 'ì—¬ëŸ (otto)'},
-                    {char: 'ì•„í™‰', sound: 'a-hop', example: 'ì•„í™‰ (nove)'},
-                    {char: 'ì—´', sound: 'yeol', example: 'ì—´ (dieci)'}
+                showLessonContent('숫자', '하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열', [
+                    {char: '하나', sound: 'ha-na', example: '하나 (uno)'},
+                    {char: '둘', sound: 'dul', example: '둘 (due)'},
+                    {char: '셋', sound: 'set', example: '셋 (tre)'},
+                    {char: '넷', sound: 'net', example: '넷 (quattro)'},
+                    {char: '다섯', sound: 'da-seot', example: '다섯 (cinque)'},
+                    {char: '여섯', sound: 'yeo-seot', example: '여섯 (sei)'},
+                    {char: '일곱', sound: 'il-gop', example: '일곱 (sette)'},
+                    {char: '여덟', sound: 'yeo-deol', example: '여덟 (otto)'},
+                    {char: '아홉', sound: 'a-hop', example: '아홉 (nove)'},
+                    {char: '열', sound: 'yeol', example: '열 (dieci)'}
                 ]);
             } else if (lessonNumber === 4) {
-                showLessonContent('ìƒ‰ê¹”', 'ë¹¨ê°„ìƒ‰, íŒŒëž€ìƒ‰, ë…¸ëž€ìƒ‰, ì´ˆë¡ìƒ‰, ê²€ì€ìƒ‰, í°ìƒ‰', [
-                    {char: 'ë¹¨ê°„ìƒ‰', sound: 'ppal-gan-saek', example: 'ë¹¨ê°„ìƒ‰ (rosso)'},
-                    {char: 'íŒŒëž€ìƒ‰', sound: 'pa-ran-saek', example: 'íŒŒëž€ìƒ‰ (blu)'},
-                    {char: 'ë…¸ëž€ìƒ‰', sound: 'no-ran-saek', example: 'ë…¸ëž€ìƒ‰ (giallo)'},
-                    {char: 'ì´ˆë¡ìƒ‰', sound: 'cho-rok-saek', example: 'ì´ˆë¡ìƒ‰ (verde)'},
-                    {char: 'ê²€ì€ìƒ‰', sound: 'geom-eun-saek', example: 'ê²€ì€ìƒ‰ (nero)'},
-                    {char: 'í°ìƒ‰', sound: 'huin-saek', example: 'í°ìƒ‰ (bianco)'},
-                    {char: 'ë³´ë¼ìƒ‰', sound: 'bo-ra-saek', example: 'ë³´ë¼ìƒ‰ (viola)'},
-                    {char: 'ë¶„í™ìƒ‰', sound: 'bun-hong-saek', example: 'ë¶„í™ìƒ‰ (rosa)'}
+                showLessonContent('색깔', '빨간색, 파란색, 노란색, 초록색, 검은색, 흰색', [
+                    {char: '빨간색', sound: 'ppal-gan-saek', example: '빨간색 (rosso)'},
+                    {char: '파란색', sound: 'pa-ran-saek', example: '파란색 (blu)'},
+                    {char: '노란색', sound: 'no-ran-saek', example: '노란색 (giallo)'},
+                    {char: '초록색', sound: 'cho-rok-saek', example: '초록색 (verde)'},
+                    {char: '검은색', sound: 'geom-eun-saek', example: '검은색 (nero)'},
+                    {char: '흰색', sound: 'huin-saek', example: '흰색 (bianco)'},
+                    {char: '보라색', sound: 'bo-ra-saek', example: '보라색 (viola)'},
+                    {char: '분홍색', sound: 'bun-hong-saek', example: '분홍색 (rosa)'}
                 ]);
             } else if (lessonNumber === 5) {
-                showLessonContent('ê°€ì¡±', 'ì•„ë²„ì§€, ì–´ë¨¸ë‹ˆ, í˜•, ëˆ„ë‚˜, ë™ìƒ', [
-                    {char: 'ì•„ë²„ì§€', sound: 'a-beo-ji', example: 'ì•„ë²„ì§€ (padre)'},
-                    {char: 'ì–´ë¨¸ë‹ˆ', sound: 'eo-meo-ni', example: 'ì–´ë¨¸ë‹ˆ (madre)'},
-                    {char: 'í˜•', sound: 'hyeong', example: 'í˜• (fratello maggiore - per maschi)'},
-                    {char: 'ëˆ„ë‚˜', sound: 'nu-na', example: 'ëˆ„ë‚˜ (sorella maggiore - per maschi)'},
-                    {char: 'ë™ìƒ', sound: 'dong-saeng', example: 'ë™ìƒ (fratello/sorella minore)'},
-                    {char: 'í• ì•„ë²„ì§€', sound: 'hal-a-beo-ji', example: 'í• ì•„ë²„ì§€ (nonno)'},
-                    {char: 'í• ë¨¸ë‹ˆ', sound: 'hal-meo-ni', example: 'í• ë¨¸ë‹ˆ (nonna)'},
-                    {char: 'ê°€ì¡±', sound: 'ga-jok', example: 'ê°€ì¡± (famiglia)'}
+                showLessonContent('가족', '아버지, 어머니, 형, 누나, 동생', [
+                    {char: '아버지', sound: 'a-beo-ji', example: '아버지 (padre)'},
+                    {char: '어머니', sound: 'eo-meo-ni', example: '어머니 (madre)'},
+                    {char: '형', sound: 'hyeong', example: '형 (fratello maggiore - per maschi)'},
+                    {char: '누나', sound: 'nu-na', example: '누나 (sorella maggiore - per maschi)'},
+                    {char: '동생', sound: 'dong-saeng', example: '동생 (fratello/sorella minore)'},
+                    {char: '할아버지', sound: 'hal-a-beo-ji', example: '할아버지 (nonno)'},
+                    {char: '할머니', sound: 'hal-meo-ni', example: '할머니 (nonna)'},
+                    {char: '가족', sound: 'ga-jok', example: '가족 (famiglia)'}
                 ]);
             } else if (lessonNumber === 6) {
-                showLessonContent('ìŒì‹', 'ê¹€ì¹˜, ë¹„ë¹”ë°¥, ë¶ˆê³ ê¸°, ë¼ë©´, ë–¡ë³¶ì´', [
-                    {char: 'ê¹€ì¹˜', sound: 'gim-chi', example: 'ê¹€ì¹˜ (kimchi)'},
-                    {char: 'ë¹„ë¹”ë°¥', sound: 'bi-bim-bap', example: 'ë¹„ë¹”ë°¥ (bibimbap)'},
-                    {char: 'ë¶ˆê³ ê¸°', sound: 'bul-go-gi', example: 'ë¶ˆê³ ê¸° (bulgogi)'},
-                    {char: 'ë¼ë©´', sound: 'ra-myeon', example: 'ë¼ë©´ (ramen)'},
-                    {char: 'ë–¡ë³¶ì´', sound: 'tteok-bo-kki', example: 'ë–¡ë³¶ì´ (tteokbokki)'},
-                    {char: 'ë°¥', sound: 'bap', example: 'ë°¥ (riso)'},
-                    {char: 'ë¬¼', sound: 'mul', example: 'ë¬¼ (acqua)'},
-                    {char: 'ë§¥ì£¼', sound: 'maek-ju', example: 'ë§¥ì£¼ (birra)'}
+                showLessonContent('음식', '김치, 비빔밥, 불고기, 라면, 떡볶이', [
+                    {char: '김치', sound: 'gim-chi', example: '김치 (kimchi)'},
+                    {char: '비빔밥', sound: 'bi-bim-bap', example: '비빔밥 (bibimbap)'},
+                    {char: '불고기', sound: 'bul-go-gi', example: '불고기 (bulgogi)'},
+                    {char: '라면', sound: 'ra-myeon', example: '라면 (ramen)'},
+                    {char: '떡볶이', sound: 'tteok-bo-kki', example: '떡볶이 (tteokbokki)'},
+                    {char: '밥', sound: 'bap', example: '밥 (riso)'},
+                    {char: '물', sound: 'mul', example: '물 (acqua)'},
+                    {char: '맥주', sound: 'maek-ju', example: '맥주 (birra)'}
                 ]);
             } else {
-                alert(`ðŸŽ‰ ì¶•í•˜í•©ë‹ˆë‹¤! ëª¨ë“  ìˆ˜ì—…ì´ ì—´ë ¤ìžˆìŠµë‹ˆë‹¤. ìˆ˜ì—… ${lessonNumber}ì„ ì„ íƒí•˜ì…¨ìŠµë‹ˆë‹¤!`);
+                alert(`🎉 축하합니다! 모든 수업이 열려있습니다. 수업 ${lessonNumber}을 선택하셨습니다!`);
             }
         }
 
@@ -548,7 +548,7 @@
                 <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-3xl font-bold text-gray-800">${title}</h2>
-                        <button onclick="closeLessonModal()" class="text-gray-500 hover:text-gray-700 text-2xl">âœ•</button>
+                        <button onclick="closeLessonModal()" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
                     </div>
                     
                     <p class="text-gray-600 mb-8 korean-text">${description}</p>
@@ -565,10 +565,10 @@
                     
                     <div class="flex gap-4 justify-center">
                         <button onclick="startLessonQuiz('${title}')" class="bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                            ðŸŽ¯ í…ŒìŠ¤íŠ¸
+                            🎯 테스트
                         </button>
                         <button onclick="closeLessonModal()" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-300 transition-all">
-                            âœ“ ì™„ë£Œ
+                            ✓ 완료
                         </button>
                     </div>
                 </div>
@@ -587,22 +587,22 @@
         function startLessonQuiz(lessonTitle) {
             closeLessonModal();
             showSection('exercises');
-            alert(`ðŸŽ¯ í›Œë¥­í•©ë‹ˆë‹¤! ì´ì œ ${lessonTitle}ì— ëŒ€í•œ í…ŒìŠ¤íŠ¸ë¥¼ í•´ë³´ì„¸ìš”. ì—°ìŠµ ì„¹ì…˜ìœ¼ë¡œ ê°€ì„œ ë°°ìš´ ê²ƒì„ í…ŒìŠ¤íŠ¸í•´ë³´ì„¸ìš”!`);
+            alert(`🎯 훌륭합니다! 이제 ${lessonTitle}에 대한 테스트를 해보세요. 연습 섹션으로 가서 배운 것을 테스트해보세요!`);
         }
 
         // Exercise functions
         let currentExercise = {
-            character: 'ã„±',
+            character: 'ㄱ',
             correctAnswer: 'g',
             characters: [
-                {char: 'ã„±', answer: 'g', sound: 'G/K'},
-                {char: 'ã„´', answer: 'n', sound: 'N'},
-                {char: 'ã„·', answer: 'd', sound: 'D/T'},
-                {char: 'ã„¹', answer: 'r', sound: 'R/L'},
-                {char: 'ã…', answer: 'm', sound: 'M'},
-                {char: 'ã…‚', answer: 'b', sound: 'B/P'},
-                {char: 'ã……', answer: 's', sound: 'S'},
-                {char: 'ã…‡', answer: 'ng', sound: 'NG'}
+                {char: 'ㄱ', answer: 'g', sound: 'G/K'},
+                {char: 'ㄴ', answer: 'n', sound: 'N'},
+                {char: 'ㄷ', answer: 'd', sound: 'D/T'},
+                {char: 'ㄹ', answer: 'r', sound: 'R/L'},
+                {char: 'ㅁ', answer: 'm', sound: 'M'},
+                {char: 'ㅂ', answer: 'b', sound: 'B/P'},
+                {char: 'ㅅ', answer: 's', sound: 'S'},
+                {char: 'ㅇ', answer: 'ng', sound: 'NG'}
             ],
             currentIndex: 0
         };
@@ -614,7 +614,7 @@ function startExercise(type) {
         document.getElementById('exercise-area').scrollIntoView({behavior: 'smooth'});
         nextExercise(); // avvio immediato
     } else {
-        alert(`ðŸŽµ ë°œìŒ ì—°ìŠµ! ì‹¤ì œ ì•±ì—ì„œëŠ” ë§ˆì´í¬ë¥¼ ì‚¬ìš©í•´ì„œ í•œêµ­ì–´ ê¸€ìž ë°œìŒì„ ì—°ìŠµí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.`);
+        alert(`🎵 발음 연습! 실제 앱에서는 마이크를 사용해서 한국어 글자 발음을 연습할 수 있습니다.`);
     }
 }
 
@@ -626,19 +626,19 @@ function startExercise(type) {
             if (answer === character.answer) {
                 feedback.innerHTML = `
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 bounce-in">
-                        <strong>ì •ë‹µ! ðŸŽ‰</strong> ${character.char} si pronuncia "${character.sound}"
+                        <strong>정답! 🎉</strong> ${character.char} si pronuncia "${character.sound}"
                     </div>
                     <button onclick="nextExercise()" class="bg-gradient-to-r from-red-500 to-blue-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                        ë‹¤ìŒ ë¬¸ì œ â†’
+                        다음 문제 →
                     </button>
                 `;
             } else {
                 feedback.innerHTML = `
                     <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-xl mb-4 bounce-in">
-                        <strong>ë‹¤ì‹œ ì‹œë„í•´ë³´ì„¸ìš”! ðŸ¤”</strong> ${character.char}ëŠ” ê·¸ë ‡ê²Œ ë°œìŒí•˜ì§€ ì•Šì•„ìš”...
+                        <strong>다시 시도해보세요! 🤔</strong> ${character.char}는 그렇게 발음하지 않아요...
                     </div>
                     <button onclick="nextExercise()" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all">
-                        ì •ë‹µ ë³´ê¸°
+                        정답 보기
                     </button>
                 `;
             }
