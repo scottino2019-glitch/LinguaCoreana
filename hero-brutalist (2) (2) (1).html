@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero brutalist</title>
+    <meta name="google" content="notranslate">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Yeon Sung", system-ui;
+        }
+
+        
+        
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.btn:hover { animation: pulse 0.8s ease-in-out infinite; }
+
+
+        .hero-brutalist {
+            min-height: 100vh;
+            /* Immagine di sfondo solo fuori dai bordi */
+            background-image: url('https://images.unsplash.com/photo-1540483761890-a1f7be05d99f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwzfHxDb3JlYXxlbnwwfHx8fDE3Njk4MDgwNTB8MA&ixlib=rb-4.1.0&q=85');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-brutalist::before {
+            content: 'HERO';
+            position: absolute;
+            font-size: 300px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Archivo', sans-serif;
+            letter-spacing: -20px;
+            z-index: 0;
+        }
+
+        .brutalist-border {
+            border: 8px solid white;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            background: #000; /* Nero solido sotto scritta, copre immagine */
+            max-width: 800px;
+            text-align: center;
+        }
+@keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-5px) translateX(3px); } 50% { transform: translateY(-8px) translateX(0); } 75% { transform: translateY(-5px) translateX(-3px); } }
+.emoji-float { animation: float 2s ease-in-out infinite; display: inline-block; }
+    
+    .gradient-text {
+  background: linear-gradient(135deg, #ff0000 0%, #ff6b00 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+    
+    .animated-emoji {
+      font-size: 72px;
+    }
+    
+    h1 {
+      margin: 0;
+      line-height: 1.2;
+    }
+.btn { 
+display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+font-family:  "Yeon Sung", system-ui;
+font-weight: 600;
+  font-style: normal;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border-radius: 0 20px 0 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  border: 3px dotted blue;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+#coreano {
+box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+
+min-height: 100vh;
+      font-family:  "Yeon Sung", system-ui;
+font-weight: 400;
+  font-style: normal;
+      color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 10% 10%, #0052a4 0, #000000 45%),
+        radial-gradient(circle at 90% 90%, #c60c30 0, #000000 55%);
+      background-color: #020617;
+      overflow-x: hidden;
+}
+ .overlay-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+      background-size: 4px 4px;
+      opacity: 0.5;
+      mix-blend-mode: screen;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1100px;
+      padding: 24px 16px 32px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(248, 250, 252, 0.18);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background:
+        conic-gradient(from 0deg, #c60c30 0 50%, #0052a4 50% 100%);
+      border: 2px solid #f9fafb;
+      box-shadow: 0 0 16px rgba(248, 250, 252, 0.5);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-text span:first-child {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .brand-text span:last-child {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    nav a {
+      padding: 6px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid transparent;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+margin-left: 60px;
+    }
+
+    nav a:hover {
+      background: rgba(248, 250, 252, 0.12);
+      border-color: rgba(248, 250, 252, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .nav-primary {
+      background: linear-gradient(135deg, #0052a4, #c60c30);
+      color: #f9fafb;
+      border-color: rgba(248, 250, 252, 0.55);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.1fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 820px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+
+    .hero {
+      padding: 26px 24px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.95));
+      border: 1px solid rgba(248, 250, 252, 0.15);
+      box-shadow:
+        0 18px 60px rgba(0, 0, 0, 0.8),
+        0 0 80px rgba(37, 99, 235, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -80%;
+      background:
+        radial-gradient(circle at 5% 10%, rgba(248, 250, 252, 0.08), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(37, 99, 235, 0.35), transparent 60%),
+        radial-gradient(circle at 20% 110%, rgba(220, 38, 38, 0.4), transparent 65%);
+      opacity: 0.8;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(248, 250, 252, 0.2);
+      color: #e5e7eb;
+      margin-bottom: 14px;
+    }
+
+    .hero-tag-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background:
+        conic-gradient(from 0deg, #c60c30 0 50%, #0052a4 50% 100%);
+      box-shadow: 0 0 10px rgba(248, 250, 252, 0.8);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 4vw, 2.6rem);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-title-korean {
+      font-size: 1.3rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: #e5e7eb;
+      max-width: 30rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-highlight {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .hero-highlight span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.16);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-cta a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 999px;
+      padding: 9px 18px;
+      border: 1px solid transparent;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+    }
+
+    .hero-cta-primary {
+      background: linear-gradient(135deg, #0052a4, #c60c30);
+      color: #f9fafb;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+      border-color: rgba(248, 250, 252, 0.5);
+    }
+
+    .hero-cta-primary:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-cta-ghost {
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      border-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .hero-cta-ghost:hover {
+      background: rgba(15, 23, 42, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .cards-panel {
+      padding: 20px 18px;
+      border-radius: 26px;
+      background: rgba(15, 23, 42, 0.58);
+      border: 1px solid rgba(248, 250, 252, 0.16);
+      box-shadow:
+        0 18px 60px rgba(0, 0, 0, 0.85),
+        0 0 80px rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .cards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .cards-header-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .cards-header-badge {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.22);
+      color: #e5e7eb;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      position: relative;
+      border-radius: 18px;
+      padding: 14px 14px 46px;
+      background: rgba(15, 23, 42, 0.68);
+      border: 1px solid rgba(248, 250, 252, 0.22);
+      box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.85),
+        0 0 40px rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.11), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(37, 99, 235, 0.32), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 20px 70px rgba(0, 0, 0, 0.95),
+        0 0 50px rgba(59, 130, 246, 0.7);
+      border-color: rgba(248, 250, 252, 0.6);
+      background: rgba(15, 23, 42, 0.78);
+    }
+
+    .card:hover::before {
+      opacity: 0.75;
+    }
+
+    .card-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .card-meta {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-meta span::before {
+      content: "• ";
+      opacity: 0.7;
+    }
+
+    .card-link {
+      position: absolute;
+      inset: auto 14px 12px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 30px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: #f9fafb;
+      background: linear-gradient(135deg, #0052a4, #c60c30);
+      border: 1px solid rgba(248, 250, 252, 0.7);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .card-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.95);
+      background: linear-gradient(135deg, #c60c30, #0052a4);
+    }
+@keyframes bounce-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.emoji-bounce { animation: bounce-soft 1s ease-in-out infinite; display: inline-block; }
+
+    </style>
+</head>
+<body>
+    <div class="hero-brutalist">
+        <div class="brutalist-border">
+            <h1 style="font-family: 'Yeon Sung', serif; font-size: 72px;">
+    <span class="animated-emoji emoji-float">🏯</span><span class="gradient-text">한국어</span><span class="animated-emoji emoji-float">🐅</span></span>
+  </h1>
+            <div style="display: flex; gap: 0; justify-content: center; flex-wrap: wrap;">
+           <a href="#coreano">     <button class="btn">
+  <span>☀️</span>
+  <span>entra</span>
+</button></a>
+            </div>
+        </div>
+    </div>
+<section id="coreano">
+<div class="overlay-noise"></div>
+
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true"></div>
+        
+      </div>
+      <nav aria-label="Navigazione principale">
+   <h1 style="font-family: 'Yeon Sung', serif; color: #f8f8f8; font-size: 14px;"><a href="#" class="nav-primary">한국어 학습</a><span class="animated-emoji emoji-bounce">🏯</span></h1>
+      </nav>
+
+    
+
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span class="hero-tag-dot"></span>
+            <span>Livelli A1–B2 • Hangul • K‑Culture</span>
+          </div>
+
+          <div class="hero-title-korean">한국어 · Hangul · K‑Drama</div>
+
+          <h1 id="hero-title" class="hero-title">
+            <span>Homepage interattiva</span>
+            <span>per studiare il coreano</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Allenati con percorsi guidati sulla scrittura Hangul, grammatica essenziale
+            e frasi di sopravvivenza ispirate a K‑Drama e K‑Pop.
+          </p>
+
+          <div class="hero-highlight">
+            <span>🇰🇷 Alfabeto Hangul passo‑passo</span>
+            <span>🎯 Percorsi per obiettivi (viaggio, esame, hobby)</span>
+            <span>🕒 Sessioni brevi da 10 minuti</span>
+          </div>
+
+          <div class="hero-cta">
+            <a href="https://tuosito.com/coreano-hangul" class="hero-cta-primary">
+              Inizia da Hangul
+            </a>
+            <a href="https://tuosito.com/coreano-panorama" class="hero-cta-ghost">
+              Vedi tutti i percorsi →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="cards-panel" aria-label="Percorsi di studio coreano">
+        <div class="cards-header">
+          <div class="cards-header-title">Percorsi principali</div>
+          <div class="cards-header-badge">3 moduli consigliati</div>
+        </div>
+
+        <div class="cards-grid">
+          <!-- CARD 1 -->
+          <article class="card">
+            <div class="card-label">Percorso 01</div>
+            <h2 class="card-title">Alfabeto Hangul</h2>
+            <p class="card-subtitle">
+              Impara a leggere e scrivere tutte le lettere coreane con esercizi
+              progressivi e schede visive.
+            </p>
+            <div class="card-meta">
+              <span>15 unità</span>
+              <span>Ideale per principianti assoluti</span>
+            </div>
+            <a href="https://tuosito.com/coreano/hangul" class="card-link">
+              Vai al percorso Hangul
+            </a>
+          </article>
+
+          <!-- CARD 2 -->
+          <article class="card">
+            <div class="card-label">Percorso 02</div>
+            <h2 class="card-title">Grammatica base</h2>
+            <p class="card-subtitle">
+              Strutture fondamentali, particelle, presente e passato con esempi
+              ispirati a frasi reali di K‑Drama.
+            </p>
+            <div class="card-meta">
+              <span>20 lezioni</span>
+              <span>Livelli A1–A2</span>
+            </div>
+            <a href="https://tuosito.com/coreano/grammatica-base" class="card-link">
+              Vai alla grammatica
+            </a>
+          </article>
+
+          <!-- CARD 3 -->
+          <article class="card">
+            <div class="card-label">Percorso 03</div>
+            <h2 class="card-title">Frasi da K‑Culture</h2>
+            <p class="card-subtitle">
+              Espressioni utili da K‑Pop, drama e vita quotidiana, con audio e
+              modalità ripasso veloce.
+            </p>
+            <div class="card-meta">
+              <span>100+ frasi</span>
+              <span>Per viaggi e conversazione</span>
+            </div>
+            <a href="https://tuosito.com/coreano/k-culture-frasi" class="card-link">
+              Vai alle frasi K‑Culture
+            </a>
+          </article>
+        </div>
+      </aside>
+    </main>
+  </div>
+</section>
+</body>
+</html>
