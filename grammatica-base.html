@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammatica Coreana Base</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=Source+Sans+3:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .korean-text {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .heading-font {
+      font-family: 'Playfair Display', serif;
+    }
+    .body-font {
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .gradient-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+      backdrop-filter: blur(10px);
+    }
+    .drama-quote {
+      position: relative;
+    }
+    .drama-quote::before {
+      content: '"';
+      position: absolute;
+      left: -8px;
+      top: -10px;
+      font-size: 3rem;
+      opacity: 0.15;
+      font-family: 'Playfair Display', serif;
+    }
+    .particle-badge {
+      animation: pulse-soft 2s infinite;
+    }
+    @keyframes pulse-soft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .tab-active {
+      position: relative;
+    }
+    .tab-active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 2px;
+    }
+    .example-card {
+      transition: all 0.3s ease;
+    }
+    .example-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full body-font">
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"><!-- Decorative Elements -->
+   <div class="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+    <div class="absolute top-20 left-10 w-32 h-32 rounded-full opacity-10" style="background: radial-gradient(circle, #e94560 0%, transparent 70%);"></div>
+    <div class="absolute bottom-40 right-20 w-48 h-48 rounded-full opacity-10" style="background: radial-gradient(circle, #533483 0%, transparent 70%);"></div>
+    <div class="absolute top-1/2 left-1/3 w-24 h-24 rounded-full opacity-5" style="background: radial-gradient(circle, #e94560 0%, transparent 70%);"></div>
+   </div>
+   <div class="relative z-10 max-w-4xl mx-auto px-4 py-8 md:py-12"><!-- Header -->
+    <header class="text-center mb-10">
+     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm mb-4" style="background: rgba(233, 69, 96, 0.2); color: #e94560;"><span>🎬</span> <span id="subtitle-display">Ispirata ai K-Drama</span>
+     </div>
+     <h1 id="title-display" class="heading-font text-4xl md:text-5xl font-bold text-white mb-3">Grammatica Coreana</h1>
+     <p class="text-gray-400 text-lg">Strutture fondamentali • Particelle • Tempi verbali</p>
+    </header><!-- Navigation Tabs -->
+    <nav class="flex justify-center gap-2 mb-8 flex-wrap"><button onclick="showSection('struttura')" id="tab-struttura" class="tab-btn tab-active px-5 py-2.5 rounded-full text-sm font-medium transition-all" style="background: #e94560; color: white;"> 📐 Struttura </button> <button onclick="showSection('particelle')" id="tab-particelle" class="tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);"> ✨ Particelle </button> <button onclick="showSection('presente')" id="tab-presente" class="tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);"> ⏰ Presente </button> <button onclick="showSection('passato')" id="tab-passato" class="tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);"> ⏪ Passato </button>
+    </nav><!-- Content Sections -->
+    <main><!-- Struttura Section -->
+     <section id="section-struttura" class="section-content">
+      <div class="gradient-card rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
+       <h2 class="heading-font text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background: linear-gradient(135deg, #e94560, #533483);">1</span> Ordine delle Parole</h2>
+       <p class="text-gray-600 mb-4 leading-relaxed">Il coreano segue l'ordine <strong>SOV</strong> (Soggetto + Oggetto + Verbo), completamente diverso dall'italiano che usa SVO (Soggetto + Verbo + Oggetto).</p>
+       <p class="text-gray-600 mb-4 leading-relaxed">Questo significa che il verbo va <strong>sempre alla fine della frase</strong>. Nei K-Drama noterai che spesso le frasi vengono interrotte proprio prima del verbo per creare suspense! È una tecnica narrativa molto usata.</p>
+       <p class="text-gray-600 mb-6 leading-relaxed"><strong>Trucco per imparare:</strong> Quando costruisci una frase in coreano, pensa prima a cosa vuoi dire in italiano, poi sposta mentalmente il verbo alla fine. Con la pratica diventerà naturale!</p>
+       <div class="rounded-xl p-5 mb-6" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+        <div class="flex flex-wrap items-center justify-center gap-3 text-center">
+         <div class="px-4 py-3 rounded-lg bg-white shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">
+           SOGGETTO
+          </div>
+          <div class="font-semibold" style="color: #e94560;">
+           나는
+          </div>
+          <div class="text-xs text-gray-400">
+           io
+          </div>
+         </div>
+         <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+         </svg>
+         <div class="px-4 py-3 rounded-lg bg-white shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">
+           OGGETTO
+          </div>
+          <div class="font-semibold" style="color: #533483;">
+           커피를
+          </div>
+          <div class="text-xs text-gray-400">
+           caffè
+          </div>
+         </div>
+         <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+         </svg>
+         <div class="px-4 py-3 rounded-lg bg-white shadow-sm">
+          <div class="text-xs text-gray-500 mb-1">
+           VERBO
+          </div>
+          <div class="font-semibold" style="color: #0f3460;">
+           마셔요
+          </div>
+          <div class="text-xs text-gray-400">
+           bevo
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="drama-quote pl-6 py-4 border-l-4 rounded-r-lg" style="border-color: #e94560; background: rgba(233, 69, 96, 0.05);">
+        <p class="korean-text text-xl text-gray-800 mb-2">나는 커피를 마셔요</p>
+        <p class="text-gray-500 italic">"Io bevo caffè"</p>
+        <p class="text-xs mt-2 px-2 py-1 rounded inline-block" style="background: rgba(233, 69, 96, 0.1); color: #e94560;">☕ Scena tipica: protagonista al bar</p>
+       </div>
+      </div>
+      <div class="gradient-card rounded-2xl p-6 md:p-8 shadow-xl">
+       <h2 class="heading-font text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><span class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background: linear-gradient(135deg, #e94560, #533483);">2</span> Livelli di Formalità</h2>
+       <p class="text-gray-600 mb-3 leading-relaxed">La cultura coreana dà grande importanza al rispetto e alla gerarchia sociale. Per questo motivo, la lingua coreana ha sviluppato diversi <strong>livelli di cortesia</strong> che cambiano in base a chi stai parlando.</p>
+       <p class="text-gray-600 mb-4 leading-relaxed"><strong>Quando usare quale livello?</strong> Dipende dall'età, dalla posizione sociale e dal grado di familiarità. Nei K-Drama vedrai spesso tensione quando qualcuno passa dal formale all'informale (o viceversa) - è un momento significativo nelle relazioni!</p>
+       <p class="text-gray-600 mb-5 leading-relaxed">In questa guida ci concentriamo sul <strong>해요체 (haeyoche)</strong>, il livello cortese standard, perfetto per la maggior parte delle situazioni quotidiane.</p>
+       <div class="grid gap-4">
+        <div class="example-card flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100">
+         <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #10b981, #059669);"><span class="text-white text-lg">👔</span>
+         </div>
+         <div>
+          <div class="font-semibold text-gray-800 mb-1">
+           Formale (합니다체)
+          </div>
+          <p class="korean-text text-lg text-gray-700">감사합니다</p>
+          <p class="text-sm text-gray-500">Grazie (molto formale)</p>
+         </div>
+        </div>
+        <div class="example-card flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+         <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #3b82f6, #6366f1);"><span class="text-white text-lg">😊</span>
+         </div>
+         <div>
+          <div class="font-semibold text-gray-800 mb-1">
+           Cortese (해요체)
+          </div>
+          <p class="korean-text text-lg text-gray-700">고마워요</p>
+          <p class="text-sm text-gray-500">Grazie (cortese, comune nei drama)</p>
+         </div>
+        </div>
+        <div class="example-card flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100">
+         <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><span class="text-white text-lg">🤝</span>
+         </div>
+         <div>
+          <div class="font-semibold text-gray-800 mb-1">
+           Informale (반말)
+          </div>
+          <p class="korean-text text-lg text-gray-700">고마워</p>
+          <p class="text-sm text-gray-500">Grazie (tra amici intimi)</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Particelle Section -->
+     <section id="section-particelle" class="section-content hidden">
+      <div class="gradient-card rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
+       <h2 class="heading-font text-2xl font-bold text-gray-800 mb-2">Le Particelle Essenziali</h2>
+       <p class="text-gray-600 mb-3 leading-relaxed">Le particelle sono piccole sillabe che si attaccano ai sostantivi e indicano la loro funzione grammaticale nella frase. Sono fondamentali in coreano!</p>
+       <p class="text-gray-600 mb-4 leading-relaxed"><strong>Perché esistono due forme?</strong> (come 은/는 o 이/가) La scelta dipende dal suono finale della parola precedente:</p>
+       <ul class="text-gray-600 mb-6 leading-relaxed space-y-2 ml-6">
+        <li class="flex gap-2"><span class="flex-shrink-0">•</span><span><strong>Dopo consonante</strong> → usa 은, 이, 을 (suonano più fluidi)</span></li>
+        <li class="flex gap-2"><span class="flex-shrink-0">•</span><span><strong>Dopo vocale</strong> → usa 는, 가, 를 (evitano incontri vocalici difficili)</span></li>
+       </ul>
+       <p class="text-gray-600 mb-6 leading-relaxed">È come in italiano quando diciamo "un" o "uno" a seconda della parola che segue - una questione di eufonia!</p>
+       <div class="grid gap-4"><!-- 은/는 -->
+        <div class="rounded-xl overflow-hidden border border-gray-100">
+         <div class="p-4" style="background: linear-gradient(135deg, #e94560, #c73e54);">
+          <div class="flex items-center gap-3"><span class="particle-badge korean-text text-2xl font-bold text-white">은/는</span>
+           <div>
+            <div class="text-white font-medium">
+             Particella del TEMA/ARGOMENTO
+            </div>
+            <div class="text-white/70 text-sm">
+             은 dopo consonante, 는 dopo vocale
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="p-4 bg-white">
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>Funzione:</strong> Introduce l'argomento generale di cui stai parlando. È come dire "Per quanto riguarda X..." o "Parlando di X...". Si usa quando vuoi stabilire di cosa/chi stai parlando, spesso in contrasto con altro.</p>
+          <p class="text-gray-600 mb-4 text-sm leading-relaxed"><strong>Esempio pratico:</strong> "저는 의사예요" = "Per quanto riguarda me, sono un dottore" (magari qualcun altro è infermiere). Il focus è su CHI sei, stabilendo il tema della conversazione.</p>
+          <div class="drama-quote pl-4 mb-3">
+           <p class="korean-text text-lg text-gray-800">저<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(233, 69, 96, 0.2); color: #e94560;">는</span> 의사예요</p>
+           <p class="text-gray-500 text-sm italic">"Io sono un dottore"</p>
+          </div>
+          <p class="text-xs px-2 py-1 rounded inline-block" style="background: rgba(233, 69, 96, 0.1); color: #e94560;">🏥 Hospital Playlist - presentandosi</p>
+         </div>
+        </div><!-- 이/가 -->
+        <div class="rounded-xl overflow-hidden border border-gray-100">
+         <div class="p-4" style="background: linear-gradient(135deg, #533483, #3d2463);">
+          <div class="flex items-center gap-3"><span class="particle-badge korean-text text-2xl font-bold text-white">이/가</span>
+           <div>
+            <div class="text-white font-medium">
+             Particella del SOGGETTO
+            </div>
+            <div class="text-white/70 text-sm">
+             이 dopo consonante, 가 dopo vocale
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="p-4 bg-white">
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>Funzione:</strong> Marca il soggetto grammaticale che compie l'azione. Si usa quando vuoi enfatizzare CHI o COSA sta facendo qualcosa, spesso per rispondere a domande o dare nuove informazioni.</p>
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>은/는 vs 이/가:</strong> Differenza sottile ma importante! 은/는 stabilisce l'argomento generale ("parlando di X..."), mentre 이/가 identifica chi fa l'azione ("è X che..."). Nei drama, quando qualcuno dice "내가 했어!" (IO l'ho fatto!), usa 가 per enfasi forte.</p>
+          <div class="drama-quote pl-4 mb-3">
+           <p class="korean-text text-lg text-gray-800">눈<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(83, 52, 131, 0.2); color: #533483;">이</span> 와요</p>
+           <p class="text-gray-500 text-sm italic">"Sta nevicando" (lett. "la neve viene")</p>
+          </div>
+          <p class="text-xs px-2 py-1 rounded inline-block" style="background: rgba(83, 52, 131, 0.1); color: #533483;">❄️ Goblin - scena romantica invernale</p>
+         </div>
+        </div><!-- 을/를 -->
+        <div class="rounded-xl overflow-hidden border border-gray-100">
+         <div class="p-4" style="background: linear-gradient(135deg, #0f3460, #0a2647);">
+          <div class="flex items-center gap-3"><span class="particle-badge korean-text text-2xl font-bold text-white">을/를</span>
+           <div>
+            <div class="text-white font-medium">
+             Particella dell'OGGETTO DIRETTO
+            </div>
+            <div class="text-white/70 text-sm">
+             을 dopo consonante, 를 dopo vocale
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="p-4 bg-white">
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>Funzione:</strong> Indica l'oggetto che riceve direttamente l'azione del verbo. È equivalente al complemento oggetto in italiano, ma mentre in italiano la posizione della parola spesso basta, in coreano questa particella è essenziale per chiarezza.</p>
+          <p class="text-gray-600 mb-4 text-sm leading-relaxed"><strong>Trucco per ricordare:</strong> Pensa "을/를" come la risposta alla domanda "Che cosa?" dopo il verbo. "Amo CHE COSA? → L'amore". In coreano: "사랑을 해요".</p>
+          <div class="drama-quote pl-4 mb-3">
+           <p class="korean-text text-lg text-gray-800">사랑<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(15, 52, 96, 0.2); color: #0f3460;">을</span> 해요</p>
+           <p class="text-gray-500 text-sm italic">"Ti amo" (lett. "faccio amore")</p>
+          </div>
+          <p class="text-xs px-2 py-1 rounded inline-block" style="background: rgba(15, 52, 96, 0.1); color: #0f3460;">💕 Crash Landing on You - confessione d'amore</p>
+         </div>
+        </div><!-- 에/에서 -->
+        <div class="rounded-xl overflow-hidden border border-gray-100">
+         <div class="p-4" style="background: linear-gradient(135deg, #059669, #047857);">
+          <div class="flex items-center gap-3"><span class="particle-badge korean-text text-2xl font-bold text-white">에/에서</span>
+           <div>
+            <div class="text-white font-medium">
+             Particelle di LUOGO e TEMPO
+            </div>
+            <div class="text-white/70 text-sm">
+             에 = destinazione/tempo, 에서 = luogo d'azione
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="p-4 bg-white">
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>에 - Destinazione o Tempo:</strong> Si usa per indicare dove vai (destinazione) o quando succede qualcosa. È come "a", "in" o "alle" in italiano.</p>
+          <p class="text-gray-600 mb-3 text-sm leading-relaxed"><strong>에서 - Luogo dell'azione:</strong> Indica dove si svolge un'azione. È come "in/a" ma con enfasi sul fatto che lì ACCADE qualcosa.</p>
+          <p class="text-gray-600 mb-4 text-sm leading-relaxed"><strong>Differenza chiave:</strong> "학교에 가요" (vado A scuola - movimento verso) vs "학교에서 공부해요" (studio A scuola - azione che avviene lì). Nei drama, quando qualcuno dice "여기에서 기다려!" significa "aspetta QUI!" (luogo dell'attesa).</p>
+          <div class="drama-quote pl-4 mb-3">
+           <p class="korean-text text-lg text-gray-800">학교<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(5, 150, 105, 0.2); color: #059669;">에</span> 가요</p>
+           <p class="text-gray-500 text-sm italic">"Vado a scuola" (destinazione)</p>
+          </div>
+          <div class="drama-quote pl-4 mb-3">
+           <p class="korean-text text-lg text-gray-800">카페<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(5, 150, 105, 0.2); color: #059669;">에서</span> 공부해요</p>
+           <p class="text-gray-500 text-sm italic">"Studio al bar" (luogo dell'azione)</p>
+          </div>
+          <div class="drama-quote pl-4">
+           <p class="korean-text text-lg text-gray-800">3시<span class="px-1.5 py-0.5 rounded mx-1" style="background: rgba(5, 150, 105, 0.2); color: #059669;">에</span> 만나요</p>
+           <p class="text-gray-500 text-sm italic">"Ci vediamo alle 3" (tempo)</p>
+          </div>
+          <p class="text-xs px-2 py-1 rounded inline-block mt-3" style="background: rgba(5, 150, 105, 0.1); color: #059669;">📚 Reply 1988 - vita quotidiana</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Presente Section -->
+     <section id="section-presente" class="section-content hidden">
+      <div class="gradient-card rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
+       <h2 class="heading-font text-2xl font-bold text-gray-800 mb-2">Tempo Presente (해요체)</h2>
+       <p class="text-gray-600 mb-3 leading-relaxed">Il presente cortese si forma aggiungendo <strong class="korean-text">-아요/-어요</strong> alla radice verbale (cioè il verbo senza 다).</p>
+       <p class="text-gray-600 mb-3 leading-relaxed"><strong>Come funziona:</strong> Prendi un verbo all'infinito (es. 가다 "andare"), togli il 다, e guarda l'ultima vocale della radice. Quella vocale determina quale terminazione usare.</p>
+       <p class="text-gray-600 mb-4 leading-relaxed"><strong>Perché due forme diverse?</strong> È questione di armonia vocalica - un principio fonetico per cui le vocali "luminose" (ㅏ, ㅗ) vanno con -아요, mentre le vocali "scure" (tutte le altre) vanno con -어요. È più facile da pronunciare!</p>
+       <div class="rounded-xl p-5 mb-6" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+        <h3 class="font-semibold text-gray-800 mb-3">📌 Regola Base</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+         <div class="bg-white/80 rounded-lg p-4">
+          <div class="korean-text text-lg font-medium mb-2" style="color: #e94560;">
+           -아요
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Se l'ultima vocale della radice è <strong>ㅏ</strong> o <strong>ㅗ</strong></p>
+          <p class="text-xs text-gray-500 italic">Es: 가다 → 가 + 아요 → 가요</p>
+         </div>
+         <div class="bg-white/80 rounded-lg p-4">
+          <div class="korean-text text-lg font-medium mb-2" style="color: #533483;">
+           -어요
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Per tutte le altre vocali</p>
+          <p class="text-xs text-gray-500 italic">Es: 먹다 → 먹 + 어요 → 먹어요</p>
+         </div>
+        </div>
+        <div class="mt-4 p-3 bg-white/60 rounded-lg">
+         <p class="text-sm text-gray-700"><strong>⚠️ Eccezione importante:</strong> I verbi che finiscono in <span class="korean-text">하다</span> (fare) diventano <span class="korean-text font-medium">해요</span>! Es: 공부하다 → 공부해요</p>
+        </div>
+       </div>
+       <h3 class="font-semibold text-gray-800 mb-4">Esempi dai K-Drama</h3>
+       <div class="space-y-4">
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">가다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(233, 69, 96, 0.1); color: #e94560;">가요</span> <span class="text-gray-500 text-sm">(andare)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #e94560;">
+          <p class="korean-text text-lg text-gray-800">집에 가요</p>
+          <p class="text-gray-500 text-sm italic">"Vado a casa"</p>
+         </div>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">먹다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(83, 52, 131, 0.1); color: #533483;">먹어요</span> <span class="text-gray-500 text-sm">(mangiare)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #533483;">
+          <p class="korean-text text-lg text-gray-800">뭐 먹어요?</p>
+          <p class="text-gray-500 text-sm italic">"Cosa mangi?"</p>
+         </div>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">하다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(15, 52, 96, 0.1); color: #0f3460;">해요</span> <span class="text-gray-500 text-sm">(fare)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #0f3460;">
+          <p class="korean-text text-lg text-gray-800">뭐 해요?</p>
+          <p class="text-gray-500 text-sm italic">"Cosa fai?"</p>
+         </div>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">알다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(5, 150, 105, 0.1); color: #059669;">알아요</span> <span class="text-gray-500 text-sm">(sapere)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #059669;">
+          <p class="korean-text text-lg text-gray-800">알아요, 알아요!</p>
+          <p class="text-gray-500 text-sm italic">"Lo so, lo so!"</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Passato Section -->
+     <section id="section-passato" class="section-content hidden">
+      <div class="gradient-card rounded-2xl p-6 md:p-8 mb-6 shadow-xl">
+       <h2 class="heading-font text-2xl font-bold text-gray-800 mb-2">Tempo Passato (해요체)</h2>
+       <p class="text-gray-600 mb-3 leading-relaxed">Il passato si forma aggiungendo <strong class="korean-text">-았어요/-었어요</strong> alla radice verbale. La logica è identica al presente, ma con una sillaba in più!</p>
+       <p class="text-gray-600 mb-3 leading-relaxed"><strong>Procedimento:</strong> Togli il 다 dall'infinito, guarda l'ultima vocale, e aggiungi -았어요 (per vocali "luminose" ㅏ/ㅗ) o -었어요 (per tutte le altre).</p>
+       <p class="text-gray-600 mb-4 leading-relaxed"><strong>Tip dei K-Drama:</strong> Il passato è usatissimo per raccontare flashback o per esprimere rimorso. Quante volte hai sentito "미안했어요" (Mi dispiace - per qualcosa del passato) in una scena emotiva? 😢</p>
+       <div class="rounded-xl p-5 mb-6" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+        <h3 class="font-semibold text-gray-800 mb-3">📌 Regola Base</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+         <div class="bg-white/80 rounded-lg p-4">
+          <div class="korean-text text-lg font-medium mb-2" style="color: #e94560;">
+           -았어요
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Se l'ultima vocale della radice è <strong>ㅏ</strong> o <strong>ㅗ</strong></p>
+          <p class="text-xs text-gray-500 italic">Es: 가다 → 가 + 았어요 → 갔어요</p>
+         </div>
+         <div class="bg-white/80 rounded-lg p-4">
+          <div class="korean-text text-lg font-medium mb-2" style="color: #533483;">
+           -었어요
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Per tutte le altre vocali</p>
+          <p class="text-xs text-gray-500 italic">Es: 먹다 → 먹 + 었어요 → 먹었어요</p>
+         </div>
+        </div>
+        <div class="mt-4 p-3 bg-white/60 rounded-lg">
+         <p class="text-sm text-gray-700"><strong>⚠️ Eccezione importante:</strong> I verbi in <span class="korean-text">하다</span> diventano <span class="korean-text font-medium">했어요</span> al passato! Es: 공부하다 → 공부했어요</p>
+        </div>
+       </div>
+       <h3 class="font-semibold text-gray-800 mb-4">Esempi dai K-Drama</h3>
+       <div class="space-y-4">
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">가다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(233, 69, 96, 0.1); color: #e94560;">갔어요</span> <span class="text-gray-500 text-sm">(essere andato)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #e94560;">
+          <p class="korean-text text-lg text-gray-800">어디 갔어요?</p>
+          <p class="text-gray-500 text-sm italic">"Dove sei andato/a?"</p>
+         </div>
+         <p class="text-xs px-2 py-1 rounded inline-block mt-2" style="background: rgba(233, 69, 96, 0.1); color: #e94560;">😤 Quando il protagonista scompare misteriosamente</p>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">먹다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(83, 52, 131, 0.1); color: #533483;">먹었어요</span> <span class="text-gray-500 text-sm">(aver mangiato)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #533483;">
+          <p class="korean-text text-lg text-gray-800">밥 먹었어요?</p>
+          <p class="text-gray-500 text-sm italic">"Hai mangiato?" (modo premuroso per salutare)</p>
+         </div>
+         <p class="text-xs px-2 py-1 rounded inline-block mt-2" style="background: rgba(83, 52, 131, 0.1); color: #533483;">💝 Frase classica di premura coreana</p>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">하다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(15, 52, 96, 0.1); color: #0f3460;">했어요</span> <span class="text-gray-500 text-sm">(aver fatto)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #0f3460;">
+          <p class="korean-text text-lg text-gray-800">잘 했어요!</p>
+          <p class="text-gray-500 text-sm italic">"Hai fatto bene! / Bravo/a!"</p>
+         </div>
+         <p class="text-xs px-2 py-1 rounded inline-block mt-2" style="background: rgba(15, 52, 96, 0.1); color: #0f3460;">👏 Complimento comune</p>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">보다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(5, 150, 105, 0.1); color: #059669;">봤어요</span> <span class="text-gray-500 text-sm">(aver visto)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #059669;">
+          <p class="korean-text text-lg text-gray-800">다 봤어요</p>
+          <p class="text-gray-500 text-sm italic">"Ho visto tutto"</p>
+         </div>
+         <p class="text-xs px-2 py-1 rounded inline-block mt-2" style="background: rgba(5, 150, 105, 0.1); color: #059669;">👀 Momento drammatico di rivelazione</p>
+        </div>
+        <div class="example-card p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md">
+         <div class="flex flex-wrap items-center gap-2 mb-2"><span class="korean-text text-sm px-2 py-1 rounded" style="background: #f3f4f6;">만나다</span> <span class="text-gray-400">→</span> <span class="korean-text text-sm px-2 py-1 rounded font-medium" style="background: rgba(245, 158, 11, 0.1); color: #d97706;">만났어요</span> <span class="text-gray-500 text-sm">(aver incontrato)</span>
+         </div>
+         <div class="drama-quote pl-4 border-l-2" style="border-color: #d97706;">
+          <p class="korean-text text-lg text-gray-800">만나서 반가워요</p>
+          <p class="text-gray-500 text-sm italic">"Piacere di conoscerti" (lett. "Avendoti incontrato, sono felice")</p>
+         </div>
+         <p class="text-xs px-2 py-1 rounded inline-block mt-2" style="background: rgba(245, 158, 11, 0.1); color: #d97706;">🤝 Saluto al primo incontro</p>
+        </div>
+       </div>
+      </div><!-- Quick Reference Card -->
+      <div class="gradient-card rounded-2xl p-6 shadow-xl">
+       <h3 class="heading-font text-xl font-bold text-gray-800 mb-4">🎯 Tabella Riassuntiva</h3>
+       <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+         <thead>
+          <tr style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+           <th class="p-3 text-left rounded-tl-lg">Verbo</th>
+           <th class="p-3 text-left">Presente</th>
+           <th class="p-3 text-left">Passato</th>
+           <th class="p-3 text-left rounded-tr-lg">Significato</th>
+          </tr>
+         </thead>
+         <tbody class="korean-text">
+          <tr class="border-b border-gray-100">
+           <td class="p-3">가다</td>
+           <td class="p-3" style="color: #e94560;">가요</td>
+           <td class="p-3" style="color: #533483;">갔어요</td>
+           <td class="p-3 text-gray-600 body-font">andare</td>
+          </tr>
+          <tr class="border-b border-gray-100 bg-gray-50/50">
+           <td class="p-3">오다</td>
+           <td class="p-3" style="color: #e94560;">와요</td>
+           <td class="p-3" style="color: #533483;">왔어요</td>
+           <td class="p-3 text-gray-600 body-font">venire</td>
+          </tr>
+          <tr class="border-b border-gray-100">
+           <td class="p-3">먹다</td>
+           <td class="p-3" style="color: #e94560;">먹어요</td>
+           <td class="p-3" style="color: #533483;">먹었어요</td>
+           <td class="p-3 text-gray-600 body-font">mangiare</td>
+          </tr>
+          <tr class="border-b border-gray-100 bg-gray-50/50">
+           <td class="p-3">하다</td>
+           <td class="p-3" style="color: #e94560;">해요</td>
+           <td class="p-3" style="color: #533483;">했어요</td>
+           <td class="p-3 text-gray-600 body-font">fare</td>
+          </tr>
+          <tr>
+           <td class="p-3 rounded-bl-lg">보다</td>
+           <td class="p-3" style="color: #e94560;">봐요</td>
+           <td class="p-3" style="color: #533483;">봤어요</td>
+           <td class="p-3 text-gray-600 body-font rounded-br-lg">vedere</td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </section>
+    </main><!-- Footer -->
+    <footer class="text-center mt-10 pt-6 border-t border-white/10">
+     <p class="text-gray-500 text-sm">화이팅! 🇰🇷 Continua a studiare!</p>
+    </footer>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      main_title: 'Grammatica Coreana',
+      subtitle: 'Ispirata ai K-Drama',
+      primary_color: '#1a1a2e',
+      accent_color: '#e94560',
+      text_color: '#ffffff',
+      card_color: '#ffffff',
+      secondary_accent: '#533483',
+      font_family: 'Source Sans 3',
+      font_size: 16
+    };
+
+    let config = { ...defaultConfig };
+
+    // Section navigation
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.section-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Show selected section
+      document.getElementById('section-' + sectionId).classList.remove('hidden');
+      
+      // Update tab styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.style.background = 'rgba(255,255,255,0.1)';
+        btn.style.color = 'rgba(255,255,255,0.7)';
+        btn.classList.remove('tab-active');
+      });
+      
+      const activeTab = document.getElementById('tab-' + sectionId);
+      activeTab.style.background = config.accent_color || defaultConfig.accent_color;
+      activeTab.style.color = 'white';
+      activeTab.classList.add('tab-active');
+    }
+
+    // Element SDK integration
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      // Update title and subtitle
+      document.getElementById('title-display').textContent = config.main_title || defaultConfig.main_title;
+      document.getElementById('subtitle-display').textContent = config.subtitle || defaultConfig.subtitle;
+      
+      // Update colors
+      const wrapper = document.getElementById('app-wrapper');
+      if (config.primary_color) {
+        wrapper.style.background = `linear-gradient(160deg, ${config.primary_color} 0%, #16213e 50%, #0f3460 100%)`;
+      }
+      
+      // Update font
+      const customFont = config.font_family || defaultConfig.font_family;
+      document.querySelectorAll('.body-font').forEach(el => {
+        el.style.fontFamily = `${customFont}, sans-serif`;
+      });
+      
+      // Update font size
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = `${baseSize}px`;
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.card_color || defaultConfig.card_color,
+            set: (value) => {
+              cfg.card_color = value;
+              window.elementSdk.setConfig({ card_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => cfg.secondary_accent || defaultConfig.secondary_accent,
+            set: (value) => {
+              cfg.secondary_accent = value;
+              window.elementSdk.setConfig({ secondary_accent: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['main_title', cfg.main_title || defaultConfig.main_title],
+        ['subtitle', cfg.subtitle || defaultConfig.subtitle]
+      ]);
+    }
+
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c707db9d2365091',t:'MTc2OTkzODg2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
