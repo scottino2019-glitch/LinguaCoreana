@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viaggio in Corea</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&amp;family=Quicksand:wght@500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .korean-text {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .heading-font {
+      font-family: 'Outfit', sans-serif;
+    }
+    .body-font {
+      font-family: 'Quicksand', sans-serif;
+    }
+    .lesson-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #f59e0b, #d97706);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+    .lesson-card:hover::before {
+      transform: scaleY(1);
+    }
+    .lesson-card:hover {
+      transform: translateX(8px);
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+    }
+    .lesson-card.completed {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-left: 4px solid #10b981;
+    }
+    .modal-overlay {
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-content {
+      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .progress-ring {
+      transition: stroke-dashoffset 0.6s ease;
+    }
+    .phrase-card {
+      transition: all 0.2s ease;
+    }
+    .phrase-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .floating-emoji {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .toast {
+      animation: toastSlide 0.3s ease;
+    }
+    @keyframes toastSlide {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full body-font">
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%);">
+   <div class="relative z-10 max-w-5xl mx-auto px-4 py-8"><!-- Header -->
+    <header class="text-center mb-8">
+     <div class="floating-emoji text-7xl mb-4">
+      ✈️
+     </div>
+     <h1 id="title-display" class="heading-font text-5xl md:text-6xl font-bold mb-3" style="color: #92400e;">Viaggio in Corea</h1>
+     <p id="subtitle-display" class="text-xl" style="color: #78350f;">Impara il coreano essenziale per viaggiare</p>
+    </header><!-- Progress Stats -->
+    <div class="bg-white rounded-3xl p-6 shadow-2xl mb-8">
+     <div class="flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-4">
+       <div class="relative w-20 h-20">
+        <svg class="transform -rotate-90 w-20 h-20"><circle cx="40" cy="40" r="36" stroke="#fde68a" stroke-width="8" fill="none" /> <circle id="progress-ring" class="progress-ring" cx="40" cy="40" r="36" stroke="#f59e0b" stroke-width="8" fill="none" stroke-dasharray="226.19" stroke-dashoffset="226.19" stroke-linecap="round" />
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center"><span id="progress-percent" class="text-xl font-bold" style="color: #f59e0b;">0%</span>
+        </div>
+       </div>
+       <div>
+        <div class="text-3xl font-bold heading-font" style="color: #92400e;"><span id="completed-count">0</span>/<span id="total-count">12</span>
+        </div>
+        <div class="text-sm" style="color: #78350f;">
+         Lezioni Completate
+        </div>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="text-center px-4">
+        <div class="text-2xl font-bold heading-font" style="color: #10b981;"><span id="streak-count">0</span>
+        </div>
+        <div class="text-xs" style="color: #78350f;">
+         Giorni Consecutivi
+        </div>
+       </div>
+       <div class="text-center px-4">
+        <div class="text-2xl">
+         🏆
+        </div>
+        <div class="text-xs" style="color: #78350f;">
+         Viaggiatore
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Lessons Grid -->
+    <div id="lessons-container" class="space-y-4"><!-- Lessons will be generated here -->
+    </div>
+   </div><!-- Lesson Modal -->
+   <div id="lesson-modal" class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" onclick="closeModal(event)">
+    <div class="modal-content bg-white rounded-3xl p-6 md:p-8 max-w-4xl w-full shadow-2xl max-h-[90%] overflow-y-auto" onclick="event.stopPropagation()">
+     <div class="flex items-start justify-between mb-6">
+      <div class="flex items-center gap-4">
+       <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style="background: linear-gradient(135deg, #fef3c7, #fde68a);"><span id="modal-lesson-number">1</span>
+       </div>
+       <div>
+        <h3 class="heading-font text-3xl font-bold" style="color: #92400e;" id="modal-lesson-title">Saluti</h3>
+        <p class="text-sm" style="color: #78350f;" id="modal-lesson-duration">15 minuti</p>
+       </div>
+      </div><button onclick="closeModal()" class="w-12 h-12 rounded-xl flex items-center justify-center transition-all hover:scale-110" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 24px;"> ✕ </button>
+     </div>
+     <div id="modal-lesson-content" class="space-y-6"><!-- Content generated by JS -->
+     </div><!-- Notes Section -->
+     <div class="mt-8 p-5 rounded-2xl" style="background: #fef3c7;"><label class="block font-semibold mb-2" style="color: #92400e;">📝 Note Personali:</label> <textarea id="lesson-notes" rows="3" placeholder="Aggiungi note, osservazioni o trucchi per ricordare..." class="w-full p-3 rounded-xl border-2 border-amber-200 focus:border-amber-400 focus:outline-none resize-none" style="background: white;"></textarea>
+     </div>
+     <div class="flex gap-3 mt-8 pt-6 border-t border-gray-200"><button onclick="toggleComplete()" id="complete-btn" class="flex-1 px-6 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-all text-white text-lg" style="background: linear-gradient(135deg, #f59e0b, #d97706);"> ✓ Segna come Completata </button> <button onclick="closeModal()" class="px-6 py-4 rounded-xl font-semibold transition-all hover:scale-105" style="background: rgba(107, 114, 128, 0.1); color: #4b5563;"> Chiudi </button>
+     </div>
+    </div>
+   </div><!-- Toast Notification -->
+   <div id="toast" class="toast fixed top-4 right-4 bg-white px-6 py-4 rounded-2xl shadow-2xl hidden z-50">
+    <div class="flex items-center gap-3"><span id="toast-icon" class="text-2xl">✓</span> <span id="toast-message" class="font-semibold" style="color: #1f2937;"></span>
+    </div>
+   </div>
+  </div>
+  <script>
+    const lessonsData = [
+      {
+        id: 1,
+        title: 'Saluti e Presentazioni',
+        duration: '20 minuti',
+        emoji: '👋',
+        content: {
+          intro: 'Impara i saluti essenziali per ogni situazione in Corea. Dalla mattina alla sera, formale e informale.',
+          phrases: [
+            { korean: '안녕하세요', romanization: 'Annyeonghaseyo', italian: 'Ciao / Buongiorno (formale)', audio: 'an-nyong-ha-se-yo (enfasi su "se")' },
+            { korean: '안녕', romanization: 'Annyeong', italian: 'Ciao (informale)', audio: 'an-nyong (veloce e casual)' },
+            { korean: '좋은 아침입니다', romanization: 'Joeun achimimnida', italian: 'Buongiorno (mattina)', audio: 'jo-eun a-chim-im-ni-da' },
+            { korean: '안녕히 주무세요', romanization: 'Annyeonghi jumuseyo', italian: 'Buonanotte', audio: 'an-nyong-hi ju-mu-se-yo' },
+            { korean: '감사합니다', romanization: 'Gamsahamnida', italian: 'Grazie (formale)', audio: 'kam-sa-ham-ni-da (enfasi su "kam")' },
+            { korean: '고마워요', romanization: 'Gomawoyo', italian: 'Grazie (informale)', audio: 'ko-ma-wo-yo' },
+            { korean: '천만에요', romanization: 'Cheonmaneyo', italian: 'Prego / Di niente', audio: 'chon-ma-ne-yo' },
+            { korean: '저는 [nome]입니다', romanization: 'Jeoneun [nome] imnida', italian: 'Sono [nome]', audio: 'jo-neun [nome] im-ni-da' },
+            { korean: '반갑습니다', romanization: 'Bangapseumnida', italian: 'Piacere di conoscerti', audio: 'ban-gap-seum-ni-da' },
+            { korean: '잘 부탁드립니다', romanization: 'Jal butakdeurimnida', italian: 'Piacere di lavorare con te', audio: 'jal bu-tak-deu-rim-ni-da' },
+            { korean: '실례합니다', romanization: 'Sillyehamnida', italian: 'Mi scusi / Permesso', audio: 'sil-lye-ham-ni-da' },
+            { korean: '죄송합니다', romanization: 'Joesonghamnida', italian: 'Mi dispiace (formale)', audio: 'joe-song-ham-ni-da' }
+          ],
+          dialogues: [
+            {
+              title: '🎭 Primo Incontro al Hotel',
+              lines: [
+                { speaker: 'Tu', korean: '안녕하세요', italian: 'Buongiorno' },
+                { speaker: 'Staff', korean: '안녕하세요! 어서 오세요', italian: 'Buongiorno! Benvenuto' },
+                { speaker: 'Tu', korean: '저는 마르코입니다', italian: 'Sono Marco' },
+                { speaker: 'Staff', korean: '반갑습니다, 마르코 씨', italian: 'Piacere Marco' }
+              ]
+            },
+            {
+              title: '🎭 Ringraziare Qualcuno',
+              lines: [
+                { speaker: 'Tu', korean: '감사합니다', italian: 'Grazie' },
+                { speaker: 'Persona', korean: '천만에요', italian: 'Prego' },
+                { speaker: 'Tu', korean: '정말 고마워요', italian: 'Grazie davvero' }
+              ]
+            }
+          ],
+          survival: [
+            { korean: '도와주세요', italian: 'Aiuto!', context: 'Emergenza' },
+            { korean: '영어 할 수 있어요?', italian: 'Parla inglese?', context: 'Comunicazione base' }
+          ],
+          tips: ['Usa sempre la forma formale (-요/습니다) con sconosciuti e anziani', 'Il contatto visivo mostra rispetto quando saluti', 'Inchinarsi leggermente (15-30°) quando si saluta è segno di cortesia', 'Aggiungi "-씨" (ssi) dopo il nome per mostrare rispetto', 'Evita di usare solo il nome con persone più anziane']
+        }
+      },
+      {
+        id: 2,
+        title: 'Al Ristorante',
+        duration: '25 minuti',
+        emoji: '🍜',
+        content: {
+          intro: 'Ordina cibo e bevande con sicurezza nei ristoranti coreani. Dai menu ai pagamenti.',
+          phrases: [
+            { korean: '메뉴판 주세요', romanization: 'Menyupan juseyo', italian: 'Il menu, per favore', audio: 'me-nyu-pan ju-se-yo' },
+            { korean: '이거 주세요', romanization: 'Igeo juseyo', italian: 'Questo, per favore', audio: 'i-go ju-se-yo' },
+            { korean: '추천 메뉴가 뭐예요?', romanization: 'Chucheon menyuga mwoyeyo?', italian: 'Qual è il piatto consigliato?', audio: 'chu-chon me-nyu-ga mwo-ye-yo' },
+            { korean: '물 주세요', romanization: 'Mul juseyo', italian: 'Acqua, per favore', audio: 'mul ju-se-yo' },
+            { korean: '맥주 한 병 주세요', romanization: 'Maekju han byeong juseyo', italian: 'Una birra, per favore', audio: 'mek-ju han byong ju-se-yo' },
+            { korean: '소주 있어요?', romanization: 'Soju isseoyo?', italian: 'Avete soju?', audio: 'so-ju i-sso-yo' },
+            { korean: '맛있어요', romanization: 'Masisseoyo', italian: 'È delizioso', audio: 'ma-si-sso-yo' },
+            { korean: '맵지 않��� 해주세요', romanization: 'Maepji anke haejuseyo', italian: 'Non piccante, per favore', audio: 'mep-ji an-ke he-ju-se-yo' },
+            { korean: '덜 맵게 해주세요', romanization: 'Deol maepge haejuseyo', italian: 'Meno piccante, per favore', audio: 'dol mep-ge he-ju-se-yo' },
+            { korean: '계산서 주세요', romanization: 'Gyesanseo juseyo', italian: 'Il conto, per favore', audio: 'gye-san-so ju-se-yo' },
+            { korean: '따로 계산해 주세요', romanization: 'Ttaro gyesanhae juseyo', italian: 'Conti separati, per favore', audio: 'tta-ro gye-san-he ju-se-yo' },
+            { korean: '포장 가능해요?', romanization: 'Pojang ganeunghaeyo?', italian: 'Posso portarlo via?', audio: 'po-jang ga-neung-he-yo' },
+            { korean: '여기서 먹을게요', romanization: 'Yeogiseo meogeulgeyo', italian: 'Mangio qui', audio: 'yo-gi-so mo-geul-ge-yo' },
+            { korean: '포장해 주세요', romanization: 'Pojang hae juseyo', italian: 'Da asporto, per favore', audio: 'po-jang he ju-se-yo' }
+          ],
+          dialogues: [
+            {
+              title: '🎭 Ordinare al Ristorante',
+              lines: [
+                { speaker: 'Cameriere', korean: '어서 오세요! 몇 분이세요?', italian: 'Benvenuti! Quante persone?' },
+                { speaker: 'Tu', korean: '두 명이요', italian: 'Due persone' },
+                { speaker: 'Cameriere', korean: '여기 앉으세요. 메뉴판이에요', italian: 'Sedetevi qui. Ecco il menu' },
+                { speaker: 'Tu', korean: '추천 메뉴가 뭐예요?', italian: 'Cosa consiglia?' },
+                { speaker: 'Cameriere', korean: '비빔밥이 인기 많아요', italian: 'Il bibimbap è molto popolare' },
+                { speaker: 'Tu', korean: '비빔밥 두 개 주세요', italian: 'Due bibimbap, per favore' },
+                { speaker: 'Tu', korean: '��도 주세요', italian: 'E acqua, per favore' }
+              ]
+            },
+            {
+              title: '🎭 Pagare il Conto',
+              lines: [
+                { speaker: 'Tu', korean: '저기요! 계산서 주세요', italian: 'Scusi! Il conto per favore' },
+                { speaker: 'Cameriere', korean: '네, 3만 원입니다', italian: 'Sì, sono 30.000 won' },
+                { speaker: 'Tu', korean: '카드 돼요?', italian: 'Accettate carte?' },
+                { speaker: 'Cameriere', korean: '네, 카드 됩니다', italian: 'Sì, accettiamo carte' }
+              ]
+            }
+          ],
+          survival: [
+            { korean: '저기요', italian: 'Scusi! (per chiamare)', context: 'Chiamare il cameriere' },
+            { korean: '화장실 어디예요?', italian: 'Dov\'è il bagno?', context: 'Necessità urgente' },
+            { korean: '알레르기 있어요', italian: 'Ho allergie', context: 'Salute' }
+          ],
+          tips: ['Chiama il cameriere con "저기요" (jeogiyo) - non alzando la mano', 'L\'acqua (물) è sempre gratuita', 'Molti ristoranti hanno pulsanti sul tavolo per chiamare il servizio', 'Il pagamento si fa spesso alla cassa, non al tavolo', 'Le mance non sono richieste in Corea', 'Banchan (contorni) sono gratuiti e ricaricabili']
+        }
+      },
+      {
+        id: 3,
+        title: 'Shopping e Prezzi',
+        duration: '22 minuti',
+        emoji: '🛍️',
+        content: {
+          intro: 'Fai acquisti e tratta i prezzi nei mercati e negozi. Impara i numeri e a contrattare.',
+          phrases: [
+            { korean: '얼마예요?', romanization: 'Eolmayeyo?', italian: 'Quanto costa?', audio: 'ol-ma-ye-yo' },
+            { korean: '이거 얼마예요?', romanization: 'Igeo eolmayeyo?', italian: 'Quanto costa questo?', audio: 'i-go ol-ma-ye-yo' },
+            { korean: '너무 비싸요', romanization: 'Neomu bissayo', italian: 'È troppo caro', audio: 'no-mu bi-ssa-yo' },
+            { korean: '좀 ��아 주세요', romanization: 'Jom kkakka juseyo', italian: 'Mi fa uno sconto?', audio: 'jom kka-kka ju-se-yo' },
+            { korean: '더 싼 거 있어요?', romanization: 'Deo ssan geo isseoyo?', italian: 'Ha qualcosa di più economico?', audio: 'do ssan go i-sso-yo' },
+            { korean: '카드 돼요?', romanization: 'Kadeu dwaeyo?', italian: 'Accettate carte?', audio: 'ka-deu dwe-yo' },
+            { korean: '현금만 돼요?', romanization: 'Hyeongeumman dwaeyo?', italian: 'Solo contanti?', audio: 'hyon-geum-man dwe-yo' },
+            { korean: '영수증 주세요', romanization: 'Yeongsujeung juseyo', italian: 'La ricevuta, per favore', audio: 'yong-su-jeung ju-se-yo' },
+            { korean: '이거 입어봐도 돼요?', romanization: 'Igeo ibeobwado dwaeyo?', italian: 'Posso provarlo?', audio: 'i-go i-bo-bwa-do dwe-yo' },
+            { korean: '다른 색 있어요?', romanization: 'Dareun saek isseoyo?', italian: 'Avete altri colori?', audio: 'da-reun sek i-sso-yo' },
+            { korean: '더 큰 사이즈 있어요?', romanization: 'Deo keun saijeu isseoyo?', italian: 'Avete una taglia più grande?', audio: 'do keun sa-i-jeu i-sso-yo' },
+            { korean: '작은 사이즈 있어요?', romanization: 'Jageun saijeu isseoyo?', italian: 'Avete una taglia più piccola?', audio: 'ja-geun sa-i-jeu i-sso-yo' },
+            { korean: '이거 살게요', romanization: 'Igeo salgeyo', italian: 'Prendo questo', audio: 'i-go sal-ge-yo' },
+            { korean: '환불 되나요?', romanization: 'Hwanbul doenayo?', italian: 'Posso avere un rimborso?', audio: 'hwan-bul de-na-yo' }
+          ],
+          dialogues: [
+            {
+              title: '🎭 Comprare Vestiti',
+              lines: [
+                { speaker: 'Tu', korean: '이 티셔츠 얼마예요?', italian: 'Quanto costa questa maglietta?' },
+                { speaker: 'Venditore', korean: '2만 원이에요', italian: '20.000 won' },
+                { speaker: 'Tu', korean: '너무 비싸요. 깎아 주세요', italian: 'È troppo caro. Sconto?' },
+                { speaker: 'Venditore', korean: '1만 5천 원 어때요?', italian: 'Che ne dice di 15.000 won?' },
+                { speaker: 'Tu', korean: '좋아요. 이거 살게요', italian: 'Va bene. Lo prendo' }
+              ]
+            },
+            {
+              title: '🎭 Al Supermercato',
+              lines: [
+                { speaker: 'Tu', korean: '여기 카드 돼요?', italian: 'Accettate carte qui?' },
+                { speaker: 'Cassiere', korean: '네, 됩니다', italian: 'Sì, certo' },
+                { speaker: 'Tu', korean: '영수증 주세요', italian: 'La ricevuta per favore' },
+                { speaker: 'Cassiere', korean: '여기요. 감사합니다', italian: 'Ecco. Grazie' }
+              ]
+            }
+          ],
+          survival: [
+            { korean: '도둑이야!', italian: 'Al ladro!', context: 'Emergenza furto' },
+            { korean: '환불해 주세요', italian: 'Rimborso, per favore', context: 'Prodotto difettoso' },
+            { korean: '영어 하는 분?', italian: 'Qualcuno parla inglese?', context: 'Aiuto comunicazione' }
+          ],
+          tips: ['I prezzi sono fissi nei grandi magazzini e negozi di catena', 'Puoi contrattare nei mercati tradizionali (Namdaemun, Dongdaemun)', 'La maggior parte dei posti accetta carte di credito', 'Tax refund disponibile per acquisti sopra 30.000 won (cerca il logo Tax Free)', 'Numeri coreani: 1=하나(hana), 2=둘(dul), 3=셋(set), 4=넷(net), 5=다섯(daseot)', 'Per i prezzi si usa: 천원(cheon won)=1.000, 만원(man won)=10.000']
+        }
+      },
+      {
+        id: 4,
+        title: 'Trasporti Pubblici',
+        duration: '25 minuti',
+        emoji: '🚇',
+        content: {
+          intro: 'Naviga metro, bus e taxi con facilità. Tutto quello che serve per muoversi in città.',
+          phrases: [
+            { korean: '지하철역이 어디예요?', romanization: 'Jihacheol-yeogi eodiyeyo?', italian: 'Dov\'è la stazione della metro?', audio: 'ji-ha-chol yo-gi o-di-ye-yo' },
+            { korean: '버스 정류장이 어디예요?', romanization: 'Beoseu jeongnyujangi eodiyeyo?', italian: 'Dov\'è la fermata del bus?', audio: 'bo-seu jong-nyu-jang-i o-di-ye-yo' },
+            { korean: '명동 가는 버스 있어요?', romanization: 'Myeongdong ganeun beoseu isseoyo?', italian: 'C\'è un bus per Myeongdong?', audio: 'myong-dong ga-neun bo-seu i-sso-yo' },
+            { korean: '여기서 세워 주세요', romanization: 'Yeogiseo sewo juseyo', italian: 'Fermati qui per favore', audio: 'yo-gi-so se-wo ju-se-yo' },
+            { korean: '강남역까지 가주세요', romanization: 'Gangnamyeokkkaji gajuseyo', italian: 'A Gangnam Station per favore', audio: 'gang-nam-yok-kka-ji ga-ju-se-yo' },
+            { korean: '얼마나 걸려요?', romanization: 'Eolmana geollyeoyo?', italian: 'Quanto tempo ci vuole?', audio: 'ol-ma-na gol-lyo-yo' },
+            { korean: '요금이 얼마예요?', romanization: 'Yogeumi eolmayeyo?', italian: 'Quanto costa?', audio: 'yo-geum-i ol-ma-ye-yo' },
+            { korean: '환승해야 돼요?', romanization: 'Hwanseunghaeya dwaeyo?', italian: 'Devo cambiare?', audio: 'hwan-seung-he-ya dwe-yo' },
+            { korean: '몇 호선이에요?', romanization: 'Myeot hoseon-ieyo?', italian: 'Che linea è?', audio: 'myot ho-son-i-e-yo' },
+            { korean: '다음 역이 뭐예요?', romanization: 'Daeum yeogi mwoyeyo?', italian: 'Qual è la prossima stazione?', audio: 'da-eum yo-gi mwo-ye-yo' },
+            { korean: '티머니 카드 어디서 사요?', romanization: 'Timeoni kadeu eodiseo sayo?', italian: 'Dove si compra la T-money card?', audio: 'ti-mo-ni ka-deu o-di-so sa-yo' },
+            { korean: '충전해 주세요', romanization: 'Chungjeonhae juseyo', italian: 'Ricarica per favore', audio: 'chung-jon-he ju-se-yo' },
+            { korean: '택시 불러 주세요', romanization: 'Taeksi bulleo juseyo', italian: 'Chiami un taxi per favore', audio: 'tek-si bul-lo ju-se-yo' },
+            { korean: '미터기 켜주세요', romanization: 'Miteogi kyeojuseyo', italian: 'Accenda il tassametro', audio: 'mi-to-gi kyo-ju-se-yo' }
+          ],
+          dialogues: [
+            {
+              title: '🎭 Prendere la Metro',
+              lines: [
+                { speaker: 'Tu', korean: '실례합니다. 명동���이 어디예요?', italian: 'Scusi, dov\'è la stazione di Myeongdong?' },
+                { speaker: 'Persona', korean: '4호선 타세요', italian: 'Prenda la linea 4' },
+                { speaker: 'Tu', korean: '환승해야 돼요?', italian: 'Devo cambiare?' },
+                { speaker: 'Persona', korean: '아니요, 직행이에요', italian: 'No, è diretta' },
+                { speaker: 'Tu', korean: '감사합니다', italian: 'Grazie' }
+              ]
+            },
+            {
+              title: '🎭 In Taxi',
+              lines: [
+                { speaker: 'Tu', korean: '명동으로 가주세요', italian: 'A Myeongdong per favore' },
+                { speaker: 'Tassista', korean: '네, 알겠습니다', italian: 'Sì, va bene' },
+                { speaker: 'Tu', korean: '얼마나 걸려요?', italian: 'Quanto tempo ci vuole?' },
+                { speaker: 'Tassista', korean: '20분 정도요', italian: 'Circa 20 minuti' },
+                { speaker: 'Tu', korean: '��기서 세워 주세요', italian: 'Mi fermi qui per favore' },
+                { speaker: 'Tassista', korean: '1만 5천 원입니다', italian: 'Sono 15.000 won' }
+              ]
+            }
+          ],
+          survival: [
+            { korean: '멈춰 주세요!', italian: 'Si fermi!', context: 'Emergenza in taxi' },
+            { korean: '길을 잃었어요', italian: 'Mi sono perso', context: 'Aiuto direzione' },
+            { korean: '택시 안��벨트', italian: 'Cintura di sicurezza', context: 'Sicurezza' }
+          ],
+          tips: ['T-money card: si compra nei convenience store (7-Eleven, CU, GS25)', 'La metro chiude verso mezzanotte-1:00, ultima corsa varia', 'App utili: Kakao Metro, Naver Map, Kakao T (per taxi)', 'Taxi: Nero (base), Argento (deluxe, più costoso), Grande (van)', 'I taxi accettano carte ma conferma prima di salire', 'Linee metro numerate: 1호선, 2호선, ecc.']
+        }
+      },
+      {
+        id: 5,
+        title: 'Chiedere Indicazioni',
+        duration: '20 minuti',
+        emoji: '🗺️',
+        content: {
+          intro: 'Non perderti mai più! Chiedi indicazioni con sicurezza.',
+          phrases: [
+            { korean: '길을 잃었어요', romanization: 'Gireul ilheosseoyo', italian: 'Mi sono perso/a' },
+            { korean: '어떻게 가요?', romanization: 'Eotteoke gayo?', italian: 'Come ci arrivo?' },
+            { korean: '왼쪽', romanization: 'Oenjjok', italian: 'Sinistra' },
+            { korean: '오른쪽', romanization: 'Oreunjjok', italian: 'Destra' },
+            { korean: '직진', romanization: 'Jikjin', italian: 'Dritto' },
+            { korean: '가까워요?', romanization: 'Gakkawoyo?', italian: 'È vicino?' }
+          ],
+          tips: ['Mostra l\'indirizzo sul telefono', 'Usa app di mappe in coreano', 'La gente è generalmente disponibile ad aiutare']
+        }
+      },
+      {
+        id: 6,
+        title: 'In Hotel',
+        duration: '18 minuti',
+        emoji: '🏨',
+        content: {
+          intro: 'Comunica efficacemente con il personale dell\'hotel.',
+          phrases: [
+            { korean: '예약했어요', romanization: 'Yeyakaesseoyo', italian: 'Ho una prenotazione' },
+            { korean: '방 열쇠 주세요', romanization: 'Bang yeolsoe juseyo', italian: 'La chiave della camera, per favore' },
+            { korean: '와이파이 비밀번호', romanization: 'Waipai bimilbeonho', italian: 'Password del Wi-Fi' },
+            { korean: '체���아웃 몇 시예요?', romanization: 'Chekeaus myeot siyeyo?', italian: 'A che ora è il check-out?' },
+            { korean: '짐 맡길 수 있어요?', romanization: 'Jim matgil su isseoyo?', italian: 'Posso lasciare i bagagli?' },
+            { korean: '방 청소 안 해도 돼요', romanization: 'Bang cheongso an haedo dwaeyo', italian: 'Non serve pulire la camera' }
+          ],
+          tips: ['Porta sempre la carta dell\'hotel con te', 'Chiedi una mappa in inglese alla reception', 'Wi-Fi password è spesso sulla chiave']
+        }
+      },
+      {
+        id: 7,
+        title: 'Cibo di Strada',
+        duration: '15 minuti',
+        emoji: '🍢',
+        content: {
+          intro: 'Esplora il delizioso street food coreano.',
+          phrases: [
+            { korean: '떡볶이', romanization: 'Tteokbokki', italian: 'Pasta di riso piccante' },
+            { korean: '순대', romanization: 'Sundae', italian: 'Sanguinaccio coreano' },
+            { korean: '호떡', romanization: 'Hotteok', italian: 'Pancake dolce' },
+            { korean: '김밥', romanization: 'Gimbap', italian: 'Rotolo di riso con verdure' },
+            { korean: '붕어빵', romanization: 'Bungeoppang', italian: 'Waffle a forma di pesce' },
+            { korean: '하나 주세요', romanization: 'Hana juseyo', italian: 'Uno, per favore' }
+          ],
+          tips: ['Paga in contanti nei chioschi di strada', 'Indica con il dito se non sai pronunciare', 'Lo street food è economico e delizioso']
+        }
+      },
+      {
+        id: 8,
+        title: 'Shopping Cosmetici',
+        duration: '16 minuti',
+        emoji: '💄',
+        content: {
+          intro: 'Acquista prodotti K-beauty come un pro.',
+          phrases: [
+            { korean: '샘플 주세요', romanization: 'Saempeul juseyo', italian: 'Campioni gratuiti, per favore' },
+            { korean: '건성 피부', romanization: 'Geonseong pibu', italian: 'Pelle secca' },
+            { korean: '지성 피부', romanization: 'Jiseong pibu', italian: 'Pelle grassa' },
+            { korean: '민감성 피부', romanization: 'Mingamseong pibu', italian: 'Pelle sensibile' },
+            { korean: '세일해요?', romanization: 'Seilhaeyo?', italian: 'È in saldo?' },
+            { korean: '추천해 주세요', romanization: 'Chucheonhae juseyo', italian: 'Mi consigli qualcosa' }
+          ],
+          tips: ['Chiedi sempre campioni gratuiti!', 'Tax refund disponibile per turisti', 'Brand come Innisfree, Etude House sono ovunque']
+        }
+      },
+      {
+        id: 9,
+        title: 'Caffè e Bar',
+        duration: '14 minuti',
+        emoji: '☕',
+        content: {
+          intro: 'Ordina bevande nei café trendy coreani.',
+          phrases: [
+            { korean: '아메리카노', romanization: 'Amerikano', italian: 'Caffè americano' },
+            { korean: '아이스', romanization: 'Aiseu', italian: 'Freddo/Ghiacciato' },
+            { korean: '핫', romanization: 'Hat', italian: 'Caldo' },
+            { korean: '테이크아웃', romanization: 'Teikeaus', italian: 'Da asporto' },
+            { korean: '덜 달게 해주세요', romanization: 'Deol dalge haejuseyo', italian: 'Meno dolce, per favore' },
+            { korean: '크림 빼주세요', romanization: 'Keurim ppaejuseyo', italian: 'Senza panna' }
+          ],
+          tips: ['Porta la tua tazza per uno sconto', 'Molti café hanno prese per caricare dispositivi', 'Starbucks e caffè locali sono ovunque']
+        }
+      },
+      {
+        id: 10,
+        title: 'Situazioni di Emergenza',
+        duration: '20 minuti',
+        emoji: '🚨',
+        content: {
+          intro: 'Frasi vitali per situazioni di emergenza.',
+          phrases: [
+            { korean: '도와주세요', romanization: 'Dowa juseyo', italian: 'Aiuto!' },
+            { korean: '병원', romanization: 'Byeongwon', italian: 'Ospedale' },
+            { korean: '경찰', romanization: 'Gyeongchal', italian: 'Polizia' },
+            { korean: '대사관', romanization: 'Daesagwan', italian: 'Ambasciata' },
+            { korean: '아파요', romanization: 'Apayo', italian: 'Fa male / Sono malato' },
+            { korean: '영어 하는 사람?', romanization: 'Yeongeo haneun saram?', italian: 'C\'è qualcuno che parla inglese?' }
+          ],
+          tips: ['Emergenze: 119 (ambulanza/pompieri) o 112 (polizia)', 'Numeri gratuiti anche da cellulare', 'Memorizza l\'indirizzo del tuo hotel']
+        }
+      },
+      {
+        id: 11,
+        title: 'Luoghi Turistici',
+        duration: '17 minuti',
+        emoji: '🏯',
+        content: {
+          intro: 'Visita palazzi, templi e attrazioni turistiche.',
+          phrases: [
+            { korean: '입장료', romanization: 'Ipjangnyo', italian: 'Biglietto d\'ingresso' },
+            { korean: '사진 찍어 주세요', romanization: 'Sajin jjigeo juseyo', italian: 'Mi scatta una foto, per favore?' },
+            { korean: '관광 안내소', romanization: 'Gwangwang annaeso', italian: 'Ufficio informazioni turistiche' },
+            { korean: '화장실 어디예요?', romanization: 'Hwajangsil eodiyeyo?', italian: 'Dov\'è il bagno?' },
+            { korean: '몇 시까지 열어요?', romanization: 'Myeot sikkaji yeoreoyo?', italian: 'Fino a che ora è aperto?' },
+            { korean: '가��드 투어 있어요?', romanization: 'Gaideu tueo isseoyo?', italian: 'C\'è un tour guidato?' }
+          ],
+          tips: ['Wi-Fi gratuito in molti luoghi turistici', 'Scarica mappe offline prima', 'I bagni pubblici sono sempre puliti e gratuiti']
+        }
+      },
+      {
+        id: 12,
+        title: 'Espressioni Utili Finali',
+        duration: '18 minuti',
+        emoji: '💬',
+        content: {
+          intro: 'Frasi che torneranno sempre utili durante il viaggio.',
+          phrases: [
+            { korean: '잠시만요', romanization: 'Jamsimanyo', italian: 'Un momento / Aspetta' },
+            { korean: '괜찮아요', romanization: 'Gwaenchanayo', italian: 'Va bene / Non importa / Sto bene' },
+            { korean: '모르겠어요', romanization: 'Moreugesseoyo', italian: 'Non lo so / Non capisco' },
+            { korean: '영어 할 수 있어요?', romanization: 'Yeongeo hal su isseoyo?', italian: 'Parla inglese?' },
+            { korean: '천천히 말해 주세요', romanization: 'Cheoncheonhi malhae juseyo', italian: 'Parla più lentamente, per favore' },
+            { korean: '한국 너무 좋아요', romanization: 'Hanguk neomu joayo', italian: 'Mi piace molto la Corea!' }
+          ],
+          tips: ['Un sorriso e gesti aiutano sempre', 'Scarica app traduttore offline (Papago)', 'I coreani apprezzano quando provi a parlare la loro lingua']
+        }
+      }
+    ];
+
+    const defaultConfig = {
+      app_title: 'Viaggio in Corea',
+      app_subtitle: 'Impara il coreano essenziale per viaggiare',
+      background_gradient_start: '#fef3c7',
+      background_gradient_end: '#fbbf24',
+      card_background: '#ffffff',
+      accent_color: '#f59e0b',
+      text_primary: '#92400e',
+      font_family: 'Quicksand',
+      font_size: 16
+    };
+
+    let config = { ...defaultConfig };
+    let allRecords = [];
+    let currentLesson = null;
+    let isLoading = false;
+
+    const dataHandler = {
+      onDataChanged(data) {
+        allRecords = data;
+        renderLessons();
+        updateStats();
+      }
+    };
+
+    async function initApp() {
+      // Render lessons immediately with empty data
+      renderLessons();
+      updateStats();
+      
+      const result = await window.dataSdk.init(dataHandler);
+      if (!result.isOk) {
+        console.error('Failed to initialize data SDK');
+      }
+    }
+
+    function renderLessons() {
+      const container = document.getElementById('lessons-container');
+      const html = lessonsData.map(lesson => {
+        const record = allRecords.find(r => r.lesson_id === lesson.id);
+        const isCompleted = record?.completed || false;
+        
+        return `
+          <div class="lesson-card bg-white rounded-2xl p-5 shadow-lg ${isCompleted ? 'completed' : ''}" onclick="openLesson(${lesson.id})">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+                ${lesson.emoji}
+              </div>
+              <div class="flex-1">
+                <h3 class="heading-font text-xl font-bold mb-1" style="color: #92400e;">
+                  ${lesson.id}. ${lesson.title}
+                </h3>
+                <p class="text-sm" style="color: #78350f;">${lesson.duration}</p>
+              </div>
+              <div class="text-3xl">
+                ${isCompleted ? '✅' : '▶️'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      container.innerHTML = html;
+    }
+
+    function updateStats() {
+      const completed = allRecords.filter(r => r.completed).length;
+      const total = lessonsData.length;
+      const percentage = Math.round((completed / total) * 100);
+      
+      document.getElementById('completed-count').textContent = completed;
+      document.getElementById('total-count').textContent = total;
+      document.getElementById('progress-percent').textContent = percentage + '%';
+      
+      const circumference = 2 * Math.PI * 36;
+      const offset = circumference - (percentage / 100) * circumference;
+      document.getElementById('progress-ring').style.strokeDashoffset = offset;
+      
+      const dates = allRecords
+        .filter(r => r.completed && r.completed_at)
+        .map(r => new Date(r.completed_at).toDateString());
+      const uniqueDates = new Set(dates);
+      document.getElementById('streak-count').textContent = uniqueDates.size;
+    }
+
+    function openLesson(lessonId) {
+      currentLesson = lessonsData.find(l => l.id === lessonId);
+      const record = allRecords.find(r => r.lesson_id === lessonId);
+      
+      document.getElementById('modal-lesson-number').textContent = currentLesson.emoji;
+      document.getElementById('modal-lesson-title').textContent = currentLesson.title;
+      document.getElementById('modal-lesson-duration').textContent = currentLesson.duration;
+      document.getElementById('lesson-notes').value = record?.notes || '';
+      
+      const content = currentLesson.content;
+      
+      let contentHTML = `
+        <div class="p-5 rounded-2xl" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+          <p class="text-lg" style="color: #92400e;">${content.intro}</p>
+        </div>
+        
+        <div>
+          <h4 class="heading-font text-xl font-bold mb-4" style="color: #92400e;">🗣️ Frasi Essenziali:</h4>
+          <div class="space-y-3">
+            ${content.phrases.map(p => `
+              <div class="phrase-card p-4 rounded-xl border-2 border-amber-100" style="background: #fffbeb;">
+                <div class="korean-text text-3xl font-bold mb-2" style="color: #92400e;">${p.korean}</div>
+                <div class="text-base italic mb-2" style="color: #78350f;">${p.romanization}</div>
+                <div class="text-base font-semibold mb-1" style="color: #451a03;">→ ${p.italian}</div>
+                ${p.audio ? `<div class="text-sm p-2 rounded mt-2" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 4px solid #8b5cf6; color: #6b21a8;">🔊 ${p.audio}</div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      if (content.dialogues && content.dialogues.length > 0) {
+        contentHTML += `
+          <div>
+            <h4 class="heading-font text-xl font-bold mb-4" style="color: #92400e;">💬 Dialoghi Pratici:</h4>
+            <div class="space-y-4">
+              ${content.dialogues.map(d => `
+                <div class="p-4 rounded-2xl" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+                  <h5 class="font-bold mb-3" style="color: #92400e;">${d.title}</h5>
+                  <div class="space-y-2">
+                    ${d.lines.map(line => `
+                      <div class="flex gap-2">
+                        <span class="font-semibold" style="color: #78350f;">${line.speaker}:</span>
+                        <div>
+                          <div class="korean-text font-bold" style="color: #92400e;">${line.korean}</div>
+                          <div style="color: #451a03;">${line.italian}</div>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      if (content.survival && content.survival.length > 0) {
+        contentHTML += `
+          <div class="p-5 rounded-2xl" style="background: linear-gradient(135deg, #fee2e2, #fecaca);">
+            <h4 class="heading-font font-bold mb-3 flex items-center gap-2" style="color: #991b1b;">
+              <span class="text-2xl">🆘</span>
+              <span>Frasi di Sopravvivenza:</span>
+            </h4>
+            <div class="space-y-2">
+              ${content.survival.map(s => `
+                <div class="p-3 rounded-xl" style="background: white;">
+                  <div class="korean-text text-xl font-bold mb-1" style="color: #991b1b;">${s.korean}</div>
+                  <div class="font-semibold mb-1" style="color: #7f1d1d;">→ ${s.italian}</div>
+                  <div class="text-sm italic" style="color: #991b1b;">Quando: ${s.context}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      contentHTML += `
+        <div class="p-5 rounded-2xl" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
+          <h4 class="heading-font font-bold mb-3 flex items-center gap-2" style="color: #1e40af;">
+            <span class="text-2xl">💡</span>
+            <span>Consigli Pratici:</span>
+          </h4>
+          <ul class="space-y-2">
+            ${content.tips.map(tip => `
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600 font-bold">•</span>
+                <span style="color: #1e3a8a;">${tip}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+      
+      document.getElementById('modal-lesson-content').innerHTML = contentHTML;
+      
+      const completeBtn = document.getElementById('complete-btn');
+      if (record?.completed) {
+        completeBtn.innerHTML = '✓ Completata';
+        completeBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      } else {
+        completeBtn.innerHTML = '✓ Segna come Completata';
+        completeBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+      }
+      
+      document.getElementById('lesson-modal').classList.remove('hidden');
+    }
+
+    async function toggleComplete() {
+      if (isLoading || allRecords.length >= 999) {
+        if (allRecords.length >= 999) {
+          showToast('⚠️', 'Limite massimo raggiunto (999 lezioni)');
+        }
+        return;
+      }
+      
+      isLoading = true;
+      const record = allRecords.find(r => r.lesson_id === currentLesson.id);
+      const notes = document.getElementById('lesson-notes').value;
+      
+      if (record) {
+        const updated = { ...record, completed: !record.completed, notes: notes };
+        if (!record.completed) {
+          updated.completed_at = new Date().toISOString();
+        }
+        
+        const result = await window.dataSdk.update(updated);
+        if (result.isOk) {
+          showToast('✓', updated.completed ? 'Lezione completata!' : 'Lezione riaperta');
+          closeModal();
+        } else {
+          showToast('❌', 'Errore durante l\'aggiornamento');
+        }
+      } else {
+        const newRecord = {
+          lesson_id: currentLesson.id,
+          completed: true,
+          completed_at: new Date().toISOString(),
+          notes: notes
+        };
+        
+        const result = await window.dataSdk.create(newRecord);
+        if (result.isOk) {
+          showToast('🎉', 'Lezione completata!');
+          closeModal();
+        } else {
+          showToast('❌', 'Errore durante il salvataggio');
+        }
+      }
+      
+      isLoading = false;
+    }
+
+    function closeModal(event) {
+      if (!event || event.target.id === 'lesson-modal') {
+        const record = allRecords.find(r => r.lesson_id === currentLesson?.id);
+        const notes = document.getElementById('lesson-notes').value;
+        
+        if (record && notes !== record.notes) {
+          const updated = { ...record, notes: notes };
+          window.dataSdk.update(updated);
+        }
+        
+        document.getElementById('lesson-modal').classList.add('hidden');
+        currentLesson = null;
+      }
+    }
+
+    function showToast(icon, message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-icon').textContent = icon;
+      document.getElementById('toast-message').textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      document.getElementById('title-display').textContent = config.app_title || defaultConfig.app_title;
+      document.getElementById('subtitle-display').textContent = config.app_subtitle || defaultConfig.app_subtitle;
+      
+      const wrapper = document.getElementById('app-wrapper');
+      wrapper.style.background = `linear-gradient(135deg, ${config.background_gradient_start || defaultConfig.background_gradient_start} 0%, ${config.background_gradient_end || defaultConfig.background_gradient_end} 100%)`;
+      
+      const customFont = config.font_family || defaultConfig.font_family;
+      document.body.style.fontFamily = `${customFont}, sans-serif`;
+      
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = `${baseSize}px`;
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_gradient_start || defaultConfig.background_gradient_start,
+            set: (value) => {
+              cfg.background_gradient_start = value;
+              window.elementSdk.setConfig({ background_gradient_start: value });
+            }
+          },
+          {
+            get: () => cfg.background_gradient_end || defaultConfig.background_gradient_end,
+            set: (value) => {
+              cfg.background_gradient_end = value;
+              window.elementSdk.setConfig({ background_gradient_end: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_primary || defaultConfig.text_primary,
+            set: (value) => {
+              cfg.text_primary = value;
+              window.elementSdk.setConfig({ text_primary: value });
+            }
+          },
+          {
+            get: () => cfg.card_background || defaultConfig.card_background,
+            set: (value) => {
+              cfg.card_background = value;
+              window.elementSdk.setConfig({ card_background: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['app_title', cfg.app_title || defaultConfig.app_title],
+        ['app_subtitle', cfg.app_subtitle || defaultConfig.app_subtitle]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c70f0d1d141ed25',t:'MTc2OTk0MzU4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
