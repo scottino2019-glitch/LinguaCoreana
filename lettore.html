@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lettore Testo Coreano</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&amp;family=Outfit:wght@600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .heading-font {
+      font-family: 'Outfit', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-container" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #cffafe 0%, #dbeafe 100%);">
+   <div class="max-w-3xl mx-auto px-6 py-16">
+    <header class="text-center mb-12">
+     <div class="text-7xl mb-6">
+      🎧
+     </div>
+     <h1 id="main-title" class="heading-font text-5xl font-bold mb-3 gradient-text">Lettore Testo Coreano</h1>
+     <p id="main-subtitle" class="text-xl" style="color: #0e7490;">Scrivi il tuo testo e ascoltalo in coreano</p>
+    </header>
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+     <div class="mb-8"><label for="korean-text" class="block text-lg font-semibold mb-3" style="color: #0e7490;"> ✍️ Inserisci Testo </label> <textarea id="korean-text" rows="10" placeholder="Scrivi qui il tuo testo..." class="w-full p-5 rounded-2xl border-2 focus:outline-none focus:ring-4 text-2xl resize-none transition-all" style="border-color: #a5f3fc; background: #f0fdfa; color: #164e63;"></textarea>
+      <div class="mt-3"><span id="char-count" class="text-sm font-semibold" style="color: #0891b2;">0 caratteri</span>
+      </div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div><label class="block text-base font-semibold mb-3" style="color: #0e7490;"> ⚡ Velocità di lettura </label> <select id="speed-select" class="w-full p-4 rounded-xl border-2 text-lg font-semibold cursor-pointer" style="border-color: #a5f3fc; background: #f0fdfa; color: #0e7490;"> <option value="0.5">0.5x - Molto lento</option> <option value="0.75">0.75x - Lento</option> <option value="1" selected>1.0x - Normale</option> <option value="1.25">1.25x - Veloce</option> <option value="1.5">1.5x - Molto veloce</option> </select>
+      </div>
+      <div><label class="block text-base font-semibold mb-3" style="color: #0e7490;"> 🎵 Tonalità voce </label> <select id="pitch-select" class="w-full p-4 rounded-xl border-2 text-lg font-semibold cursor-pointer" style="border-color: #a5f3fc; background: #f0fdfa; color: #0e7490;"> <option value="0.8">Bassa</option> <option value="1" selected>Normale</option> <option value="1.2">Alta</option> </select>
+      </div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><button id="speak-btn" class="px-8 py-6 rounded-2xl font-bold text-white text-2xl flex items-center justify-center gap-4 transition-all hover:opacity-90" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);"> <span class="text-4xl">🔊</span> <span>Riproduci</span> </button> <button id="stop-btn" class="px-8 py-6 rounded-2xl font-bold text-2xl flex items-center justify-center gap-4 transition-all hover:opacity-90 border-2" style="background: white; color: #0891b2; border-color: #0891b2;"> <span class="text-4xl">⏹️</span> <span>Ferma</span> </button>
+     </div>
+    </div>
+    <div class="mt-8 p-6 bg-white rounded-2xl shadow-lg text-center">
+     <p class="text-base leading-relaxed" style="color: #0e7490;">💡 <strong>Nota:</strong> Il browser utilizzerà la voce coreana di sistema per leggere il testo.</p>
+    </div>
+   </div>
+   <div id="toast" class="fixed bottom-6 right-6 px-6 py-4 rounded-2xl shadow-2xl hidden z-50" style="background: linear-gradient(135deg, #10b981, #059669);">
+    <div class="flex items-center gap-3"><span id="toast-icon" class="text-2xl">✓</span> <span id="toast-message" class="font-bold text-white text-base"></span>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Variabili globali
+    let isSpeaking = false;
+
+    // Riferimenti elementi
+    const textareaEl = document.getElementById('korean-text');
+    const charCountEl = document.getElementById('char-count');
+    const speakBtnEl = document.getElementById('speak-btn');
+    const stopBtnEl = document.getElementById('stop-btn');
+    const speedSelectEl = document.getElementById('speed-select');
+    const pitchSelectEl = document.getElementById('pitch-select');
+    const toastEl = document.getElementById('toast');
+    const toastIconEl = document.getElementById('toast-icon');
+    const toastMessageEl = document.getElementById('toast-message');
+
+    // Conteggio caratteri
+    textareaEl.addEventListener('input', function() {
+      charCountEl.textContent = textareaEl.value.length + ' caratteri';
+    });
+
+    // Funzione per mostrare toast
+    function showToast(icon, message) {
+      toastIconEl.textContent = icon;
+      toastMessageEl.textContent = message;
+      toastEl.classList.remove('hidden');
+      setTimeout(function() {
+        toastEl.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Funzione per parlare
+    speakBtnEl.addEventListener('click', function() {
+      const text = textareaEl.value.trim();
+      
+      if (text === '') {
+        showToast('⚠️', 'Scrivi del testo prima!');
+        return;
+      }
+
+      if (!window.speechSynthesis) {
+        showToast('❌', 'Sintesi vocale non supportata');
+        return;
+      }
+
+      // Se sta già parlando, ferma
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        speakBtnEl.style.background = 'linear-gradient(135deg, #06b6d4, #3b82f6)';
+        return;
+      }
+
+      // Ferma qualsiasi sintesi precedente
+      window.speechSynthesis.cancel();
+
+      // Aspetta un momento prima di iniziare la nuova sintesi
+      setTimeout(function() {
+        const speed = parseFloat(speedSelectEl.value);
+        const pitch = parseFloat(pitchSelectEl.value);
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.rate = speed;
+        utterance.pitch = pitch;
+
+        utterance.onstart = function() {
+          isSpeaking = true;
+          speakBtnEl.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+          showToast('🔊', 'Lettura avviata');
+        };
+
+        utterance.onend = function() {
+          isSpeaking = false;
+          speakBtnEl.style.background = 'linear-gradient(135deg, #06b6d4, #3b82f6)';
+          showToast('✓', 'Lettura completata');
+        };
+
+        utterance.onerror = function(event) {
+          isSpeaking = false;
+          speakBtnEl.style.background = 'linear-gradient(135deg, #06b6d4, #3b82f6)';
+          // Ignora errori "interrupted" e "canceled"
+          if (event.error !== 'canceled' && event.error !== 'interrupted') {
+            showToast('❌', 'Errore: ' + event.error);
+          }
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }, 100);
+    });
+
+    // Funzione per fermare
+    stopBtnEl.addEventListener('click', function() {
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        speakBtnEl.style.background = 'linear-gradient(135deg, #06b6d4, #3b82f6)';
+        showToast('⏹️', 'Lettura fermata');
+      }
+    });
+
+    // SDK Configuration
+    const defaultConfig = {
+      app_title: 'Lettore Testo Coreano',
+      app_subtitle: 'Scrivi il tuo testo e ascoltalo in coreano',
+      background_start: '#cffafe',
+      background_end: '#dbeafe',
+      primary_color: '#06b6d4',
+      text_color: '#0e7490',
+      font_family: 'Noto Sans KR',
+      font_size: 16
+    };
+
+    async function onConfigChange(cfg) {
+      document.getElementById('main-title').textContent = cfg.app_title || defaultConfig.app_title;
+      document.getElementById('main-subtitle').textContent = cfg.app_subtitle || defaultConfig.app_subtitle;
+      
+      const container = document.getElementById('app-container');
+      container.style.background = 'linear-gradient(135deg, ' + (cfg.background_start || defaultConfig.background_start) + ' 0%, ' + (cfg.background_end || defaultConfig.background_end) + ' 100%)';
+      
+      document.body.style.fontFamily = (cfg.font_family || defaultConfig.font_family) + ', sans-serif';
+      document.body.style.fontSize = (cfg.font_size || defaultConfig.font_size) + 'px';
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_start || defaultConfig.background_start,
+            set: (value) => {
+              cfg.background_start = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ background_start: value });
+            }
+          },
+          {
+            get: () => cfg.background_end || defaultConfig.background_end,
+            set: (value) => {
+              cfg.background_end = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ background_end: value });
+            }
+          },
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ text_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['app_title', cfg.app_title || defaultConfig.app_title],
+        ['app_subtitle', cfg.app_subtitle || defaultConfig.app_subtitle]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c721cfa75395091',t:'MTc2OTk1NTg3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
