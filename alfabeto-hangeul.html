@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfabeto Hangul</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Poppins:wght@500;600;700;800&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .korean-text {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .heading-font {
+      font-family: 'Poppins', sans-serif;
+    }
+    .body-font {
+      font-family: 'DM Sans', sans-serif;
+    }
+    .glass-morphism {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .letter-card {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+    .letter-card:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+    .letter-card.selected {
+      transform: scale(1.05);
+    }
+    .quiz-option {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover {
+      transform: scale(1.02);
+    }
+    .quiz-option.correct {
+      animation: correctAnswer 0.6s ease;
+    }
+    .quiz-option.wrong {
+      animation: wrongAnswer 0.5s ease;
+    }
+    @keyframes correctAnswer {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    @keyframes wrongAnswer {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    .practice-canvas {
+      touch-action: none;
+      cursor: crosshair;
+    }
+    .stroke-order {
+      animation: fadeInScale 0.5s ease forwards;
+    }
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .progress-ring {
+      transition: stroke-dashoffset 0.5s ease;
+    }
+    .tab-indicator {
+      position: absolute;
+      bottom: 0;
+      height: 3px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .letter-detail-modal {
+      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .floating-particle {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-20px) rotate(5deg); }
+      66% { transform: translateY(-10px) rotate(-5deg); }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full body-font">
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);"><!-- Floating Decorative Elements -->
+   <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="floating-particle absolute top-20 left-10 w-16 h-16 rounded-full opacity-20" style="background: radial-gradient(circle, #fbbf24 0%, transparent 70%); animation-delay: 0s;"></div>
+    <div class="floating-particle absolute top-40 right-20 w-24 h-24 rounded-full opacity-15" style="background: radial-gradient(circle, #ec4899 0%, transparent 70%); animation-delay: 1s;"></div>
+    <div class="floating-particle absolute bottom-32 left-1/4 w-20 h-20 rounded-full opacity-10" style="background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); animation-delay: 2s;"></div>
+    <div class="floating-particle absolute top-1/2 right-1/3 w-12 h-12 rounded-full opacity-20" style="background: radial-gradient(circle, #10b981 0%, transparent 70%); animation-delay: 1.5s;"></div>
+   </div>
+   <div class="relative z-10 max-w-7xl mx-auto px-4 py-6 md:py-10"><!-- Header -->
+    <header class="text-center mb-8">
+     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm mb-4 font-semibold" style="background: rgba(255,255,255,0.25); color: white; backdrop-filter: blur(10px);"><span>🔤</span> <span id="subtitle-display">Impara a Leggere e Scrivere il Coreano</span>
+     </div>
+     <h1 id="title-display" class="heading-font text-4xl md:text-6xl font-extrabold text-white mb-3 drop-shadow-2xl">Alfabeto Hangul</h1>
+     <p class="text-white/90 text-base md:text-lg">Vocali • Consonanti • Esercizi Interattivi • Pratica di Scrittura</p>
+    </header><!-- Navigation Tabs -->
+    <nav class="glass-morphism rounded-2xl p-2 mb-6 shadow-2xl relative">
+     <div class="flex gap-1 md:gap-2 flex-wrap relative"><button onclick="showSection('vowels')" id="tab-vowels" class="tab-btn flex-1 min-w-fit px-3 md:px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all relative z-10" style="color: white;"> ㅏ Vocali </button> <button onclick="showSection('consonants')" id="tab-consonants" class="tab-btn flex-1 min-w-fit px-3 md:px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all relative z-10" style="color: #1e40af;"> ㄱ Consonanti </button> <button onclick="showSection('quiz')" id="tab-quiz" class="tab-btn flex-1 min-w-fit px-3 md:px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all relative z-10" style="color: #1e40af;"> 🎯 Quiz </button> <button onclick="showSection('practice')" id="tab-practice" class="tab-btn flex-1 min-w-fit px-3 md:px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all relative z-10" style="color: #1e40af;"> ✍️ Pratica </button>
+     </div>
+    </nav><!-- Vowels Section -->
+    <section id="section-vowels" class="section-content">
+     <div class="glass-morphism rounded-2xl p-5 md:p-7 mb-6 shadow-2xl">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">
+        ㅏ
+       </div>
+       <div>
+        <h2 class="heading-font text-xl md:text-2xl font-bold text-gray-800">Vocali Base</h2>
+        <p class="text-sm text-gray-600">10 vocali semplici + 11 dittonghi</p>
+       </div>
+      </div>
+      <div class="mb-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #fef3c7, #fed7aa);">
+       <p class="text-sm md:text-base text-gray-800 leading-relaxed"><strong>💡 Tip:</strong> Le vocali coreane si dividono in vocali semplici (ㅏ, ㅓ, ㅗ, ㅜ...) e dittonghi (ㅑ, ㅕ, ㅛ, ㅠ...). Clicca su ogni lettera per vedere dettagli, pronuncia e ordine dei tratti!</p>
+      </div>
+      <div id="vowels-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4"><!-- Vowels will be generated by JavaScript -->
+      </div>
+     </div>
+    </section><!-- Consonants Section -->
+    <section id="section-consonants" class="section-content hidden">
+     <div class="glass-morphism rounded-2xl p-5 md:p-7 mb-6 shadow-2xl">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+        ㄱ
+       </div>
+       <div>
+        <h2 class="heading-font text-xl md:text-2xl font-bold text-gray-800">Consonanti</h2>
+        <p class="text-sm text-gray-600">14 consonanti base + 5 consonanti doppie</p>
+       </div>
+      </div>
+      <div class="mb-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
+       <p class="text-sm md:text-base text-gray-800 leading-relaxed"><strong>💡 Tip:</strong> Le consonanti doppie (ㄲ, ㄸ, ㅃ, ㅆ, ㅉ) si pronunciano con più tensione. Clicca su ogni lettera per esplorare!</p>
+      </div>
+      <div id="consonants-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-4"><!-- Consonants will be generated by JavaScript -->
+      </div>
+     </div>
+    </section><!-- Quiz Section -->
+    <section id="section-quiz" class="section-content hidden">
+     <div class="glass-morphism rounded-2xl p-5 md:p-7 mb-6 shadow-2xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+       <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+         🎯
+        </div>
+        <div>
+         <h2 class="heading-font text-xl md:text-2xl font-bold text-gray-800">Quiz di Riconoscimento</h2>
+         <p class="text-sm text-gray-600">Testa la tua conoscenza dell'Hangul</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-4">
+        <div class="text-center">
+         <div class="text-2xl md:text-3xl font-bold heading-font" style="color: #10b981;" id="quiz-score">
+          0
+         </div>
+         <div class="text-xs text-gray-600">
+          Corrette
+         </div>
+        </div>
+        <div class="text-center">
+         <div class="text-2xl md:text-3xl font-bold heading-font" style="color: #ef4444;" id="quiz-wrong">
+          0
+         </div>
+         <div class="text-xs text-gray-600">
+          Sbagliate
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="quiz-question" class="text-center mb-8">
+       <p class="text-gray-700 text-base md:text-lg mb-6 font-medium">Quale lettera corrisponde al suono:</p>
+       <div class="inline-block px-8 py-4 rounded-2xl shadow-lg mb-8" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
+        <p id="quiz-sound" class="text-3xl md:text-5xl font-bold text-gray-800">"a"</p>
+       </div>
+      </div>
+      <div id="quiz-options" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"><!-- Quiz options will be generated by JavaScript -->
+      </div>
+      <div class="mt-8 text-center"><button onclick="nextQuizQuestion()" class="px-8 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white;"> Prossima Domanda → </button>
+      </div>
+     </div>
+    </section><!-- Practice Section -->
+    <section id="section-practice" class="section-content hidden">
+     <div class="glass-morphism rounded-2xl p-5 md:p-7 mb-6 shadow-2xl">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #10b981, #059669);">
+        ✍️
+       </div>
+       <div>
+        <h2 class="heading-font text-xl md:text-2xl font-bold text-gray-800">Pratica di Scrittura</h2>
+        <p class="text-sm text-gray-600">Impara l'ordine corretto dei tratti</p>
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6"><!-- Letter Selection -->
+       <div>
+        <h3 class="font-bold text-gray-800 mb-3">Scegli una lettera da praticare:</h3>
+        <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 mb-4 max-h-64 overflow-y-auto p-2" style="background: rgba(255,255,255,0.5); border-radius: 12px;"><button onclick="selectPracticeLetter('ㅏ', 'a', ['Linea verticale', 'Linea orizzontale a destra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅏ</button> <button onclick="selectPracticeLetter('ㅓ', 'eo', ['Linea verticale', 'Linea orizzontale a sinistra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅓ</button> <button onclick="selectPracticeLetter('ㅗ', 'o', ['Linea orizzontale', 'Linea verticale sotto'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅗ</button> <button onclick="selectPracticeLetter('ㅜ', 'u', ['Linea orizzontale', 'Linea verticale sopra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅜ</button> <button onclick="selectPracticeLetter('ㅡ', 'eu', ['Linea orizzontale'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅡ</button> <button onclick="selectPracticeLetter('ㅣ', 'i', ['Linea verticale'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #ec4899;">ㅣ</button> <button onclick="selectPracticeLetter('ㄱ', 'g/k', ['Linea orizzontale', 'Linea verticale giù'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㄱ</button> <button onclick="selectPracticeLetter('ㄴ', 'n', ['Linea verticale', 'Linea orizzontale a destra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㄴ</button> <button onclick="selectPracticeLetter('ㄷ', 'd/t', ['Linea orizzontale sopra', 'Linea verticale', 'Linea orizzontale sotto'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㄷ</button> <button onclick="selectPracticeLetter('ㄹ', 'r/l', ['Linea orizzontale sopra', 'Linea verticale', 'Linea orizzontale sotto a destra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㄹ</button> <button onclick="selectPracticeLetter('ㅁ', 'm', ['Quadrato (senso orario dall\'alto)'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅁ</button> <button onclick="selectPracticeLetter('ㅂ', 'b/p', ['Linea verticale', 'Linea orizzontale sopra', 'Linea orizzontale sotto'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅂ</button> <button onclick="selectPracticeLetter('ㅅ', 's', ['Linea diagonale sinistra', 'Linea diagonale destra'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅅ</button> <button onclick="selectPracticeLetter('ㅇ', 'ng/silent', ['Cerchio (senso orario)'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅇ</button> <button onclick="selectPracticeLetter('ㅈ', 'j', ['Linea orizzontale', 'Linea verticale', 'Linea orizzontale sotto'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅈ</button> <button onclick="selectPracticeLetter('ㅎ', 'h', ['Cerchio con linee orizzontali'])" class="practice-letter-btn korean-text text-3xl font-bold py-3 rounded-xl hover:scale-110 transition-all" style="background: white; color: #3b82f6;">ㅎ</button>
+        </div>
+        <div id="stroke-order-info" class="stroke-order p-4 rounded-xl" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+         <h4 class="font-bold text-gray-800 mb-2">📝 Ordine dei Tratti:</h4>
+         <div id="stroke-order-text" class="text-sm text-gray-700">
+          Seleziona una lettera per vedere l'ordine dei tratti
+         </div>
+        </div>
+       </div><!-- Drawing Canvas -->
+       <div>
+        <div class="flex items-center justify-between mb-3">
+         <h3 class="font-bold text-gray-800">Canvas di Pratica:</h3><button onclick="clearCanvas()" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105" style="background: #ef4444; color: white;"> 🗑️ Cancella </button>
+        </div>
+        <div class="relative">
+         <canvas id="practice-canvas" class="practice-canvas w-full rounded-xl shadow-lg" width="400" height="400" style="background: white; touch-action: none;"></canvas>
+         <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div id="practice-letter-bg" class="korean-text text-9xl opacity-10 text-gray-400">
+           ㅏ
+          </div>
+         </div>
+        </div>
+        <p class="text-xs text-gray-600 mt-2 text-center">✍️ Disegna la lettera seguendo l'ordine dei tratti</p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- Letter Detail Modal -->
+   <div id="letter-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" onclick="closeModal(event)">
+    <div class="letter-detail-modal glass-morphism rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl" onclick="event.stopPropagation()">
+     <div class="flex items-start justify-between mb-6">
+      <div class="flex items-center gap-4">
+       <div class="w-16 h-16 rounded-2xl flex items-center justify-center korean-text text-4xl font-bold" id="modal-letter-display" style="background: linear-gradient(135deg, #ec4899, #f43f5e); color: white;">
+        ㅏ
+       </div>
+       <div>
+        <h3 class="heading-font text-2xl font-bold text-gray-800" id="modal-letter-name">ㅏ</h3>
+        <p class="text-gray-600" id="modal-letter-sound">Suono: "a"</p>
+       </div>
+      </div><button onclick="closeModal()" class="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-110" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"> ✕ </button>
+     </div>
+     <div class="space-y-4">
+      <div class="p-4 rounded-xl" style="background: linear-gradient(135deg, #fef3c7, #fed7aa);">
+       <h4 class="font-bold text-gray-800 mb-2">🔊 Pronuncia:</h4>
+       <p class="text-gray-700" id="modal-pronunciation">Come la "a" in "casa"</p>
+      </div>
+      <div class="p-4 rounded-xl" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+       <h4 class="font-bold text-gray-800 mb-2">✍️ Come Scriverla:</h4>
+       <ol class="text-sm text-gray-700 space-y-1 ml-4 list-decimal" id="modal-stroke-order">
+        <li>Disegna una linea verticale</li>
+        <li>Aggiungi una linea orizzontale a destra</li>
+       </ol>
+      </div>
+      <div class="p-4 rounded-xl" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">
+       <h4 class="font-bold text-gray-800 mb-2">💡 Esempio:</h4>
+       <div class="flex items-center gap-3"><span class="korean-text text-3xl font-bold" id="modal-example">아</span> <span class="text-gray-600" id="modal-example-sound">(a)</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Hangul Data
+    const vowelsData = [
+      { letter: 'ㅏ', sound: 'a', pronunciation: 'Come la "a" in "casa"', strokes: ['Linea verticale', 'Linea orizzontale a destra'], example: '아', exampleSound: 'a' },
+      { letter: 'ㅑ', sound: 'ya', pronunciation: 'Come "ia" in "piano"', strokes: ['Linea verticale', 'Due linee orizzontali a destra'], example: '야', exampleSound: 'ya' },
+      { letter: 'ㅓ', sound: 'eo', pronunciation: 'Come "o" aperta in "morte"', strokes: ['Linea verticale', 'Linea orizzontale a sinistra'], example: '어', exampleSound: 'eo' },
+      { letter: 'ㅕ', sound: 'yeo', pronunciation: 'Come "io" in "fiore"', strokes: ['Linea verticale', 'Due linee orizzontali a sinistra'], example: '여', exampleSound: 'yeo' },
+      { letter: 'ㅗ', sound: 'o', pronunciation: 'Come "o" in "sole"', strokes: ['Linea orizzontale', 'Linea verticale sotto'], example: '오', exampleSound: 'o' },
+      { letter: 'ㅛ', sound: 'yo', pronunciation: 'Come "io" breve', strokes: ['Linea orizzontale', 'Due linee verticali sotto'], example: '요', exampleSound: 'yo' },
+      { letter: 'ㅜ', sound: 'u', pronunciation: 'Come "u" in "luna"', strokes: ['Linea orizzontale', 'Linea verticale sopra'], example: '우', exampleSound: 'u' },
+      { letter: 'ㅠ', sound: 'yu', pronunciation: 'Come "iu" in "fiume"', strokes: ['Linea orizzontale', 'Due linee verticali sopra'], example: '유', exampleSound: 'yu' },
+      { letter: 'ㅡ', sound: 'eu', pronunciation: 'Suono tra "e" ed "u", labbra distese', strokes: ['Linea orizzontale'], example: '으', exampleSound: 'eu' },
+      { letter: 'ㅣ', sound: 'i', pronunciation: 'Come "i" in "vino"', strokes: ['Linea verticale'], example: '이', exampleSound: 'i' },
+      { letter: 'ㅐ', sound: 'ae', pronunciation: 'Come "e" in "bello"', strokes: ['Linea verticale', 'Linea orizzontale a destra', 'Linea verticale piccola'], example: '애', exampleSound: 'ae' },
+      { letter: 'ㅒ', sound: 'yae', pronunciation: 'Come "ie" in "miele"', strokes: ['Linea verticale', 'Due linee orizzontali', 'Linea verticale piccola'], example: '얘', exampleSound: 'yae' },
+      { letter: 'ㅔ', sound: 'e', pronunciation: 'Come "e" in "sera"', strokes: ['Linea verticale', 'Linea orizzontale sinistra', 'Linea verticale piccola'], example: '에', exampleSound: 'e' },
+      { letter: 'ㅖ', sound: 'ye', pronunciation: 'Come "ie" in "ieri"', strokes: ['Linea verticale', 'Due linee orizzontali sinistra', 'Linea verticale'], example: '예', exampleSound: 'ye' },
+      { letter: 'ㅘ', sound: 'wa', pronunciation: 'Come "ua" in "guado"', strokes: ['ㅗ + ㅏ combinati'], example: '와', exampleSound: 'wa' },
+      { letter: 'ㅙ', sound: 'wae', pronunciation: 'Come "ue" in "questo"', strokes: ['ㅗ + ㅐ combinati'], example: '왜', exampleSound: 'wae' },
+      { letter: 'ㅚ', sound: 'oe', pronunciation: 'Come "ue" francese', strokes: ['ㅗ + ㅣ combinati'], example: '외', exampleSound: 'oe' },
+      { letter: 'ㅝ', sound: 'wo', pronunciation: 'Come "uo" in "uomo"', strokes: ['ㅜ + ㅓ combinati'], example: '워', exampleSound: 'wo' },
+      { letter: 'ㅞ', sound: 'we', pronunciation: 'Come "ue" in "guerra"', strokes: ['ㅜ + ㅔ combinati'], example: '웨', exampleSound: 'we' },
+      { letter: 'ㅟ', sound: 'wi', pronunciation: 'Come "ui" in "qui"', strokes: ['ㅜ + ㅣ combinati'], example: '위', exampleSound: 'wi' },
+      { letter: 'ㅢ', sound: 'ui', pronunciation: 'Come "ùi" (suono unico)', strokes: ['ㅡ + ㅣ combinati'], example: '의', exampleSound: 'ui' },
+    ];
+
+    const consonantsData = [
+      { letter: 'ㄱ', sound: 'g/k', pronunciation: 'Come "g" in "gatto" o "k" a fine sillaba', strokes: ['Linea orizzontale', 'Linea verticale giù'], example: '가', exampleSound: 'ga' },
+      { letter: 'ㄲ', sound: 'kk', pronunciation: 'K doppia, più tesa', strokes: ['Due ㄱ affiancati'], example: '까', exampleSound: 'kka' },
+      { letter: 'ㄴ', sound: 'n', pronunciation: 'Come "n" in "naso"', strokes: ['Linea verticale', 'Linea orizzontale a destra'], example: '나', exampleSound: 'na' },
+      { letter: 'ㄷ', sound: 'd/t', pronunciation: 'Come "d" in "dado" o "t" a fine sillaba', strokes: ['Linea orizzontale sopra', 'Linea verticale', 'Linea orizzontale sotto'], example: '다', exampleSound: 'da' },
+      { letter: 'ㄸ', sound: 'tt', pronunciation: 'T doppia, più tesa', strokes: ['Due ㄷ affiancati'], example: '따', exampleSound: 'tta' },
+      { letter: 'ㄹ', sound: 'r/l', pronunciation: 'Tra "r" e "l" italiano', strokes: ['Linea orizzontale sopra', 'Linea verticale', 'Linea orizzontale sotto a destra'], example: '라', exampleSound: 'ra' },
+      { letter: 'ㅁ', sound: 'm', pronunciation: 'Come "m" in "mano"', strokes: ['Quadrato (dall\'alto, senso orario)'], example: '마', exampleSound: 'ma' },
+      { letter: 'ㅂ', sound: 'b/p', pronunciation: 'Come "b" in "bambino" o "p" a fine sillaba', strokes: ['Linea verticale', 'Linea orizzontale sopra', 'Linea orizzontale sotto'], example: '바', exampleSound: 'ba' },
+      { letter: 'ㅃ', sound: 'pp', pronunciation: 'P doppia, più tesa', strokes: ['Due ㅂ affiancati'], example: '빠', exampleSound: 'ppa' },
+      { letter: 'ㅅ', sound: 's', pronunciation: 'Come "s" in "sole"', strokes: ['Linea diagonale sinistra', 'Linea diagonale destra'], example: '사', exampleSound: 'sa' },
+      { letter: 'ㅆ', sound: 'ss', pronunciation: 'S doppia, più tesa', strokes: ['Due ㅅ affiancati'], example: '싸', exampleSound: 'ssa' },
+      { letter: 'ㅇ', sound: 'ng/silent', pronunciation: 'Silenzioso all\'inizio, "ng" alla fine', strokes: ['Cerchio (senso orario)'], example: '아', exampleSound: 'a' },
+      { letter: 'ㅈ', sound: 'j', pronunciation: 'Come "g" dolce in "gelato"', strokes: ['Linea orizzontale', 'Linea verticale', 'Linea orizzontale sotto'], example: '자', exampleSound: 'ja' },
+      { letter: 'ㅉ', sound: 'jj', pronunciation: 'J doppia, più tesa', strokes: ['Due ㅈ affiancati'], example: '짜', exampleSound: 'jja' },
+      { letter: 'ㅊ', sound: 'ch', pronunciation: 'Come "c" in "ciao"', strokes: ['ㅈ con un tratto sopra'], example: '차', exampleSound: 'cha' },
+      { letter: 'ㅋ', sound: 'k', pronunciation: 'K aspirata forte', strokes: ['ㄱ con un tratto in più'], example: '카', exampleSound: 'ka' },
+      { letter: 'ㅌ', sound: 't', pronunciation: 'T aspirata forte', strokes: ['ㄷ con un tratto sopra'], example: '타', exampleSound: 'ta' },
+      { letter: 'ㅍ', sound: 'p', pronunciation: 'P aspirata forte', strokes: ['ㅂ con un tratto sopra'], example: '파', exampleSound: 'pa' },
+      { letter: 'ㅎ', sound: 'h', pronunciation: 'Come "h" aspirata inglese', strokes: ['Cerchio con linee orizzontali dentro'], example: '하', exampleSound: 'ha' },
+    ];
+
+    // Default configuration
+    const defaultConfig = {
+      main_title: 'Alfabeto Hangul',
+      subtitle: 'Impara a Leggere e Scrivere il Coreano',
+      primary_background: '#1e3a8a',
+      secondary_background: '#60a5fa',
+      card_background: '#ffffff',
+      accent_color: '#3b82f6',
+      text_color: '#1f2937',
+      font_family: 'DM Sans',
+      font_size: 16
+    };
+
+    let config = { ...defaultConfig };
+    let quizScore = 0;
+    let quizWrong = 0;
+    let currentQuizQuestion = null;
+    let canvas = null;
+    let ctx = null;
+    let isDrawing = false;
+    let currentPracticeLetter = 'ㅏ';
+
+    // Initialize
+    function init() {
+      renderVowels();
+      renderConsonants();
+      generateQuizQuestion();
+      initCanvas();
+    }
+
+    // Render vowels grid
+    function renderVowels() {
+      const grid = document.getElementById('vowels-grid');
+      grid.innerHTML = vowelsData.map(v => `
+        <div class="letter-card glass-morphism rounded-2xl p-4 shadow-lg text-center" onclick="showLetterDetail(${JSON.stringify(v).replace(/"/g, '&quot;')}, '#ec4899')">
+          <div class="korean-text text-4xl md:text-5xl font-bold mb-2" style="color: #ec4899;">${v.letter}</div>
+          <div class="text-xs md:text-sm font-semibold text-gray-700">${v.sound}</div>
+        </div>
+      `).join('');
+    }
+
+    // Render consonants grid
+    function renderConsonants() {
+      const grid = document.getElementById('consonants-grid');
+      grid.innerHTML = consonantsData.map(c => `
+        <div class="letter-card glass-morphism rounded-2xl p-4 shadow-lg text-center" onclick="showLetterDetail(${JSON.stringify(c).replace(/"/g, '&quot;')}, '#3b82f6')">
+          <div class="korean-text text-4xl md:text-5xl font-bold mb-2" style="color: #3b82f6;">${c.letter}</div>
+          <div class="text-xs md:text-sm font-semibold text-gray-700">${c.sound}</div>
+        </div>
+      `).join('');
+    }
+
+    // Show letter detail modal
+    function showLetterDetail(letterData, color) {
+      document.getElementById('modal-letter-display').textContent = letterData.letter;
+      document.getElementById('modal-letter-display').style.background = `linear-gradient(135deg, ${color}, ${color}dd)`;
+      document.getElementById('modal-letter-name').textContent = letterData.letter;
+      document.getElementById('modal-letter-sound').textContent = `Suono: "${letterData.sound}"`;
+      document.getElementById('modal-pronunciation').textContent = letterData.pronunciation;
+      document.getElementById('modal-stroke-order').innerHTML = letterData.strokes.map((s, i) => `<li>${i + 1}. ${s}</li>`).join('');
+      document.getElementById('modal-example').textContent = letterData.example;
+      document.getElementById('modal-example-sound').textContent = `(${letterData.exampleSound})`;
+      
+      document.getElementById('letter-modal').classList.remove('hidden');
+    }
+
+    // Close modal
+    function closeModal(event) {
+      if (!event || event.target.id === 'letter-modal') {
+        document.getElementById('letter-modal').classList.add('hidden');
+      }
+    }
+
+    // Section navigation
+    function showSection(sectionId) {
+      document.querySelectorAll('.section-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById('section-' + sectionId).classList.remove('hidden');
+      
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.style.background = 'transparent';
+        btn.style.color = '#1e40af';
+      });
+      
+      const activeTab = document.getElementById('tab-' + sectionId);
+      activeTab.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+      activeTab.style.color = 'white';
+    }
+
+    // Quiz functions
+    function generateQuizQuestion() {
+      const allLetters = [...vowelsData, ...consonantsData];
+      const correctAnswer = allLetters[Math.floor(Math.random() * allLetters.length)];
+      
+      const options = [correctAnswer];
+      while (options.length < 4) {
+        const randomLetter = allLetters[Math.floor(Math.random() * allLetters.length)];
+        if (!options.find(o => o.letter === randomLetter.letter)) {
+          options.push(randomLetter);
+        }
+      }
+      
+      // Shuffle options
+      options.sort(() => Math.random() - 0.5);
+      
+      currentQuizQuestion = { correct: correctAnswer, options };
+      
+      document.getElementById('quiz-sound').textContent = `"${correctAnswer.sound}"`;
+      
+      const optionsContainer = document.getElementById('quiz-options');
+      optionsContainer.innerHTML = options.map(opt => `
+        <div class="quiz-option glass-morphism rounded-2xl p-6 shadow-lg text-center" onclick="checkQuizAnswer('${opt.letter}', '${correctAnswer.letter}', this)">
+          <div class="korean-text text-5xl font-bold" style="color: #3b82f6;">${opt.letter}</div>
+        </div>
+      `).join('');
+    }
+
+    function checkQuizAnswer(selected, correct, element) {
+      if (selected === correct) {
+        element.classList.add('correct');
+        element.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        element.querySelector('div').style.color = 'white';
+        quizScore++;
+        document.getElementById('quiz-score').textContent = quizScore;
+        
+        setTimeout(() => {
+          generateQuizQuestion();
+        }, 1000);
+      } else {
+        element.classList.add('wrong');
+        element.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        element.querySelector('div').style.color = 'white';
+        quizWrong++;
+        document.getElementById('quiz-wrong').textContent = quizWrong;
+        
+        setTimeout(() => {
+          element.classList.remove('wrong');
+          element.style.background = '';
+          element.querySelector('div').style.color = '#3b82f6';
+        }, 500);
+      }
+    }
+
+    function nextQuizQuestion() {
+      generateQuizQuestion();
+    }
+
+    // Canvas functions
+    function initCanvas() {
+      canvas = document.getElementById('practice-canvas');
+      ctx = canvas.getContext('2d');
+      
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#3b82f6';
+      
+      // Mouse events
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      
+      // Touch events
+      canvas.addEventListener('touchstart', handleTouchStart);
+      canvas.addEventListener('touchmove', handleTouchMove);
+      canvas.addEventListener('touchend', stopDrawing);
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function handleTouchStart(e) {
+      e.preventDefault();
+      isDrawing = true;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      ctx.beginPath();
+      ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (!isDrawing) return;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+      ctx.stroke();
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function selectPracticeLetter(letter, sound, strokes) {
+      currentPracticeLetter = letter;
+      document.getElementById('practice-letter-bg').textContent = letter;
+      document.getElementById('stroke-order-text').innerHTML = strokes.map((s, i) => `<div class="mb-1">${i + 1}. ${s}</div>`).join('');
+      clearCanvas();
+    }
+
+    // Element SDK integration
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      document.getElementById('title-display').textContent = config.main_title || defaultConfig.main_title;
+      document.getElementById('subtitle-display').textContent = config.subtitle || defaultConfig.subtitle;
+      
+      const wrapper = document.getElementById('app-wrapper');
+      wrapper.style.background = `linear-gradient(135deg, ${config.primary_background || defaultConfig.primary_background} 0%, ${config.secondary_background || defaultConfig.secondary_background} 100%)`;
+      
+      const customFont = config.font_family || defaultConfig.font_family;
+      document.querySelectorAll('.body-font').forEach(el => {
+        el.style.fontFamily = `${customFont}, sans-serif`;
+      });
+      
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = `${baseSize}px`;
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.primary_background || defaultConfig.primary_background,
+            set: (value) => {
+              cfg.primary_background = value;
+              window.elementSdk.setConfig({ primary_background: value });
+            }
+          },
+          {
+            get: () => cfg.secondary_background || defaultConfig.secondary_background,
+            set: (value) => {
+              cfg.secondary_background = value;
+              window.elementSdk.setConfig({ secondary_background: value });
+            }
+          },
+          {
+            get: () => cfg.card_background || defaultConfig.card_background,
+            set: (value) => {
+              cfg.card_background = value;
+              window.elementSdk.setConfig({ card_background: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['main_title', cfg.main_title || defaultConfig.main_title],
+        ['subtitle', cfg.subtitle || defaultConfig.subtitle]
+      ]);
+    }
+
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    // Start the app
+    init();
+    showSection('vowels');
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c70a181e4560e02',t:'MTc2OTk0MDMzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
