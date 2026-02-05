@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="ko" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국어 학교 - Scuola di Coreano</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;family=Nanum+Pen+Script&amp;family=Gaegu:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    .font-korean { font-family: 'Gowun Dodum', sans-serif; }
+    .font-handwriting { font-family: 'Gaegu', cursive; }
+    .font-chalk { font-family: 'Nanum Pen Script', cursive; }
+    
+    .notebook-paper {
+      background: linear-gradient(#fef9e7 1px, transparent 1px);
+      background-size: 100% 28px;
+      background-color: #fffdf5;
+    }
+    
+    .chalkboard {
+      background: linear-gradient(135deg, #2d5016 0%, #3d6b1e 50%, #2d5016 100%);
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
+    }
+    
+    .chalk-text {
+      color: #f5f5dc;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .wooden-frame {
+      background: linear-gradient(90deg, #8B4513, #A0522D, #8B4513);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    
+    .pencil-btn {
+      position: relative;
+      transition: transform 0.2s;
+    }
+    
+    .pencil-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .sticky-note {
+      transform: rotate(-2deg);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    }
+    
+    .sticky-note:nth-child(even) {
+      transform: rotate(1deg);
+    }
+    
+    .correct-answer {
+      animation: correctPulse 0.5s ease;
+    }
+    
+    @keyframes correctPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .tab-active {
+      border-bottom: 3px solid #dc2626;
+    }
+    
+    .hangul-big {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+    
+    .red-pen {
+      color: #dc2626;
+    }
+    
+    .blue-pen {
+      color: #1e40af;
+    }
+
+    .exercise-card {
+      transition: all 0.3s ease;
+    }
+
+    .exercise-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-korean">
+  <div id="app-wrapper" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);"><!-- Header come lavagna -->
+   <header class="wooden-frame p-2">
+    <div class="chalkboard p-6 text-center">
+     <h1 id="main-title" class="font-chalk chalk-text text-4xl md:text-5xl mb-2">한국어 학교</h1>
+     <p class="chalk-text font-handwriting text-xl">Scuola di Lingua Coreana 🇰🇷</p>
+    </div>
+   </header><!-- Navigation Tabs -->
+   <nav class="bg-amber-100 border-b-4 border-amber-800 px-4">
+    <div class="max-w-6xl mx-auto flex"><button id="tab-grammar" class="tab-btn tab-active px-6 py-3 font-handwriting text-xl text-amber-900 hover:bg-amber-200 transition-colors" data-tab="grammar"> 📚 Grammatica </button> <button id="tab-exercises" class="tab-btn px-6 py-3 font-handwriting text-xl text-amber-900 hover:bg-amber-200 transition-colors" data-tab="exercises"> ✏️ Esercizi </button>
+    </div>
+   </nav><!-- Main Content -->
+   <main class="max-w-6xl mx-auto p-4 md:p-6"><!-- SEZIONE GRAMMATICA -->
+    <section id="grammar-section" class="space-y-6">
+     <div class="notebook-paper rounded-lg shadow-lg border-l-4 border-red-400 p-6">
+      <h2 id="grammar-title" class="font-chalk text-3xl text-amber-900 mb-6 border-b-2 border-dashed border-amber-400 pb-2">📖 문법 - Grammatica</h2><!-- Accordion Verbo Essere -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-yellow-100 hover:bg-yellow-200 p-4 rounded-t-lg border-2 border-amber-300 flex justify-between items-center transition-colors" data-section="essere"> <span class="font-handwriting text-2xl text-amber-800">🔤 1. Il Verbo Essere (이다 - ida)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-amber-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-yellow-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-yellow-900 mb-3">Coniugazione - 이다</h4>
+          <p class="font-handwriting text-lg mb-4">Si usa per descrizioni permanenti, professioni, e caratteristiche</p>
+          <div class="overflow-x-auto">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-yellow-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Forma</th>
+              <th class="p-3 text-left font-handwriting">Coreano</th>
+              <th class="p-3 text-left font-handwriting">Pronuncia</th>
+              <th class="p-3 text-left font-handwriting">Italiano</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3 font-bold">Formale</td>
+              <td class="p-3 text-2xl">입니다</td>
+              <td class="p-3">imnida</td>
+              <td class="p-3">è (formale)</td>
+             </tr>
+             <tr class="border-b bg-yellow-50">
+              <td class="p-3 font-bold">Cortese</td>
+              <td class="p-3 text-2xl">예요/이에요</td>
+              <td class="p-3">yeyo/ieyo</td>
+              <td class="p-3">è (cortese)</td>
+             </tr>
+             <tr class="border-b">
+              <td class="p-3 font-bold">Informale</td>
+              <td class="p-3 text-2xl">야/이야</td>
+              <td class="p-3">ya/iya</td>
+              <td class="p-3">è (informale)</td>
+             </tr>
+             <tr>
+              <td class="p-3 font-bold">Negazione</td>
+              <td class="p-3 text-2xl">아니에요</td>
+              <td class="p-3">anieyo</td>
+              <td class="p-3">non è</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+         <div class="grid md:grid-cols-2 gap-4">
+          <div class="sticky-note bg-blue-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-blue-900 mb-2">Esempi</h5>
+           <ul class="space-y-2 font-handwriting text-sm">
+            <li>저는 <span class="text-xl text-blue-600">학생이에요</span><br>
+             Sono uno studente</li>
+            <li>그는 <span class="text-xl text-blue-600">의사입니다</span><br>
+             Lui è un medico (formale)</li>
+            <li>나는 <span class="text-xl text-blue-600">한국 사람이야</span><br>
+             Io sono coreano</li>
+           </ul>
+          </div>
+          <div class="sticky-note bg-orange-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-orange-900 mb-2">⚠️ Importante</h5>
+           <p class="font-handwriting text-sm">Si usa <span class="text-xl">예요</span> dopo vocale e <span class="text-xl">이에요</span> dopo consonante</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Verbo Avere -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-pink-100 hover:bg-pink-200 p-4 rounded-t-lg border-2 border-pink-300 flex justify-between items-center transition-colors" data-section="avere"> <span class="font-handwriting text-2xl text-pink-800">💕 2. Il Verbo Avere (있다 - itda)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-pink-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-pink-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-pink-900 mb-3">Coniugazione - 있다</h4>
+          <p class="font-handwriting text-lg mb-4">Si usa per esprimere il possesso o l'esistenza di qualcosa</p>
+          <div class="overflow-x-auto">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-pink-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Forma</th>
+              <th class="p-3 text-left font-handwriting">Coreano</th>
+              <th class="p-3 text-left font-handwriting">Pronuncia</th>
+              <th class="p-3 text-left font-handwriting">Italiano</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3 font-bold">Formale</td>
+              <td class="p-3 text-2xl">있습니다</td>
+              <td class="p-3">isseumnida</td>
+              <td class="p-3">ho (formale)</td>
+             </tr>
+             <tr class="border-b bg-pink-50">
+              <td class="p-3 font-bold">Cortese</td>
+              <td class="p-3 text-2xl">있어요</td>
+              <td class="p-3">isseoyo</td>
+              <td class="p-3">ho</td>
+             </tr>
+             <tr class="border-b">
+              <td class="p-3 font-bold">Informale</td>
+              <td class="p-3 text-2xl">있어</td>
+              <td class="p-3">isseo</td>
+              <td class="p-3">ho</td>
+             </tr>
+             <tr>
+              <td class="p-3 font-bold">Negazione</td>
+              <td class="p-3 text-2xl">없어요</td>
+              <td class="p-3">eopseoyo</td>
+              <td class="p-3">non ho</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+         <div class="grid md:grid-cols-2 gap-4">
+          <div class="sticky-note bg-red-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-red-900 mb-2">Possesso</h5>
+           <ul class="space-y-2 font-handwriting text-sm">
+            <li>나는 <span class="text-xl text-red-600">고양이가 있어요</span><br>
+             Ho un gatto</li>
+            <li>그는 <span class="text-xl text-red-600">형이 있어</span><br>
+             Lui ha un fratello maggiore</li>
+            <li>우리는 <span class="text-xl text-red-600">개가 없어요</span><br>
+             Non abbiamo un cane</li>
+           </ul>
+          </div>
+          <div class="sticky-note bg-purple-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-purple-900 mb-2">Esistenza</h5>
+           <ul class="space-y-2 font-handwriting text-sm">
+            <li><span class="text-xl text-purple-600">탁자 위에 책이 있어요</span><br>
+             C'è un libro sul tavolo</li>
+            <li><span class="text-xl text-purple-600">방에 창문이 있어요</span><br>
+             Nella stanza c'è una finestra</li>
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Contatori -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-green-100 hover:bg-green-200 p-4 rounded-t-lg border-2 border-green-300 flex justify-between items-center transition-colors" data-section="counters"> <span class="font-handwriting text-2xl text-green-800">🔢 3. I Contatori (수사 - Susa)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-blue-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <p class="font-handwriting text-lg text-gray-700 mb-4">In coreano, diversi contatori si usano a seconda dell'oggetto!</p>
+         <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-green-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-green-900 mb-3">개 (gae) - Oggetti Generici</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: libri, matite, sedie, bottiglie, ecc.</p>
+           <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">책 한 개</span><br><small>1 libro</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">의자 두 개</span><br><small>2 sedie</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">연필 다섯 개</span><br><small>5 matite</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">병 열 개</span><br><small>10 bottiglie</small>
+            </div>
+           </div>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-blue-900 mb-3">명 (myeong) - Persone</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: persone (formale e polito)</p>
+           <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">학생 한 명</span><br><small>1 studente</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">친구 세 명</span><br><small>3 amici</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">선생님 두 명</span><br><small>2 insegnanti</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">사람 몇 명</span><br><small>quante persone?</small>
+            </div>
+           </div>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-purple-900 mb-3">마리 (mari) - Animali</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: cani, gatti, uccelli, ecc.</p>
+           <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">개 한 마리</span><br><small>1 cane</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">고양이 두 마리</span><br><small>2 gatti</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">새 세 마리</span><br><small>3 uccelli</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">말 다섯 마리</span><br><small>5 cavalli</small>
+            </div>
+           </div>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-orange-900 mb-3">잔 (jan) - Bicchieri/Tazze</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: caffè, tè, birra, vino</p>
+           <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">커피 한 잔</span><br><small>1 caffè</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">맥주 두 잔</span><br><small>2 birre</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">물 한 잔</span><br><small>1 bicchier d'acqua</small>
+            </div>
+            <div class="bg-white p-2 rounded">
+             <span class="text-xl">차 세 잔</span><br><small>3 tè</small>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-red-900 mb-3">장 (jang) - Fogli/Pagine</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: carta, foto, francobolli</p>
+           <div class="text-center space-y-2 font-handwriting">
+            <p><span class="text-xl">종이 한 장</span> - 1 foglio</p>
+            <p><span class="text-xl">사진 다섯 장</span> - 5 foto</p>
+           </div>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+           <h5 class="font-chalk text-lg text-yellow-900 mb-3">권 (gwon) - Libri/Quaderni</h5>
+           <p class="text-sm text-gray-600 mb-2">Per: libri, quaderni, fumetti</p>
+           <div class="text-center space-y-2 font-handwriting">
+            <p><span class="text-xl">책 한 권</span> - 1 libro</p>
+            <p><span class="text-xl">만화책 두 권</span> - 2 fumetti</p>
+           </div>
+          </div>
+         </div>
+         <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400 mt-4">
+          <h5 class="font-chalk text-lg text-indigo-900 mb-2">💡 Come usarli nelle frasi</h5>
+          <div class="space-y-2 font-handwriting text-sm">
+           <p><span class="text-xl">저는 고양이 두 마리가 있어요</span><br>
+            Ho due gatti</p>
+           <p><span class="text-xl">커피 한 잔 주세요</span><br>
+            Mi dia un caffè, per favore</p>
+           <p><span class="text-xl">학생이 5명 있어요</span><br>
+            Ci sono 5 studenti</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Particella Soggetto -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-red-100 hover:bg-red-200 p-4 rounded-t-lg border-2 border-red-300 flex justify-between items-center transition-colors" data-section="subject-particle"> <span class="font-handwriting text-2xl text-red-800">👤 4. Particella Soggetto (이/가, 은/는)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-red-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-red-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-red-900 mb-3">Le Due Particelle del Soggetto</h4>
+          <p class="font-handwriting text-lg mb-4">Il coreano ha due particelle per il soggetto con significati leggermente diversi</p>
+          <div class="overflow-x-auto mb-4">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-red-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Particella</th>
+              <th class="p-3 text-left font-handwriting">Uso</th>
+              <th class="p-3 text-left font-handwriting">Esempio</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3 text-2xl font-bold">이/가</td>
+              <td class="p-3">Enfasi, domande, nuovo argomento</td>
+              <td class="p-3"><span class="text-xl">누가 왔어요?</span><br>
+               Chi è venuto?</td>
+             </tr>
+             <tr class="bg-red-50">
+              <td class="p-3 text-2xl font-bold">은/는</td>
+              <td class="p-3">Tema, contrasto, argomento noto</td>
+              <td class="p-3"><span class="text-xl">저는 학생이에요</span><br>
+               Io sono uno studente</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+           <div class="sticky-note bg-blue-100 p-4 rounded">
+            <h5 class="font-chalk text-lg text-blue-900 mb-2">이/가 (dopo consonante/vocale)</h5>
+            <ul class="space-y-2 font-handwriting text-sm">
+             <li><span class="text-xl text-blue-600">그가 여기 있어</span><br>
+              Lui c'è qui (nuovo info)</li>
+             <li><span class="text-xl text-blue-600">누가 왔어?</span><br>
+              Chi è venuto?</li>
+            </ul>
+           </div>
+           <div class="sticky-note bg-orange-100 p-4 rounded">
+            <h5 class="font-chalk text-lg text-orange-900 mb-2">은/는 (dopo consonante/vocale)</h5>
+            <ul class="space-y-2 font-handwriting text-sm">
+             <li><span class="text-xl text-orange-600">그는 의사예요</span><br>
+              Lui è un medico</li>
+             <li><span class="text-xl text-orange-600">날씨는 좋아요</span><br>
+              Il tempo è bello</li>
+            </ul>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Particella Oggetto -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-teal-100 hover:bg-teal-200 p-4 rounded-t-lg border-2 border-teal-300 flex justify-between items-center transition-colors" data-section="object-particle"> <span class="font-handwriting text-2xl text-teal-800">🎯 5. Particella Oggetto (을/를)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-teal-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-teal-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-teal-900 mb-3">La Particella dell'Oggetto Diretto</h4>
+          <p class="font-handwriting text-lg mb-4">Si usa per indicare l'oggetto su cui agisce il verbo</p>
+          <div class="overflow-x-auto mb-4">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-teal-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Quando Usare</th>
+              <th class="p-3 text-left font-handwriting">Particella</th>
+              <th class="p-3 text-left font-handwriting">Esempio</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3">Dopo consonante</td>
+              <td class="p-3 text-2xl font-bold">을</td>
+              <td class="p-3"><span class="text-xl">책을 읽어요</span><br>
+               Leggo il libro</td>
+             </tr>
+             <tr class="bg-teal-50">
+              <td class="p-3">Dopo vocale</td>
+              <td class="p-3 text-2xl font-bold">를</td>
+              <td class="p-3"><span class="text-xl">물을 마셔요</span><br>
+               Bevo acqua</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <div class="sticky-note bg-green-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-green-900 mb-2">Più Esempi</h5>
+           <ul class="space-y-2 font-handwriting text-sm">
+            <li><span class="text-xl text-green-600">사과를 먹어요</span><br>
+             Mangio la mela</li>
+            <li><span class="text-xl text-green-600">영화를 봐요</span><br>
+             Guardo un film</li>
+            <li><span class="text-xl text-green-600">밥을 지어요</span><br>
+             Cucino il riso</li>
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Particella Stato in Luogo -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-cyan-100 hover:bg-cyan-200 p-4 rounded-t-lg border-2 border-cyan-300 flex justify-between items-center transition-colors" data-section="location-particle"> <span class="font-handwriting text-2xl text-cyan-800">📍 6. Particella Stato in Luogo (에, 에서)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-cyan-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-cyan-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-cyan-900 mb-3">La Grande Differenza: 에 vs 에서</h4>
+          <p class="font-handwriting text-lg mb-4">Entrambe significano "a" ma hanno usi diversi!</p>
+          <div class="overflow-x-auto mb-4">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-cyan-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Particella</th>
+              <th class="p-3 text-left font-handwriting">Uso</th>
+              <th class="p-3 text-left font-handwriting">Esempio</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3 text-2xl font-bold">에</td>
+              <td class="p-3">Destinazione, direzione, posizione</td>
+              <td class="p-3"><span class="text-xl">학교에 가요</span><br>
+               Vado a scuola</td>
+             </tr>
+             <tr class="bg-cyan-50">
+              <td class="p-3 text-2xl font-bold">에서</td>
+              <td class="p-3">Luogo di azione, movimento</td>
+              <td class="p-3"><span class="text-xl">학교에서 공부해요</span><br>
+               Studio a scuola</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+           <div class="sticky-note bg-blue-100 p-4 rounded">
+            <h5 class="font-chalk text-lg text-blue-900 mb-2">에 (Destinazione)</h5>
+            <ul class="space-y-2 font-handwriting text-sm">
+             <li><span class="text-xl text-blue-600">서울에 가요</span><br>
+              Vado a Seul</li>
+             <li><span class="text-xl text-blue-600">집에 있어요</span><br>
+              Sono a casa</li>
+             <li><span class="text-xl text-blue-600">책상에 놓아요</span><br>
+              Lo metto sul tavolo</li>
+            </ul>
+           </div>
+           <div class="sticky-note bg-orange-100 p-4 rounded">
+            <h5 class="font-chalk text-lg text-orange-900 mb-2">에서 (Luogo d'azione)</h5>
+            <ul class="space-y-2 font-handwriting text-sm">
+             <li><span class="text-xl text-orange-600">카페에서 만나요</span><br>
+              Ci incontriamo al bar</li>
+             <li><span class="text-xl text-orange-600">집에서 쉬어요</span><br>
+              Riposso a casa</li>
+             <li><span class="text-xl text-orange-600">공원에서 놀아요</span><br>
+              Gioco al parco</li>
+            </ul>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Struttura Frase -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-blue-100 hover:bg-blue-200 p-4 rounded-t-lg border-2 border-blue-300 flex justify-between items-center transition-colors" data-section="sentence"> <span class="font-handwriting text-2xl text-blue-800">📝 7. Struttura della Frase</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-blue-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-green-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-green-900 mb-3">Ordine SOV</h4>
+          <p class="font-handwriting text-lg mb-4">Il coreano usa l'ordine <span class="red-pen font-bold">Soggetto + Oggetto + Verbo</span></p>
+          <div class="bg-white p-4 rounded shadow">
+           <p class="text-center"><span class="blue-pen text-2xl">저는</span> <span class="text-gray-400 mx-2">+</span> <span class="text-green-600 text-2xl">사과를</span> <span class="text-gray-400 mx-2">+</span> <span class="red-pen text-2xl">먹어요</span></p>
+           <p class="text-center mt-2 text-gray-600"><span class="blue-pen">Io</span> + <span class="text-green-600">mela</span> + <span class="red-pen">mangio</span></p>
+           <p class="text-center text-sm text-gray-500 mt-1">"Io mangio una mela"</p>
+          </div>
+         </div>
+         <div class="grid md:grid-cols-2 gap-4">
+          <div class="sticky-note bg-blue-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-blue-900 mb-2">Particelle del Soggetto</h5>
+           <ul class="space-y-2 font-handwriting">
+            <li><span class="text-2xl">은/는</span> - Tema (dopo consonante/vocale)</li>
+            <li><span class="text-2xl">이/가</span> - Soggetto (dopo consonante/vocale)</li>
+           </ul>
+          </div>
+          <div class="sticky-note bg-orange-100 p-4 rounded">
+           <h5 class="font-chalk text-lg text-orange-900 mb-2">Particelle dell'Oggetto</h5>
+           <ul class="space-y-2 font-handwriting">
+            <li><span class="text-2xl">을/를</span> - Oggetto (dopo consonante/vocale)</li>
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Coniugazione Verbi -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-purple-100 hover:bg-purple-200 p-4 rounded-t-lg border-2 border-purple-300 flex justify-between items-center transition-colors" data-section="verbs"> <span class="font-handwriting text-2xl text-purple-800">🔄 8. Coniugazione dei Verbi</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-white border-x-2 border-b-2 border-purple-300 rounded-b-lg">
+        <div class="p-6 space-y-4">
+         <div class="bg-green-50 p-4 rounded-lg">
+          <h4 class="font-chalk text-xl text-purple-900 mb-3">Livelli di Cortesia</h4>
+          <p class="font-handwriting text-lg mb-4">Il coreano ha diversi livelli di formalità</p>
+          <div class="overflow-x-auto">
+           <table class="w-full bg-white rounded shadow">
+            <thead class="bg-purple-200">
+             <tr>
+              <th class="p-3 text-left font-handwriting">Livello</th>
+              <th class="p-3 text-left font-handwriting">먹다 (mangiare)</th>
+              <th class="p-3 text-left font-handwriting">가다 (andare)</th>
+             </tr>
+            </thead>
+            <tbody class="font-handwriting text-lg">
+             <tr class="border-b">
+              <td class="p-3">Formale</td>
+              <td class="p-3 text-2xl">먹습니다</td>
+              <td class="p-3 text-2xl">갑니다</td>
+             </tr>
+             <tr class="border-b bg-purple-50">
+              <td class="p-3">Cortese</td>
+              <td class="p-3 text-2xl">먹어요</td>
+              <td class="p-3 text-2xl">가요</td>
+             </tr>
+             <tr>
+              <td class="p-3">Informale</td>
+              <td class="p-3 text-2xl">먹어</td>
+              <td class="p-3 text-2xl">가</td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+         <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+          <p class="font-handwriting text-lg">💡 <strong>Tip:</strong> Il livello cortese (-요) è il più usato nella vita quotidiana. Perfetto per i principianti!</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Accordion Verbi Irregolari PLACEHOLDER -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-gray-200 hover:bg-gray-300 p-4 rounded-t-lg border-2 border-dashed border-gray-400 flex justify-between items-center transition-colors cursor-not-allowed" data-section="irregular-verbs"> <span class="font-handwriting text-2xl text-gray-600">🌀 9. Verbi Irregolari (In Arrivo)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-gray-50 border-x-2 border-b-2 border-dashed border-gray-400 rounded-b-lg">
+        <div class="p-6 text-center">
+         <p class="font-handwriting text-lg text-gray-600">📚 Questa sezione sarà aggiornata presto con nuovi contenuti!</p>
+        </div>
+       </div>
+      </div><!-- Accordion Come Si Dice L'Ora PLACEHOLDER -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-gray-200 hover:bg-gray-300 p-4 rounded-t-lg border-2 border-dashed border-gray-400 flex justify-between items-center transition-colors cursor-not-allowed" data-section="time"> <span class="font-handwriting text-2xl text-gray-600">🕐 10. Come Si Dice L'Ora (In Arrivo)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-gray-50 border-x-2 border-b-2 border-dashed border-gray-400 rounded-b-lg">
+        <div class="p-6 text-center">
+         <p class="font-handwriting text-lg text-gray-600">📚 Questa sezione sarà aggiornata presto con nuovi contenuti!</p>
+        </div>
+       </div>
+      </div><!-- Accordion Tempo Presente PLACEHOLDER -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-gray-200 hover:bg-gray-300 p-4 rounded-t-lg border-2 border-dashed border-gray-400 flex justify-between items-center transition-colors cursor-not-allowed" data-section="present-tense"> <span class="font-handwriting text-2xl text-gray-600">⏱️ 11. Tempo Presente (In Arrivo)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-gray-50 border-x-2 border-b-2 border-dashed border-gray-400 rounded-b-lg">
+        <div class="p-6 text-center">
+         <p class="font-handwriting text-lg text-gray-600">📚 Questa sezione sarà aggiornata presto con nuovi contenuti!</p>
+        </div>
+       </div>
+      </div><!-- Accordion Altre Particelle PLACEHOLDER -->
+      <div class="grammar-accordion mb-4"><button class="accordion-header w-full text-left bg-gray-200 hover:bg-gray-300 p-4 rounded-t-lg border-2 border-dashed border-gray-400 flex justify-between items-center transition-colors cursor-not-allowed" data-section="other-particles"> <span class="font-handwriting text-2xl text-gray-600">✨ 12. Altre Particelle (In Arrivo)</span> <span class="accordion-icon text-2xl transition-transform">▼</span> </button>
+       <div class="accordion-content bg-gray-50 border-x-2 border-b-2 border-dashed border-gray-400 rounded-b-lg">
+        <div class="p-6 text-center">
+         <p class="font-handwriting text-lg text-gray-600">📚 Questa sezione sarà aggiornata presto con nuovi contenuti!</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- SEZIONE ESERCIZI -->
+    <section id="exercises-section" class="hidden space-y-6">
+     <div class="notebook-paper rounded-lg shadow-lg border-l-4 border-blue-400 p-6">
+      <h2 id="exercises-title" class="font-chalk text-3xl text-amber-900 mb-6 border-b-2 border-dashed border-amber-400 pb-2">✏️ 연습 - Esercizi</h2><!-- Selettore Tipo Esercizio -->
+      <div class="flex flex-wrap gap-3 mb-6"><button class="exercise-type-btn pencil-btn bg-yellow-400 hover:bg-yellow-500 text-yellow-900 px-4 py-2 rounded-full font-handwriting text-lg shadow active" data-type="hangul"> 🔤 Hangul Quiz </button> <button class="exercise-type-btn pencil-btn bg-green-400 hover:bg-green-500 text-green-900 px-4 py-2 rounded-full font-handwriting text-lg shadow" data-type="vocab"> 📚 Vocabolario </button> <button class="exercise-type-btn pencil-btn bg-purple-400 hover:bg-purple-500 text-purple-900 px-4 py-2 rounded-full font-handwriting text-lg shadow" data-type="sentence"> 📝 Completa la Frase </button>
+      </div><!-- Area Esercizi -->
+      <div id="exercise-area" class="min-h-64"><!-- Esercizi vengono caricati qui -->
+      </div><!-- Punteggio -->
+      <div class="mt-6 bg-amber-100 p-4 rounded-lg border-2 border-amber-300">
+       <div class="flex justify-between items-center">
+        <div class="font-handwriting text-xl"><span class="text-amber-800">Punteggio:</span> <span id="score" class="text-2xl font-bold text-green-600">0</span> <span class="text-amber-800">/</span> <span id="total" class="text-2xl font-bold text-amber-700">0</span>
+        </div><button id="reset-btn" class="pencil-btn bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-handwriting text-lg shadow"> 🔄 Ricomincia </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main><!-- Footer -->
+   <footer class="bg-amber-800 text-amber-100 p-4 mt-8">
+    <div class="max-w-6xl mx-auto text-center font-handwriting">
+     <p class="text-lg">화이팅! 💪 Buono studio!</p>
+     <p class="text-sm mt-1 opacity-75">한국어 학교 - Scuola di Coreano</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Config e SDK
+    const defaultConfig = {
+      main_title: '한국어 학교',
+      grammar_section_title: '📖 문법 - Grammatica',
+      exercises_section_title: '✏️ 연습 - Esercizi',
+      primary_color: '#f5e6d3',
+      secondary_color: '#92400e',
+      text_color: '#1c1917',
+      accent_color: '#dc2626',
+      button_color: '#facc15',
+      font_family: 'Gowun Dodum',
+      font_size: 16
+    };
+
+    let config = { ...defaultConfig };
+
+    // Dati Esercizi
+    const exercises = {
+      hangul: [
+        { question: 'Come si pronuncia ㄱ?', options: ['g/k', 'n', 'm', 'b'], correct: 0 },
+        { question: 'Quale vocale è ㅏ?', options: ['o', 'u', 'a', 'i'], correct: 2 },
+        { question: 'Come si legge 가?', options: ['na', 'ga', 'da', 'ma'], correct: 1 },
+        { question: 'Quale consonante fa "n"?', options: ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ'], correct: 1 },
+        { question: 'Come si pronuncia ㅎ?', options: ['k', 'p', 'h', 't'], correct: 2 },
+        { question: 'Quale sillaba è "ma"?', options: ['나', '다', '마', '바'], correct: 2 },
+      ],
+      vocab: [
+        { question: 'Cosa significa 사랑 (sarang)?', options: ['Amicizia', 'Amore', 'Famiglia', 'Casa'], correct: 1 },
+        { question: 'Come si dice "ciao" informale?', options: ['감사합니다', '안녕', '미안해', '잘가'], correct: 1 },
+        { question: 'Cosa significa 학교 (hakgyo)?', options: ['Casa', 'Lavoro', 'Scuola', 'Negozio'], correct: 2 },
+        { question: 'Come si dice "grazie"?', options: ['안녕하세요', '감사합니다', '죄송합니다', '네'], correct: 1 },
+        { question: 'Cosa significa 물 (mul)?', options: ['Fuoco', 'Terra', 'Acqua', 'Aria'], correct: 2 },
+        { question: 'Come si dice "sì"?', options: ['아니요', '네', '왜', '뭐'], correct: 1 },
+      ],
+      sentence: [
+        { question: '저는 학생___요. (Sono studente)', options: ['이에', '이', '을', '는'], correct: 0 },
+        { question: '사과___ 먹어요. (Mangio la mela)', options: ['은', '가', '를', '에'], correct: 2 },
+        { question: '한국___ 가요. (Vado in Corea)', options: ['를', '에', '은', '이'], correct: 1 },
+        { question: '저___ 김민수예요. (Io sono Kim Minsu)', options: ['가', '를', '는', '에'], correct: 2 },
+        { question: '책___ 읽어요. (Leggo il libro)', options: ['은', '을', '에', '가'], correct: 1 },
+      ]
+    };
+
+    let currentExerciseType = 'hangul';
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let totalAnswered = 0;
+    let shuffledExercises = [];
+
+    // Funzione shuffle
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    // Render Esercizio
+    function renderExercise() {
+      const area = document.getElementById('exercise-area');
+      
+      if (currentQuestionIndex >= shuffledExercises.length) {
+        area.innerHTML = `
+          <div class="text-center py-12">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="font-chalk text-3xl text-amber-900 mb-4">Complimenti!</h3>
+            <p class="font-handwriting text-xl text-gray-700">
+              Hai completato tutti gli esercizi di questa sezione!
+            </p>
+            <p class="font-handwriting text-lg text-gray-600 mt-2">
+              Punteggio finale: <span class="text-green-600 font-bold">${score}</span>/${totalAnswered}
+            </p>
+            <button onclick="resetExercises()" class="mt-6 pencil-btn bg-green-400 hover:bg-green-500 text-white px-6 py-3 rounded-lg font-handwriting text-xl shadow">
+              🔄 Riprova
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const exercise = shuffledExercises[currentQuestionIndex];
+      const shuffledOptions = exercise.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+      
+      area.innerHTML = `
+        <div class="exercise-card bg-white rounded-xl shadow-lg p-6 border-2 border-amber-200">
+          <div class="flex justify-between items-center mb-4">
+            <span class="bg-amber-200 text-amber-800 px-3 py-1 rounded-full font-handwriting">
+              Domanda ${currentQuestionIndex + 1}/${shuffledExercises.length}
+            </span>
+            <span class="text-3xl">${currentExerciseType === 'hangul' ? '🔤' : currentExerciseType === 'vocab' ? '📚' : '📝'}</span>
+          </div>
+          
+          <h3 class="font-chalk text-2xl text-gray-800 mb-6 text-center">
+            ${exercise.question}
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="options-container">
+            ${shuffledOptions.map((opt, idx) => `
+              <button 
+                class="option-btn pencil-btn bg-amber-100 hover:bg-amber-200 text-amber-900 p-4 rounded-lg font-handwriting text-xl border-2 border-amber-300 transition-all"
+                data-index="${opt.originalIndex}"
+              >
+                ${opt.text}
+              </button>
+            `).join('')}
+          </div>
+          
+          <div id="feedback" class="mt-6 text-center hidden">
+          </div>
+        </div>
+      `;
+
+      // Event listeners per opzioni
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
+      });
+    }
+
+    // Gestione Risposta
+    function handleAnswer(selectedIndex) {
+      const exercise = shuffledExercises[currentQuestionIndex];
+      const isCorrect = selectedIndex === exercise.correct;
+      const feedback = document.getElementById('feedback');
+      const buttons = document.querySelectorAll('.option-btn');
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        const idx = parseInt(btn.dataset.index);
+        if (idx === exercise.correct) {
+          btn.classList.remove('bg-amber-100', 'hover:bg-amber-200', 'border-amber-300');
+          btn.classList.add('bg-green-400', 'border-green-500', 'correct-answer');
+        } else if (idx === selectedIndex && !isCorrect) {
+          btn.classList.remove('bg-amber-100', 'hover:bg-amber-200', 'border-amber-300');
+          btn.classList.add('bg-red-400', 'border-red-500');
+        }
+      });
+
+      totalAnswered++;
+      if (isCorrect) {
+        score++;
+        feedback.innerHTML = `
+          <div class="text-green-600 font-handwriting text-xl">
+            ✅ 정답! Corretto! 잘했어요!
+          </div>
+        `;
+      } else {
+        feedback.innerHTML = `
+          <div class="text-red-600 font-handwriting text-xl">
+            ❌ 틀렸어요! La risposta corretta era: <strong>${exercise.options[exercise.correct]}</strong>
+          </div>
+        `;
+      }
+
+      feedback.classList.remove('hidden');
+      updateScore();
+
+      // Prossima domanda dopo delay
+      setTimeout(() => {
+        currentQuestionIndex++;
+        renderExercise();
+      }, 1500);
+    }
+
+    // Aggiorna punteggio
+    function updateScore() {
+      document.getElementById('score').textContent = score;
+      document.getElementById('total').textContent = totalAnswered;
+    }
+
+    // Reset esercizi
+    function resetExercises() {
+      currentQuestionIndex = 0;
+      score = 0;
+      totalAnswered = 0;
+      shuffledExercises = shuffleArray(exercises[currentExerciseType]);
+      updateScore();
+      renderExercise();
+    }
+
+    // Cambio tipo esercizio
+    function changeExerciseType(type) {
+      currentExerciseType = type;
+      document.querySelectorAll('.exercise-type-btn').forEach(btn => {
+        btn.classList.remove('active', 'ring-2', 'ring-offset-2', 'ring-amber-500');
+        if (btn.dataset.type === type) {
+          btn.classList.add('active', 'ring-2', 'ring-offset-2', 'ring-amber-500');
+        }
+      });
+      resetExercises();
+    }
+
+    // Tab Navigation
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('tab-active');
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('tab-active');
+        }
+      });
+
+      document.getElementById('grammar-section').classList.toggle('hidden', tabName !== 'grammar');
+      document.getElementById('exercises-section').classList.toggle('hidden', tabName !== 'exercises');
+
+      if (tabName === 'exercises' && shuffledExercises.length === 0) {
+        resetExercises();
+      }
+    }
+
+    // Accordion
+    function setupAccordions() {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const content = header.nextElementSibling;
+          const icon = header.querySelector('.accordion-icon');
+          
+          content.classList.toggle('open');
+          icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+      });
+    }
+
+    // onConfigChange
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      // Aggiorna titoli
+      const mainTitle = document.getElementById('main-title');
+      if (mainTitle) mainTitle.textContent = config.main_title || defaultConfig.main_title;
+      
+      const grammarTitle = document.getElementById('grammar-title');
+      if (grammarTitle) grammarTitle.textContent = config.grammar_section_title || defaultConfig.grammar_section_title;
+      
+      const exercisesTitle = document.getElementById('exercises-title');
+      if (exercisesTitle) exercisesTitle.textContent = config.exercises_section_title || defaultConfig.exercises_section_title;
+      
+      // Aggiorna colori
+      const appWrapper = document.getElementById('app-wrapper');
+      if (appWrapper) {
+        appWrapper.style.background = `linear-gradient(135deg, ${config.primary_color} 0%, ${adjustColor(config.primary_color, -10)} 100%)`;
+      }
+      
+      // Aggiorna font
+      const customFont = config.font_family || defaultConfig.font_family;
+      document.body.style.fontFamily = `${customFont}, sans-serif`;
+      
+      // Aggiorna dimensione font
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.documentElement.style.fontSize = `${baseSize}px`;
+    }
+
+    // Helper per modificare colori
+    function adjustColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const amt = Math.round(2.55 * percent);
+      const R = (num >> 16) + amt;
+      const G = (num >> 8 & 0x00FF) + amt;
+      const B = (num & 0x0000FF) + amt;
+      return '#' + (0x1000000 + 
+        (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + 
+        (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + 
+        (B < 255 ? (B < 1 ? 0 : B) : 255)
+      ).toString(16).slice(1);
+    }
+
+    // mapToCapabilities
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              cfg.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => cfg.button_color || defaultConfig.button_color,
+            set: (value) => {
+              cfg.button_color = value;
+              window.elementSdk.setConfig({ button_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => {
+            cfg.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => {
+            cfg.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    // mapToEditPanelValues
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['main_title', cfg.main_title || defaultConfig.main_title],
+        ['grammar_section_title', cfg.grammar_section_title || defaultConfig.grammar_section_title],
+        ['exercises_section_title', cfg.exercises_section_title || defaultConfig.exercises_section_title]
+      ]);
+    }
+
+    // Init
+    function init() {
+      // Setup accordions
+      setupAccordions();
+
+      // Tab listeners
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Exercise type listeners
+      document.querySelectorAll('.exercise-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => changeExerciseType(btn.dataset.type));
+      });
+
+      // Reset button
+      document.getElementById('reset-btn').addEventListener('click', resetExercises);
+
+      // Init SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      }
+    }
+
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c948f1130e3ee5d',t:'MTc3MDMxNzA2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

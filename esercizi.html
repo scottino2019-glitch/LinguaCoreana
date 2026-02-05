@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esercizi Coreano</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .font-korean {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .drag-item {
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+    }
+    .drag-item:active,
+    .drag-item.dragging {
+      cursor: grabbing;
+      transform: scale(1.08) !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      z-index: 1000;
+    }
+    .drop-zone {
+      min-height: 60px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .drop-zone.drag-over {
+      transform: scale(1.02);
+      box-shadow: inset 0 0 12px rgba(233, 69, 96, 0.3);
+    }
+    .particle-tag {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      position: absolute;
+      top: -8px;
+      right: -4px;
+    }
+    @keyframes bounce-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .animate-bounce-in {
+      animation: bounce-in 0.4s ease-out;
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-out;
+    }
+    .progress-bar {
+      transition: width 0.5s ease-out;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-korean">
+  <div id="app-container" class="h-full overflow-auto">
+   <div class="min-h-full p-4 md:p-8">
+    <div class="max-w-2xl mx-auto"><!-- Header -->
+     <header class="text-center mb-8">
+      <h1 id="main-title" class="text-2xl md:text-3xl font-bold mb-2">Esercizi di Coreano</h1>
+      <p class="text-sm opacity-80">Costruzione delle frasi con particelle e verbo essere</p>
+     </header><!-- Progress -->
+     <div class="mb-6">
+      <div class="flex justify-between text-sm mb-2"><span>Progresso</span> <span id="progress-text">0 / 8</span>
+      </div>
+      <div class="h-3 rounded-full overflow-hidden" style="background: rgba(255,255,255,0.3);">
+       <div id="progress-bar" class="progress-bar h-full rounded-full" style="width: 0%;"></div>
+      </div>
+     </div><!-- Score -->
+     <div class="flex justify-center gap-6 mb-6 text-center">
+      <div class="px-4 py-2 rounded-lg" style="background: rgba(255,255,255,0.2);">
+       <div class="text-2xl font-bold" id="correct-count">
+        0
+       </div>
+       <div class="text-xs">
+        Corrette
+       </div>
+      </div>
+      <div class="px-4 py-2 rounded-lg" style="background: rgba(255,255,255,0.2);">
+       <div class="text-2xl font-bold" id="wrong-count">
+        0
+       </div>
+       <div class="text-xs">
+        Sbagliate
+       </div>
+      </div>
+     </div><!-- Exercise Card -->
+     <div id="exercise-card" class="rounded-2xl p-6 mb-6 shadow-xl"><!-- Particle Legend -->
+      <div id="particle-legend" class="mb-4 p-3 rounded-lg text-xs">
+       <div class="font-bold mb-2">
+        📚 Particelle:
+       </div>
+       <div class="grid grid-cols-2 md:grid-cols-3 gap-2"><span><strong>은/는</strong> - Soggetto (tema)</span> <span><strong>이/가</strong> - Soggetto</span> <span><strong>을/를</strong> - Oggetto</span> <span><strong>에</strong> - Luogo/Tempo</span> <span><strong>에서</strong> - Luogo (azione)</span> <span><strong>의</strong> - Possesso</span>
+       </div>
+      </div><!-- Question -->
+      <div class="mb-4">
+       <div class="text-sm opacity-70 mb-1">
+        Traduci in coreano:
+       </div>
+       <div id="question-text" class="text-xl font-semibold"></div>
+      </div><!-- Hint -->
+      <div id="hint-box" class="mb-4 p-3 rounded-lg text-sm" style="background: rgba(255,255,255,0.1);"><span class="font-bold">💡 Suggerimento:</span> <span id="hint-text"></span>
+      </div><!-- Drop Zone -->
+      <div class="mb-4">
+       <div class="text-sm opacity-70 mb-2">
+        Costruisci la frase (trascina le parole):
+       </div>
+       <div id="drop-zone" class="drop-zone rounded-xl p-4 flex flex-wrap gap-2 min-h-16 border-2 border-dashed" style="border-color: rgba(255,255,255,0.3);"><span class="opacity-50 text-sm" id="drop-placeholder">Trascina qui le parole...</span>
+       </div>
+      </div><!-- Word Bank -->
+      <div class="mb-4">
+       <div class="text-sm opacity-70 mb-2">
+        Parole disponibili:
+       </div>
+       <div id="word-bank" class="flex flex-wrap gap-2 min-h-12 p-2 rounded-lg" style="background: rgba(255,255,255,0.1);"></div>
+      </div><!-- Feedback -->
+      <div id="feedback" class="hidden text-center p-4 rounded-xl mb-4 font-bold text-lg"></div><!-- Explanation -->
+      <div id="explanation" class="hidden p-4 rounded-lg text-sm mb-4"></div><!-- Buttons -->
+      <div class="flex gap-3 justify-center"><button id="check-btn" class="px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95"> Verifica ✓ </button> <button id="reset-btn" class="px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95" style="background: rgba(255,255,255,0.2);"> Riprova ↺ </button> <button id="next-btn" class="hidden px-6 py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95"> Prossimo → </button>
+      </div>
+     </div><!-- Completion Screen -->
+     <div id="completion-screen" class="hidden rounded-2xl p-8 text-center shadow-xl">
+      <div class="text-6xl mb-4">
+       🎊
+      </div>
+      <h2 class="text-2xl font-bold mb-2">Complimenti!</h2>
+      <p class="mb-4">Hai completato tutti gli esercizi!</p>
+      <div class="text-4xl font-bold mb-2" id="final-score">
+       0/8
+      </div>
+      <p class="text-sm opacity-70 mb-6">Risposte corrette</p><button id="restart-btn" class="px-8 py-3 rounded-xl font-bold transition-all hover:scale-105 active:scale-95"> Ricomincia 🔄 </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      app_title: 'Esercizi di Coreano',
+      correct_message: 'Corretto! 🎉',
+      incorrect_message: 'Riprova! 💪',
+      background_color: '#1a1a2e',
+      surface_color: '#16213e',
+      text_color: '#eaeaea',
+      primary_action_color: '#e94560',
+      secondary_action_color: '#0f3460'
+    };
+
+    let config = { ...defaultConfig };
+
+    const exercises = [
+      {
+        italian: "Io sono uno studente.",
+        korean: ["저", "는", "학생", "이에요"],
+        words: ["저", "는", "학생", "이에요", "을", "에서"],
+        particles: { "는": "sogg", "이에요": "essere" },
+        hint: "저 = io, 학생 = studente, 는 = particella tema, 이에요 = sono/è",
+        explanation: "저는 학생이에요 - '는' marca il tema della frase, '이에요' è il verbo essere per parole che finiscono in consonante."
+      },
+      {
+        italian: "Il gatto è a casa.",
+        korean: ["고양이", "가", "집", "에", "있어요"],
+        words: ["고양이", "가", "집", "에", "있어요", "는", "를"],
+        particles: { "가": "sogg", "에": "luogo", "있어요": "esiste" },
+        hint: "고양이 = gatto, 집 = casa, 에 = a/in (luogo), 있어요 = c'è/esiste",
+        explanation: "고양이가 집에 있어요 - '가' marca il soggetto, '에' indica il luogo statico, '있어요' significa 'c'è/esiste'."
+      },
+      {
+        italian: "Studio coreano a scuola.",
+        korean: ["학교", "에서", "한국어", "를", "공부해요"],
+        words: ["학교", "에서", "한국어", "를", "공부해요", "에", "이"],
+        particles: { "에서": "luogo-az", "를": "oggetto" },
+        hint: "학교 = scuola, 에서 = a/in (azione), 한국어 = coreano, 를 = particella oggetto",
+        explanation: "학교에서 한국어를 공부해요 - '에서' indica il luogo dove avviene un'azione, '를' marca l'oggetto diretto."
+      },
+      {
+        italian: "Questo è il libro di mia madre.",
+        korean: ["이것", "은", "어머니", "의", "책", "이에요"],
+        words: ["이것", "은", "어머니", "의", "책", "이에요", "가", "를"],
+        particles: { "은": "sogg", "의": "poss", "이에요": "essere" },
+        hint: "이것 = questo, 어머니 = madre, 의 = di (possesso), 책 = libro",
+        explanation: "이것은 어머니의 책이에요 - '의' indica il possesso (come 'di' in italiano)."
+      },
+      {
+        italian: "L'amico è coreano.",
+        korean: ["친구", "는", "한국", "사람", "이에요"],
+        words: ["친구", "는", "한국", "사람", "이에요", "가", "에"],
+        particles: { "는": "sogg", "이에요": "essere" },
+        hint: "친구 = amico, 한국 사람 = persona coreana, 는 = tema",
+        explanation: "친구는 한국 사람이에요 - Il soggetto è marcato con '는', 한국 사람 significa 'persona coreana'."
+      },
+      {
+        italian: "Mangio la mela.",
+        korean: ["사과", "를", "먹어요"],
+        words: ["사과", "를", "먹어요", "은", "에서", "가"],
+        particles: { "를": "oggetto" },
+        hint: "사과 = mela, 를 = oggetto, 먹어요 = mangio",
+        explanation: "사과를 먹어요 - '를' marca l'oggetto diretto (la mela che viene mangiata)."
+      },
+      {
+        italian: "Il caffè è sul tavolo.",
+        korean: ["커피", "가", "테이블", "위", "에", "있어요"],
+        words: ["커피", "가", "테이블", "위", "에", "있어요", "는", "를"],
+        particles: { "가": "sogg", "에": "luogo", "있어요": "esiste" },
+        hint: "커피 = caffè, 테이블 = tavolo, 위 = sopra, 에 = a/in",
+        explanation: "커피가 테이블 위에 있어요 - '위에' significa 'su/sopra', '있어요' indica esistenza/presenza."
+      },
+      {
+        italian: "Non sono un insegnante.",
+        korean: ["저", "는", "선생님", "이", "아니에요"],
+        words: ["저", "는", "선생님", "이", "아니에요", "가", "를"],
+        particles: { "는": "sogg", "이": "sogg", "아니에요": "non-essere" },
+        hint: "선생님 = insegnante, 아니에요 = non sono/non è",
+        explanation: "저는 선생님이 아니에요 - '아니에요' è la forma negativa del verbo essere, '이' marca il complemento predicativo."
+      },
+      {
+        italian: "Ho tre libri.",
+        korean: ["책", "이", "세", "권", "있어요"],
+        words: ["책", "이", "세", "권", "있어요", "를", "에"],
+        particles: { "이": "sogg", "권": "classif" },
+        hint: "책 = libro, 세 = tre, 권 = classificatore per libri, 있어요 = ho/ci sono",
+        explanation: "책이 세 권 있어요 - '권' è il classificatore per i libri. In coreano si usa sempre un classificatore con i numeri (권 per libri, 명 per persone, 개 per oggetti generici)."
+      },
+      {
+        italiano: "Ci sono cinque persone.",
+        korean: ["사람", "이", "다섯", "명", "있어요"],
+        words: ["사람", "이", "다섯", "명", "있어요", "가", "를"],
+        particles: { "이": "sogg", "명": "classif" },
+        hint: "사람 = persona, 다섯 = cinque, 명 = classificatore per persone, 있어요 = ci sono",
+        explanation: "사람이 다섯 명 있어요 - '명' è il classificatore per le persone. Quando contiamo persone in coreano, usiamo sempre '명'."
+      },
+      {
+        italian: "Compro due tazze di caffè.",
+        korean: ["커피", "를", "두", "잔", "사요"],
+        words: ["커피", "를", "두", "잔", "사요", "이", "에"],
+        particles: { "를": "oggetto", "잔": "classif" },
+        hint: "커피 = caffè, 를 = particella oggetto, 두 = due, 잔 = classificatore per tazze/bicchieri",
+        explanation: "커피를 두 잔 사요 - '잔' è il classificatore per tazze, bicchieri e tazze di bevande. Il classificatore va sempre dopo il numero e l'oggetto."
+      },
+      {
+        italian: "Ci sono dieci studenti nella classe.",
+        korean: ["교실", "에", "학생", "이", "열", "명", "있어요"],
+        words: ["교실", "에", "학생", "이", "열", "명", "있어요", "를", "는"],
+        particles: { "에": "luogo", "이": "sogg", "명": "classif" },
+        hint: "교실 = classe, 에 = in (luogo), 학생 = studente, 열 = dieci, 명 = classificatore per persone",
+        explanation: "교실에 학생이 열 명 있어요 - Con i numeri e i conteggi, il classificatore (명) viene dopo il numero. La struttura è: luogo + particella 에 + oggetto + particella 이 + numero + classificatore + verbo."
+      },
+    {
+    italian: "Ci sono studenti nell'aula.",
+    korean: ["교실", "에", "학생", "이", "있어요"],
+    words: ["교실", "에", "학생", "이", "열", "명", "있어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "교실 = aula/classe, 에 = in (luogo), 학생 = studente, 있어요 = c'è/ci sono",
+    explanation: "교실에 학생이 있어요 - Struttura: luogo + 에 + soggetto + 이/가 + 있어요 (c'è / ci sono)."
+  },
+  {
+    italian: "Ci sono dieci studenti nell'aula.",
+    korean: ["교실", "에", "학생", "이", "열", "명", "있어요"],
+    words: ["교실", "에", "학생", "이", "열", "명", "있어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg", "명": "classif" },
+    hint: "교실 = aula/classe, 열 = dieci, 명 = classificatore per persone",
+    explanation: "교실에 학생이 열 명 있어요 - Con i numeri il classificatore (명) viene dopo il numero: numero + classificatore."
+  },
+  {
+    italian: "C'è un tavolo libero qui?",
+    korean: ["여기", "에", "빈", "자리", "가", "있어요"],
+    words: ["여기", "에", "빈", "자리", "가", "있어요", "없어요", "는"],
+    particles: { "에": "luogo", "가": "sogg" },
+    hint: "여기 = qui, 빈 자리 = posto/tavolo libero, 있어요? = c'è?",
+    explanation: "여기에 빈 자리가 있어요? - luogo + 에 + soggetto + 이/가 + 있어요? per chiedere 'c'è...?'. 에 dopo 여기 si può anche omettere."
+  },
+  {
+    italian: "Qui non ci sono posti liberi.",
+    korean: ["여기", "에", "빈", "자리", "가", "없어요"],
+    words: ["여기", "에", "빈", "자리", "가", "있어요", "없어요", "는"],
+    particles: { "에": "luogo", "가": "sogg" },
+    hint: "없어요 = non c'è / non ci sono",
+    explanation: "여기에 빈 자리가 없어요 - Negazione di 있어요: 없다 = non esserci, non esistere."
+  },
+  {
+    italian: "Lo studente è in classe.",
+    korean: ["학생", "이", "교실", "에", "있어요"],
+    words: ["학생", "이", "교실", "에", "있어요", "를", "는"],
+    particles: { "이": "sogg", "에": "luogo" },
+    hint: "학생 = studente, 교실 = classe",
+    explanation: "학생이 교실에 있어요 - Soggetto + 이/가 + luogo + 에 + 있어요 per dire 'X è in Y'."
+  },
+  {
+    italian: "Lo studente non è in classe.",
+    korean: ["학생", "이", "교실", "에", "없어요"],
+    words: ["학생", "이", "교실", "에", "있어요", "없어요", "를", "는"],
+    particles: { "이": "sogg", "에": "luogo" },
+    hint: "없어요 = non c'è / non è (lì)",
+    explanation: "학생이 교실에 없어요 - Stessa struttura di 있어요, ma con 없어요 per dire che non è presente nel luogo."
+  },
+  {
+    italian: "Dov'è l'insegnante?",
+    korean: ["선생님", "이", "어디", "에", "있어요"],
+    words: ["선생님", "이", "어디", "에", "있어요", "예요", "를", "는"],
+    particles: { "이": "sogg", "에": "luogo" },
+    hint: "어디에 있어요? = dov'è (in che posto)?",
+    explanation: "선생님이 어디에 있어요? - Soggetto + 이/가 + 어디에 + 있어요? per chiedere dove si trova una persona o una cosa."
+  },
+  {
+    italian: "Il libro è in classe.",
+    korean: ["책", "이", "교실", "에", "있어요"],
+    words: ["책", "이", "교실", "에", "있어요", "를", "는"],
+    particles: { "이": "sogg", "에": "luogo" },
+    hint: "책 = libro",
+    explanation: "책이 교실에 있어요 - Puoi anche dire 교실에 책이 있어요, ma la struttura delle particelle non cambia."
+  },
+  {
+    italian: "Ho tempo.",
+    korean: ["시간", "이", "있어요"],
+    words: ["시간", "이", "있어요", "없어요", "를", "는"],
+    particles: { "이": "sogg" },
+    hint: "시간 = tempo, 있어요 con concetti astratti può significare 'ho ...'",
+    explanation: "시간이 있어요 - Letteralmente 'tempo c'è', usato come 'ho tempo'."
+  },
+  {
+    italian: "Non ho soldi.",
+    korean: ["돈", "이", "없어요"],
+    words: ["돈", "이", "있어요", "없어요", "를", "는"],
+    particles: { "이": "sogg" },
+    hint: "돈 = soldi, 없어요 = non ho / non c'è",
+    explanation: "돈이 없어요 - Letteralmente 'soldi non ci sono', significa 'non ho soldi'."
+  },
+  {
+    italian: "È uno studente.",
+    korean: ["학생", "이에요"],
+    words: ["학생", "이에요", "예요", "이", "가"],
+    particles: {},
+    hint: "학생 = studente, 이에요/예요 = è (forma cortese)",
+    explanation: "학생이에요 - 이다 nella forma cortese 이에요 per dire 'è ...' con un nome che finisce in consonante."
+  },
+  {
+    italian: "Non è un insegnante.",
+    korean: ["선생님", "이", "아니에요"],
+    words: ["선생님", "이", "아니에요", "예요", "를", "는"],
+    particles: { "이": "sogg" },
+    hint: "아니다 = non essere, si usa con 이/가",
+    explanation: "선생님이 아니ये요 - Struttura: nome + 이/가 + 아니에요 per dire 'non è ...'."
+  },
+  {
+    italian: "Io non sono italiano.",
+    korean: ["저", "는", "이탈리아", "사람", "이", "아니에요"],
+    words: ["저", "는", "이탈리아", "사람", "이", "아니에요", "예요"],
+    particles: { "는": "tema", "이": "sogg (con 아니다)" },
+    hint: "이탈리아 사람 = italiano (persona), 저는 = quanto a me",
+    explanation: "저는 이탈리아 사람이 아니에요 - 는 marca il tema 'io', 이/가 prima di 아니에요 marca ciò che 'non è'."
+  },
+  {
+    italian: "Sei coreano?",
+    korean: ["한국", "사람", "이에요"],
+    words: ["한국", "사람", "이에요", "예요", "이", "가"],
+    particles: {},
+    hint: "한국 사람 = persona coreana",
+    explanation: "한국 사람이에요? - Domanda con intonazione, stessa struttura di 'è ...?' usando 이에요."
+  },
+  {
+    italian: "Sì, sono coreano.",
+    korean: ["네", "저", "는", "한국", "사람", "이에요"],
+    words: ["네", "아니요", "저", "는", "한국", "사람", "이에요"],
+    particles: { "는": "tema" },
+    hint: "네 = sì, 저는 = quanto a me",
+    explanation: "네, 저는 한국 사람이에요 - Risposta affermativa usando la stessa struttura di identificazione con 이다."
+  },
+  {
+    italian: "No, non sono coreano.",
+    korean: ["아니요", "저", "는", "한국", "사람", "이", "아니에요"],
+    words: ["네", "아니요", "저", "는", "한국", "사람", "이", "아니에요"],
+    particles: { "는": "tema", "이": "sogg (con 아니다)" },
+    hint: "아니요 = no (come risposta), 아니에요 = non è",
+    explanation: "아니요, 저는 한국 사람이 아니에요 - Combinazione di risposta negativa (아니요) e verbo 아니다 in forma cortese."
+  },
+{
+    italian: "C'è una matita sul tavolo.",
+    korean: ["책상", "위", "에", "연필", "이", "있어요"],
+    words: ["책상", "위", "에", "연필", "이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "책상 위에 = sopra il tavolo.",
+    explanation: "책상 위에 연필이 있어요 - luogo + 에 + soggetto + 이/가 + 있어요."
+  },
+  {
+    italian: "Non c'è una matita sul tavolo.",
+    korean: ["책상", "위", "에", "연필", "이", "없어요"],
+    words: ["책상", "위", "에", "연필", "이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "Stessa struttura, ma con 없어요.",
+    explanation: "책상 위에 연필이 없어요 - 'Sopra il tavolo non c'è la matita'."
+  },
+  {
+    italian: "Ci sono molti studenti qui.",
+    korean: ["여기", "에", "학생", "이", "많이", "있어요"],
+    words: ["여기", "에", "학생", "이", "많이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "많이 = molto / in gran numero.",
+    explanation: "여기에 학생이 많이 있어요 - 'Qui ci sono molti studenti'. 에 dopo 여기 si può omettere."
+  },
+  {
+    italian: "In classe non c'è nessuno.",
+    korean: ["교실", "에", "사람", "이", "없어요"],
+    words: ["교실", "에", "사람", "이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "사람 = persona / gente.",
+    explanation: "교실에 사람이 없어요 - letteralmente 'in classe non ci sono persone'."
+  },
+  {
+    italian: "Ho un fratello maggiore.",
+    korean: ["오빠", "가", "있어요"],
+    words: ["오빠", "가", "있어요", "없어요", "를", "는"],
+    particles: { "가": "sogg" },
+    hint: "오빠 = fratello maggiore (per una donna).",
+    explanation: "오빠가 있어요 - 'c'è un fratello maggiore' → 'ho un fratello maggiore'."
+  },
+  {
+    italian: "Non ho sorella maggiore.",
+    korean: ["언니", "가", "없어요"],
+    words: ["언니", "가", "있어요", "없어요", "를", "는"],
+    particles: { "가": "sogg" },
+    hint: "언니 = sorella maggiore (per una donna).",
+    explanation: "언니가 없어요 - 'sorella maggiore non c'è' → 'non ho una sorella maggiore'."
+  },
+  {
+    italian: "Nel frigorifero c'è acqua.",
+    korean: ["냉장고", "에", "물", "이", "있어요"],
+    words: ["냉장고", "에", "물", "이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "냉장고 = frigorifero, 물 = acqua.",
+    explanation: "냉장고에 물이 있어요 - 'Nel frigo c'è acqua'."
+  },
+  {
+    italian: "Nel frigorifero non c'è acqua.",
+    korean: ["냉장고", "에", "물", "이", "없어요"],
+    words: ["냉장고", "에", "물", "이", "있어요", "없어요", "를", "는"],
+    particles: { "에": "luogo", "이": "sogg" },
+    hint: "Stessa frase, negata.",
+    explanation: "냉장고에 물이 없어요 - 'Nel frigo non c'è acqua'."
+  },
+  {
+    italian: "Io vedo il libro.",
+    korean: ["저", "는", "책", "을", "봐요"],
+    words: ["저", "는", "책", "을", "봐요", "가", "이"],
+    particles: { "는": "tema", "을": "oggetto" },
+    hint: "저 = io, 책 = libro, 을 dopo vocale per oggetto diretto.",
+    explanation: "저는 책을 봐요 - Tema (io) + particella 는 + oggetto (libro) + 을 + verbo. 는 marca il tema, 을 marca l'oggetto."
+  },
+  {
+    italian: "Il cane mangia la mela.",
+    korean: ["개", "가", "사과", "를", "먹어요"],
+    words: ["개", "가", "사과", "를", "먹어요", "는", "을"],
+    particles: { "가": "sogg", "를": "oggetto" },
+    hint: "개 = cane, 사과 = mela, 가 per soggetto nuovo, 를 dopo vocale.",
+    explanation: "개가 사과를 먹어요 - Soggetto + 가 (focus) + oggetto + 를 + verbo. 가 introduce soggetto nuovo nel discorso."
+  },
+  {
+    italian: "Io ho una penna.",
+    korean: ["저", "는", "펜", "이", "있어요"],
+    words: ["저", "는", "펜", "이", "있어요", "가", "을"],
+    particles: { "는": "tema", "이": "sogg" },
+    hint: "펜 = penna, 저는 = quanto a me (tema), 이 per soggetto del possesso.",
+    explanation: "저는 펜이 있어요 - Tema (io) + 는 + oggetto posseduto + 이/가 + 있어요 per esprimere possesso."
+  },
+  {
+    italian: "Mia sorella ha un libro.",
+    korean: ["언니", "가", "책", "이", "있어요"],
+    words: ["언니", "가", "책", "이", "있어요", "는", "을"],
+    particles: { "가": "sogg", "이": "sogg" },
+    hint: "언니 = sorella maggiore, 가 per possessore, 이 per cosa posseduta.",
+    explanation: "언니가 책이 있어요 - Possessore + 가 + posseduto + 이/가 + 있어요. Entrambi prendono particelle soggetto."
+  },
+  {
+    italian: "Dov'è il mio libro?",
+    korean: ["제", "책", "이", "어디", "에", "있어요"],
+    words: ["제", "책", "이", "어디", "에", "있어요", "가", "를"],
+    particles: { "이": "sogg", "에": "luogo" },
+    hint: "제 = mio, 어디에 있어요? = dov'è?",
+    explanation: "제 책이 어디에 있어요? - 제 marca possessivo, 이 per soggetto, 어디에 + 있어요 per chiedere posizione."
+  },
+  {
+    italian: "Io leggo il giornale di Marco.",
+    korean: ["저", "는", "마르코", "가", "신문", "을", "봐요"],
+    words: ["저", "는", "마르코", "가", "신문", "을", "봐요"],
+    particles: { "는": "tema", "가": "sogg", "을": "oggetto" },
+    hint: "신문 = giornale, 마르코가 신문 = il giornale di Marco.",
+    explanation: "저는 마르코가 신문 을 봐요 - Possesso con 가, io (tema) + 는, oggetto + 을."
+  },
+  {
+    italian: "La mamma compra il latte per il bambino.",
+    korean: ["엄마", "가", "아기", "를", "위해", "우유", "를", "사요"],
+    words: ["엄마", "가", "아기", "를", "위해", "우유", "를", "사요"],
+    particles: { "가": "sogg", "를": "oggetto", "위해": "beneficiario" },
+    hint: "엄마 = mamma, 위해 = per (beneficio), 두 oggetti con 를.",
+    explanation: "엄만가 아기를 위해 우유를 사요 - Soggetto + 가, beneficiario + 를 + 위해, oggetto + 를."
+  },
+  {
+    italian: "Tu conosci il professore?",
+    korean: ["너", "는", "선생님", "을", "알아요"],
+    words: ["너", "는", "선생님", "을", "알아요", "가", "이"],
+    particles: { "는": "tema", "을": "oggetto" },
+    hint: "너 = tu, 선생님 = professore, 알다 = conoscere.",
+    explanation: "너는 선생님을 알아요? - Tema (tu) + 는 + oggetto conosciuto + 을 + 알다."
+  },
+  {
+    italian: "Dov'è la borsa di mia madre?",
+    korean: ["엄마", "가", "가방", "이", "어디", "에", "있어요"],
+    words: ["엄마", "가", "가방", "이", "어디", "에", "있어요"],
+    particles: { "가": "sogg", "이": "sogg", "에": "luogo" },
+    hint: "가방 = borsa, 엄마가 가방 = borsa di mamma.",
+    explanation: "엄마가 가방이 어디에 있어요? - Possesso + dove si trova."
+  },
+  {
+    italian: "Io non mangio carne.",
+    korean: ["저", "는", "고기", "를", "안", "먹어요"],
+    words: ["저", "는", "고기", "를", "안", "먹어요", "없어요"],
+    particles: { "는": "tema", "를": "oggetto" },
+    hint: "고기 = carne, 안 + verbo = negazione.",
+    explanation: "저는 고기를 안 먹어요 - Tema + 는 + oggetto negato + 를 + 안 + verbo."
+  }
+    ];
+
+    let currentExercise = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let droppedWords = [];
+    let draggedElement = null;
+
+    function applyStyles() {
+      const appContainer = document.getElementById('app-container');
+      const exerciseCard = document.getElementById('exercise-card');
+      const completionScreen = document.getElementById('completion-screen');
+      const checkBtn = document.getElementById('check-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const restartBtn = document.getElementById('restart-btn');
+      const progressBar = document.getElementById('progress-bar');
+      const mainTitle = document.getElementById('main-title');
+      const particleLegend = document.getElementById('particle-legend');
+
+      appContainer.style.background = `linear-gradient(135deg, ${config.background_color} 0%, ${config.secondary_action_color} 100%)`;
+      appContainer.style.color = config.text_color;
+      
+      exerciseCard.style.background = config.surface_color;
+      exerciseCard.style.color = config.text_color;
+      
+      completionScreen.style.background = config.surface_color;
+      completionScreen.style.color = config.text_color;
+      
+      checkBtn.style.background = config.primary_action_color;
+      checkBtn.style.color = config.text_color;
+      
+      nextBtn.style.background = config.primary_action_color;
+      nextBtn.style.color = config.text_color;
+      
+      restartBtn.style.background = config.primary_action_color;
+      restartBtn.style.color = config.text_color;
+      
+      progressBar.style.background = config.primary_action_color;
+      
+      mainTitle.textContent = config.app_title;
+      mainTitle.style.color = config.text_color;
+      
+      particleLegend.style.background = config.secondary_action_color;
+      particleLegend.style.color = config.text_color;
+    }
+
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function createWordElement(word, particles, inDropZone = false) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'relative';
+      
+      const el = document.createElement('div');
+      el.className = 'drag-item px-4 py-2 rounded-lg font-bold text-lg transition-all hover:scale-105';
+      el.style.background = config.secondary_action_color;
+      el.style.color = config.text_color;
+      el.textContent = word;
+      el.dataset.word = word;
+      el.draggable = true;
+      
+      if (particles && particles[word]) {
+        const tag = document.createElement('span');
+        tag.className = 'particle-tag';
+        tag.style.background = config.primary_action_color;
+        tag.style.color = config.text_color;
+        const labels = {
+          'sogg': 'S',
+          'oggetto': 'O',
+          'luogo': 'L',
+          'luogo-az': 'L-az',
+          'poss': 'P',
+          'essere': '이다',
+          'esiste': '있다',
+          'non-essere': '아니다'
+        };
+        tag.textContent = labels[particles[word]] || particles[word];
+        wrapper.appendChild(tag);
+      }
+      
+      el.addEventListener('dragstart', handleDragStart);
+      el.addEventListener('dragend', handleDragEnd);
+      el.addEventListener('touchstart', handleTouchStart, { passive: false });
+      el.addEventListener('touchmove', handleTouchMove, { passive: false });
+      el.addEventListener('touchend', handleTouchEnd);
+      
+      wrapper.appendChild(el);
+      return wrapper;
+    }
+
+    function handleDragStart(e) {
+      draggedElement = e.target.closest('.drag-item');
+      if (!draggedElement) return;
+      draggedElement.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', draggedElement.innerHTML);
+    }
+
+    function handleDragEnd(e) {
+      if (draggedElement) {
+        draggedElement.classList.remove('dragging');
+      }
+      draggedElement = null;
+    }
+
+    let touchStartY = 0;
+    let touchElement = null;
+
+    function handleTouchStart(e) {
+      e.preventDefault();
+      touchElement = e.target.closest('.drag-item');
+      if (!touchElement) return;
+      
+      const touch = e.touches[0];
+      touchStartY = touch.clientY;
+      touchElement.style.opacity = '0.7';
+      touchElement.style.transform = 'scale(1.1)';
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+    }
+
+    function handleTouchEnd(e) {
+      if (!touchElement) return;
+      
+      const touch = e.changedTouches[0];
+      const dropZone = document.getElementById('drop-zone');
+      const wordBank = document.getElementById('word-bank');
+      
+      const dropRect = dropZone.getBoundingClientRect();
+      const bankRect = wordBank.getBoundingClientRect();
+      
+      touchElement.style.opacity = '1';
+      touchElement.style.transform = 'scale(1)';
+      
+      const word = touchElement.dataset.word;
+      const exercise = exercises[currentExercise];
+      
+      if (touch.clientY >= dropRect.top && touch.clientY <= dropRect.bottom) {
+        if (!touchElement.closest('#drop-zone')) {
+          droppedWords.push(word);
+          renderExercise();
+        }
+      } else if (touch.clientY >= bankRect.top && touch.clientY <= bankRect.bottom) {
+        if (touchElement.closest('#drop-zone')) {
+          const index = droppedWords.indexOf(word);
+          if (index > -1) {
+            droppedWords.splice(index, 1);
+            renderExercise();
+          }
+        }
+      }
+      
+      touchElement = null;
+    }
+
+    function setupDropZone() {
+      const dropZone = document.getElementById('drop-zone');
+      const wordBank = document.getElementById('word-bank');
+      
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+        dropZone.style.borderColor = config.primary_action_color;
+      });
+      
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+        dropZone.style.borderColor = 'rgba(255,255,255,0.3)';
+      });
+      
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        dropZone.style.borderColor = 'rgba(255,255,255,0.3)';
+        
+        if (draggedElement && !draggedElement.closest('#drop-zone')) {
+          const word = draggedElement.dataset.word;
+          droppedWords.push(word);
+          renderExercise();
+        }
+      });
+      
+      wordBank.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+      
+      wordBank.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedElement && draggedElement.closest('#drop-zone')) {
+          const word = draggedElement.dataset.word;
+          const index = droppedWords.indexOf(word);
+          if (index > -1) {
+            droppedWords.splice(index, 1);
+            renderExercise();
+          }
+        }
+      });
+    }
+
+    function renderExercise() {
+      const exercise = exercises[currentExercise];
+      const dropZone = document.getElementById('drop-zone');
+      const wordBank = document.getElementById('word-bank');
+      const questionText = document.getElementById('question-text');
+      const hintText = document.getElementById('hint-text');
+      const placeholder = document.getElementById('drop-placeholder');
+      
+      questionText.textContent = exercise.italian;
+      hintText.textContent = exercise.hint;
+      
+      dropZone.innerHTML = '';
+      if (droppedWords.length === 0) {
+        const placeholderEl = document.createElement('span');
+        placeholderEl.className = 'opacity-50 text-sm';
+        placeholderEl.id = 'drop-placeholder';
+        placeholderEl.textContent = 'Trascina qui le parole...';
+        dropZone.appendChild(placeholderEl);
+      } else {
+        droppedWords.forEach(word => {
+          dropZone.appendChild(createWordElement(word, exercise.particles, true));
+        });
+      }
+      
+      wordBank.innerHTML = '';
+      const availableWords = exercise.words.filter(w => !droppedWords.includes(w));
+      shuffleArray(availableWords).forEach(word => {
+        wordBank.appendChild(createWordElement(word, exercise.particles));
+      });
+      
+      document.getElementById('progress-text').textContent = `${currentExercise + 1} / ${exercises.length}`;
+      document.getElementById('progress-bar').style.width = `${((currentExercise + 1) / exercises.length) * 100}%`;
+      
+      document.getElementById('feedback').classList.add('hidden');
+      document.getElementById('explanation').classList.add('hidden');
+      document.getElementById('check-btn').classList.remove('hidden');
+      document.getElementById('next-btn').classList.add('hidden');
+    }
+
+    function checkAnswer() {
+      const exercise = exercises[currentExercise];
+      const isCorrect = JSON.stringify(droppedWords) === JSON.stringify(exercise.korean);
+      
+      const feedback = document.getElementById('feedback');
+      const explanation = document.getElementById('explanation');
+      
+      feedback.classList.remove('hidden');
+      feedback.classList.remove('animate-bounce-in', 'animate-shake');
+      
+      if (isCorrect) {
+        correctCount++;
+        document.getElementById('correct-count').textContent = correctCount;
+        feedback.textContent = config.correct_message;
+        feedback.style.background = '#10b981';
+        feedback.classList.add('animate-bounce-in');
+      } else {
+        wrongCount++;
+        document.getElementById('wrong-count').textContent = wrongCount;
+        feedback.textContent = config.incorrect_message + ` La risposta corretta è: ${exercise.korean.join(' ')}`;
+        feedback.style.background = config.primary_action_color;
+        feedback.classList.add('animate-shake');
+      }
+      
+      explanation.classList.remove('hidden');
+      explanation.style.background = config.secondary_action_color;
+      explanation.innerHTML = `<strong>📖 Spiegazione:</strong> ${exercise.explanation}`;
+      
+      document.getElementById('check-btn').classList.add('hidden');
+      document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextExercise() {
+      currentExercise++;
+      droppedWords = [];
+      
+      if (currentExercise >= exercises.length) {
+        showCompletion();
+      } else {
+        renderExercise();
+      }
+    }
+
+    function showCompletion() {
+      document.getElementById('exercise-card').classList.add('hidden');
+      document.getElementById('completion-screen').classList.remove('hidden');
+      document.getElementById('final-score').textContent = `${correctCount}/${exercises.length}`;
+    }
+
+    function resetExercise() {
+      droppedWords = [];
+      renderExercise();
+    }
+
+    function restartQuiz() {
+      currentExercise = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      droppedWords = [];
+      
+      document.getElementById('correct-count').textContent = '0';
+      document.getElementById('wrong-count').textContent = '0';
+      document.getElementById('exercise-card').classList.remove('hidden');
+      document.getElementById('completion-screen').classList.add('hidden');
+      
+      renderExercise();
+    }
+
+    async function onConfigChange(newConfig) {
+      config = { ...defaultConfig, ...newConfig };
+      applyStyles();
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_color || defaultConfig.background_color,
+            set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+          },
+          {
+            get: () => cfg.surface_color || defaultConfig.surface_color,
+            set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+          },
+          {
+            get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
+            set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }
+          },
+          {
+            get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || 'Noto Sans KR',
+          set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || 16,
+          set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['app_title', cfg.app_title || defaultConfig.app_title],
+        ['correct_message', cfg.correct_message || defaultConfig.correct_message],
+        ['incorrect_message', cfg.incorrect_message || defaultConfig.incorrect_message]
+      ]);
+    }
+
+    document.getElementById('check-btn').addEventListener('click', checkAnswer);
+    document.getElementById('reset-btn').addEventListener('click', resetExercise);
+    document.getElementById('next-btn').addEventListener('click', nextExercise);
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    setupDropZone();
+    applyStyles();
+    renderExercise();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c94524ab56c0e6f',t:'MTc3MDMxNDU3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
