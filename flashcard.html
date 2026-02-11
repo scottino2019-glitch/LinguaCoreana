@@ -1,0 +1,266 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Progetto Forgiato</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Poppins:wght@400;600;800&display=swap');
+
+.korean-flashcard-app {
+    font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+    background-color: #f7f9fc; /* Soft white/gray background */
+}
+
+/* Custom styles for the 3D flip card */
+.flashcard {
+    perspective: 1000px;
+    height: 280px; /* Increased height for better content visibility */
+    cursor: pointer;
+    user-select: none;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Front Face Styling (Korean, themed with Taegukgi Red) */
+.flashcard-front {
+    background: linear-gradient(135deg, #FF6B6B, #CD2E3A); 
+    color: white;
+    border: 4px solid #f7f9fc;
+    transition: background 0.3s;
+}
+.flashcard-front:hover {
+    background: linear-gradient(135deg, #FF7F7F, #E03541);
+}
+
+/* Back Face Styling (Explanation, themed with Taegukgi Blue) */
+.flashcard-back {
+    background-color: #e3f2fd; /* Light Blue */
+    color: #0047A0; /* Dark Korean Blue text */
+    transform: rotateY(180deg);
+    border: 4px solid #f7f9fc;
+    text-align: left;
+    padding: 25px;
+}
+
+.flashcard-back h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.flashcard-back p {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+.flashcard-front .emoji {
+    font-size: 3.5rem;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.2));
+}
+.flashcard-front .korean-text {
+    font-size: 2.8rem;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.2;
+}</style></head><body><div class="korean-flashcard-app min-h-screen p-4 sm:p-8">
+    <header class="text-center py-8 mb-6">
+        <h1 class="text-5xl font-extrabold mb-3 text-red-700 tracking-tight">🇰🇷 Coreano Veloce 🇰🇷</h1>
+        <p class="text-xl text-gray-700 font-light">Vocabolario essenziale, grammatica e micro-spiegazioni interattive.</p>
+    </header>
+
+    <div class="container mx-auto px-4">
+        <!-- Search Bar -->
+        <div class="relative max-w-2xl mx-auto mb-10">
+            <input type="text" id="search-input" placeholder="Cerca vocabolo, grammatica, tag o spiegazione..." 
+                   class="w-full p-4 pl-12 text-lg border-4 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-400 focus:border-blue-600 shadow-lg transition duration-300 outline-none">
+            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl"></i>
+        </div>
+
+        <!-- Flashcard Grid -->
+        <div id="flashcard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Flashcards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="no-results" class="hidden text-center mt-20 p-8 bg-blue-50 border-t-4 border-blue-500 text-blue-700 max-w-lg mx-auto rounded-xl shadow-inner">
+            <i class="fas fa-exclamation-circle text-3xl mb-3"></i>
+            <p class="text-xl font-semibold">Nessun risultato trovato.</p>
+            <p>Prova una parola chiave diversa o controlla i tag.</p>
+        </div>
+    </div>
+</div><script>const flashcardsData = [
+    { id: 1, front: "안녕하세요", back: "Ciao, Salve (forma cortese). Usato in quasi tutte le situazioni d'incontro.", emoji: "👋", tags: ["saluto", "base"] },
+    { id: 2, front: "감사합니다", back: "Grazie (forma cortese). Si traduce letteralmente con 'sono grato'.", emoji: "🙏", tags: ["cortesia", "base"] },
+    { id: 3, front: "네", back: "Sì / Certo / Ho capito. Spesso usato anche solo per riconoscere che si è ascoltato l'interlocutore.", emoji: "✅", tags: ["risposta", "base"] },
+    { id: 4, front: "아니요", back: "No / Non lo è. La negazione formale. Per un rifiuto meno formale si usa '아니'.", emoji: "❌", tags: ["risposta", "base"] },
+    { id: 5, front: "이/가", back: "Particella Nominativa. Indica il soggetto della frase. '이' dopo consonante, '가' dopo vocale.", emoji: "📝", tags: ["grammatica", "particella", "soggetto"] },
+    { id: 6, front: "입니다", back: "È (forma dichiarativa, molto formale). Viene attaccato al nome (N + 입니다) per definire l'identità.", emoji: "🎓", tags: ["grammatica", "verbo", "formale"] },
+    { id: 7, front: "사과", back: "Mela. Attenzione: può anche significare 'apology' (scusa). Il contesto definisce il significato.", emoji: "🍎", tags: ["vocabolario", "frutta", "doppiosenso"] },
+    { id: 8, front: "물", back: "Acqua. Molto semplice, una delle prime parole da imparare.", emoji: "💧", tags: ["vocabolario", "liquido", "base"] },
+    { id: 9, front: "주세요", back: "Per favore, dammi / Vorrei. Usato per chiedere oggetti o cibo nei negozi e ristoranti.", emoji: "🤲", tags: ["richiesta", "verbo"] },
+    { id: 10, front: "어디", back: "Dove. Una domanda fondamentale per chiedere la posizione o la destinazione.", emoji: "🗺️", tags: ["domanda", "avverbio"] },
+    { id: 11, front: "저는", back: "Io (soggetto). '저' è il pronome umile di '나', '는' è la particella di argomento.", emoji: "👤", tags: ["pronome", "grammatica", "io"] },
+ { 
+        id: 12, 
+        front: "반가워요", 
+        back: "Piacere di conoscerti (forma cortese standard). Si usa dopo essersi presentati.", 
+        emoji: "🤝", 
+        tags: ["saluto", "sociale"] 
+    },
+    { 
+        id: 13, 
+        front: "죄송합니다", 
+        back: "Mi dispiace / Scusi (molto formale). Usato per scusarsi seriamente o per passare tra la folla.", 
+        emoji: "🙇", 
+        tags: ["cortesia", "scuse"] 
+    },
+    { 
+        id: 14, 
+        front: "은/는", 
+        back: "Particella di Argomento (Topic Marker). Indica di cosa si parla. '은' dopo consonante, '는' dopo vocale.", 
+        emoji: "📍", 
+        tags: ["grammatica", "particella"] 
+    },
+    { 
+        id: 15, 
+        front: "밥", 
+        back: "Riso cotto / Pasto. In Corea, 'Hai mangiato?' è un saluto comune per chiedere come stai.", 
+        emoji: "🍚", 
+        tags: ["vocabolario", "cibo"] 
+    },
+    { 
+        id: 16, 
+        front: "커피", 
+        back: "Caffè. Una parola di origine inglese (Konglish) facilissima da ricordare.", 
+        emoji: "☕", 
+        tags: ["vocabolario", "bevanda"] 
+    },
+    { 
+        id: 17, 
+        front: "있어요", 
+        back: "C'è / Esiste / Ho. Esprime sia l'esistenza che il possesso.", 
+        emoji: "📦", 
+        tags: ["verbo", "base", "esistenza"] 
+    },
+    { 
+        id: 18, 
+        front: "없어요", 
+        back: "Non c'è / Non esiste / Non ho. Il contrario di 있어요.", 
+        emoji: "🚫", 
+        tags: ["verbo", "base", "negazione"] 
+    },
+    { 
+        id: 19, 
+        front: "얼마예요?", 
+        back: "Quanto costa? Indispensabile per fare shopping.", 
+        emoji: "💰", 
+        tags: ["domanda", "shopping"] 
+    },
+    { 
+        id: 20, 
+        front: "친구", 
+        back: "Amico. In Corea si usa solo per persone della stessa età cronologica.", 
+        emoji: "👫", 
+        tags: ["vocabolario", "persone"] 
+    },
+    { 
+        id: 21, 
+        front: "집", 
+        back: "Casa. Usato sia per indicare l'edificio che il concetto di focolare domestico.", 
+        emoji: "🏠", 
+        tags: ["vocabolario", "luogo"] 
+    },
+    { 
+        id: 22, 
+        front: "해요", 
+        back: "Fare (forma cortese). Deriva dal verbo '하다' (hada), il verbo più versatile del coreano.", 
+        emoji: "🏃", 
+        tags: ["verbo", "base"] 
+    }
+];
+
+function renderFlashcards(cards) {
+    const grid = document.getElementById('flashcard-grid');
+    const noResults = document.getElementById('no-results');
+    grid.innerHTML = '';
+
+    if (cards.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+    }
+    noResults.classList.add('hidden');
+
+    cards.forEach(card => {
+        // Create the tags list HTML
+        const tagsHtml = card.tags.map(tag => 
+            `<span class="inline-block bg-blue-200 text-blue-800 text-xs font-semibold rounded-full px-3 py-1 mt-2 mr-1 transition hover:bg-blue-300">#${tag}</span>`
+        ).join('');
+
+        const cardHtml = `
+            <div id="card-${card.id}" class="flashcard transition transform hover:scale-[1.03] duration-300 ease-in-out" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <!-- Front Face -->
+                    <div class="flashcard-face flashcard-front">
+                        <div class="emoji">${card.emoji}</div>
+                        <div class="korean-text">${card.front}</div>
+                    </div>
+                    <!-- Back Face -->
+                    <div class="flashcard-face flashcard-back">
+                        <h3 class="font-bold border-b pb-1 mb-2 border-blue-400">${card.front}</h3>
+                        <p class="text-gray-900">${card.back}</p>
+                        <div class="absolute bottom-3 left-3 right-3 text-xs flex flex-wrap">
+                            ${tagsHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.innerHTML += cardHtml;
+    });
+}
+
+function handleSearch(event) {
+    const query = event.target.value.toLowerCase().trim();
+    
+    const filteredCards = flashcardsData.filter(card => {
+        // Search across Korean term (front), explanation (back), and tags
+        const searchTarget = (
+            card.front.toLowerCase() + 
+            ' ' + card.back.toLowerCase() + 
+            ' ' + card.tags.join(' ').toLowerCase()
+        );
+        return searchTarget.includes(query);
+    });
+    
+    renderFlashcards(filteredCards);
+}
+
+// Initial setup
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initial Render
+    renderFlashcards(flashcardsData);
+    
+    // 2. Attach Search Listener
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', handleSearch);
+});</script></body></html>
