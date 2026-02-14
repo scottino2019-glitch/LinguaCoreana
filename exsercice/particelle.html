@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국어 문법 연습</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #3498db;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: var(--card-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        #question-area {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .blank {
+            color: var(--error-color);
+            font-weight: bold;
+            padding: 0 5px;
+            border-bottom: 2px solid var(--error-color);
+        }
+
+        .options {
+            margin-top: 20px;
+        }
+
+        .option-item {
+            display: block;
+            background-color: #fff;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #dcdcdc;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-item:hover {
+            background-color: #f0f8ff;
+            border-color: var(--primary-color);
+        }
+
+        .option-item input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--primary-color);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        #feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .correct {
+            background-color: #e8f8f5;
+            color: var(--success-color);
+        }
+
+        .incorrect {
+            background-color: #fdebd0;
+            color: var(--error-color);
+        }
+
+        #results {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        #results h2 {
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>한국어 문법 연습 📝</h1>
+
+    <div id="quiz-container">
+        <div id="question-area">
+            <!-- Question text goes here -->
+        </div>
+
+        <form id="options-form" class="options">
+            <!-- Options (radio buttons) go here -->
+        </form>
+
+        <button id="check-btn">정답 확인</button>
+
+        <div id="feedback" style="display: none;">
+            <!-- Feedback goes here -->
+        </div>
+    </div>
+
+    <div id="results" style="display: none;">
+        <!-- Results summary goes here -->
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            id: 1,
+            sentence_start: "저는 사과",
+            sentence_end: " 좋아해요.",
+            correctAnswer: "를", // Objective Marker (을/를)
+            options: ["이", "가", "는", "를"]
+        },
+        {
+            id: 2,
+            sentence_start: "날씨",
+            sentence_end: " 너무 추워요.",
+            correctAnswer: "가", // Subject Marker (이/가)
+            options: ["는", "을", "가", "로"]
+        },
+        {
+            id: 3,
+            sentence_start: "커피",
+            sentence_end: " 마시러 카페에 갔어요.",
+            correctAnswer: "를", // Objective Marker (을/를)
+            options: ["와", "를", "랑", "도"]
+        },
+        {
+            id: 4,
+            sentence_start: "내일 친구",
+            sentence_end: " 같이 영화를 볼 거예요.",
+            correctAnswer: "와", // Conjunction/Together (과/와)
+            options: ["에게", "만", "로", "와"]
+        },
+        {
+            id: 5,
+            sentence_start: "한국",
+            sentence_end: " 살고 싶어요.",
+            correctAnswer: "에서", // Location (activity)
+            options: ["까지", "에", "에서", "부터"]
+        },
+   {
+        id: 6,
+        sentence_start: "저는 어제 시장",
+        sentence_end: " 갔어요.",
+        correctAnswer: "에", // Destinazione/Luogo (에)
+        options: ["에", "에서", "를", "가"]
+    },
+    {
+        id: 7,
+        sentence_start: "책상 위",
+        sentence_end: " 연필이 있어요.",
+        correctAnswer: "에", // Stato in luogo (에)
+        options: ["은", "에", "를", "의"]
+    },
+    {
+        id: 8,
+        sentence_start: "이것은 제 동생",
+        sentence_end: " 가방이에요.",
+        correctAnswer: "의", // Possessivo (~'s / 의)
+        options: ["가", "을", "의", "도"]
+    },
+    {
+        id: 9,
+        sentence_start: "저는 빵",
+        sentence_end: " 우유를 먹었어요.",
+        correctAnswer: "하고", // Congiunzione (e / 하고)
+        options: ["하고", "에서", "는", "가"]
+    },
+    {
+        id: 10,
+        sentence_start: "집",
+        sentence_end: " 학교까지 멀어요.",
+        correctAnswer: "에서", // Punto di partenza (Da... a... / 에서...까지)
+        options: ["에", "로", "에서", "와"]
+    },
+    {
+        id: 11,
+        sentence_start: "오늘",
+        sentence_end: " 기분이 아주 좋아요.",
+        correctAnswer: "은", // Marcatore di tema/topic (은/는)
+        options: ["를", "은", "이", "의"]
+    },
+    {
+        id: 12,
+        sentence_start: "동생은 숙제",
+        sentence_end: " 해요.",
+        correctAnswer: "를", // Marcatore oggetto (을/를) con parola che finisce in vocale
+        options: ["가", "는", "를", "에"]
+    },
+    {
+        id: 13,
+        sentence_start: "부모님",
+        sentence_end: " 선물을 드렸어요.",
+        correctAnswer: "께", // Dativo onorifico (A qualcuno / 께/에게)
+        options: ["께", "를", "가", "의"]
+    },
+    {
+        id: 14,
+        sentence_start: "버스",
+        sentence_end: " 학교에 가요.",
+        correctAnswer: "로", // Mezzo/Strumento (Con/Tramite / 로/으로)
+        options: ["를", "에", "로", "가"]
+    },
+    {
+        id: 15,
+        sentence_start: "한국어",
+        sentence_end: " 재미있지만 어려워요.",
+        correctAnswer: "는", // Contrasto/Topic (은/는)
+        options: ["를", "는", "가", "로"]
+    },
+    {
+        id: 16,
+        sentence_start: "어제 친구",
+        sentence_end: " 전화했어요.",
+        correctAnswer: "한테", // A qualcuno (informale / 한테)
+        options: ["한테", "를", "가", "의"]
+    },
+    {
+        id: 17,
+        sentence_start: "식당에 사람",
+        sentence_end: " 많아요.",
+        correctAnswer: "이", // Marcatore soggetto con consonante finale (이/가)
+        options: ["은", "이", "을", "에"]
+    },
+    {
+        id: 18,
+        sentence_start: "내일 아침 9시",
+        sentence_end: " 만나요.",
+        correctAnswer: "에", // Tempo (Alle... / 에)
+        options: ["에", "에서", "를", "로"]
+    },
+    {
+        id: 19,
+        sentence_start: "공원",
+        sentence_end: " 산책을 해요.",
+        correctAnswer: "에서", // Luogo dell'azione (에서)
+        options: ["에", "에서", "을", "의"]
+    },
+    {
+        id: 20,
+        sentence_start: "저",
+        sentence_end: " 학생이에요.",
+        correctAnswer: "는", // Topic marker (io sono / 저는)
+        options: ["는", "를", "가", "의"]
+    }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionArea = document.getElementById('question-area');
+    const optionsForm = document.getElementById('options-form');
+    const checkBtn = document.getElementById('check-btn');
+    const feedbackDiv = document.getElementById('feedback');
+    const quizContainer = document.getElementById('quiz-container');
+    const resultsDiv = document.getElementById('results');
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+            showResults();
+            return;
+        }
+
+        const q = questions[currentQuestionIndex];
+        answered = false;
+        feedbackDiv.style.display = 'none';
+        checkBtn.textContent = "정답 확인";
+        checkBtn.disabled = false;
+        optionsForm.innerHTML = ''; // Clear previous options
+
+        // 1. Display Question
+        questionArea.innerHTML = `${q.sentence_start}<span class="blank"> ( ) </span>${q.sentence_end}`;
+
+        // 2. Display Options
+        q.options.forEach((option, index) => {
+            const label = document.createElement('label');
+            label.className = 'option-item';
+            
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'answer';
+            radio.value = option;
+            radio.id = `option${index}`;
+            
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(option));
+            optionsForm.appendChild(label);
+        });
+    }
+
+    function checkAnswer() {
+        if (answered) {
+            // If already answered, move to the next question
+            currentQuestionIndex++;
+            loadQuestion();
+            return;
+        }
+
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (!selectedOption) {
+            alert("답변을 선택해주세요.");
+            return;
+        }
+
+        const userAnswer = selectedOption.value;
+        const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+        
+        answered = true;
+
+        // Disable options after check
+        optionsForm.querySelectorAll('input').forEach(input => input.disabled = true);
+
+        // Provide Feedback
+        feedbackDiv.style.display = 'block';
+        if (userAnswer === correctAnswer) {
+            score++;
+            feedbackDiv.className = 'correct';
+            feedbackDiv.textContent = '✅ 정답입니다! (Correct)';
+        } else {
+            feedbackDiv.className = 'incorrect';
+            feedbackDiv.textContent = `❌ 오답입니다. 정답: "${correctAnswer}" (Incorrect)`;
+        }
+
+        // Update button for next question
+        checkBtn.textContent = (currentQuestionIndex < questions.length - 1) ? "다음 문제" : "결과 보기";
+    }
+
+    function showResults() {
+        quizContainer.style.display = 'none';
+        resultsDiv.style.display = 'block';
+
+        const totalQuestions = questions.length;
+        const percentage = (score / totalQuestions) * 100;
+
+        resultsDiv.innerHTML = `
+            <h2>시험 결과</h2>
+            <p>총 ${totalQuestions} 문제 중 <strong>${score}개</strong> 정답입니다.</p>
+            <p>점수: <strong>${percentage.toFixed(0)}%</strong></p>
+            <button onclick="window.location.reload()">다시 시작</button>
+        `;
+    }
+
+    // Event Listener
+    checkBtn.addEventListener('click', checkAnswer);
+
+    // Initialize the quiz
+    loadQuestion();
+</script>
+
+</body>
+</html>
