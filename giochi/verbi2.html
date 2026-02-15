@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Conjugation Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --correct-color: #27ae60;
+            --incorrect-color: #e74c3c;
+            --background-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .quiz-area {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .verb-root {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 10px 20px;
+            margin-bottom: 25px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .option-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            font-family: 'Noto Sans KR', sans-serif;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .option-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            min-height: 30px;
+        }
+
+        .correct {
+            color: var(--correct-color);
+        }
+
+        .incorrect {
+            color: var(--incorrect-color);
+        }
+
+        .next-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            display: none; /* Hidden by default */
+        }
+
+        .next-button:hover {
+            opacity: 0.8;
+        }
+
+        .game-over-message {
+            font-size: 1.5em;
+            color: var(--correct-color);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>한국어 동사 연습 (Korean Verb Practice)</h1>
+
+        <div class="header-info">
+            <span id="level-display">Level 1</span>
+            <span id="score-display">Score: 0</span>
+        </div>
+
+        <div class="quiz-area">
+            <p class="verb-root" id="verb-root-display">Start Game</p>
+        </div>
+
+        <div class="options" id="options-container">
+            <!-- Option buttons will be injected here -->
+        </div>
+
+        <p class="feedback" id="feedback-message"></p>
+
+        <button class="next-button" id="start-next-button" onclick="startOrNext()">시작 / 다음 (Start / Next)</button>
+
+    </div>
+
+    <script>
+        // --- Game Data ---
+        const gameData = [
+            // Level 1: Simple -아요/-어요 (No Irregularities/Contractions)
+            {
+                name: "Level 1: Basic Forms",
+                questions: [
+                    { root: "먹다", answer: "먹어요", options: ["먹아요", "먹어요", "먹다요"] },
+                    { root: "가다", answer: "가요", options: ["가요", "가아요", "거요"] },
+                    { root: "보다", answer: "봐요", options: ["봐요", "보어요", "바요"] },
+                    { root: "입다", answer: "입어요", options: ["입아요", "입어요", "이워요"] },
+                    { root: "좋다", answer: "좋아요", options: ["좋어요", "좋아요", "좋다요"] },
+                ]
+            },
+            // Level 2: Simple Contractions & 하다 Irregular
+            {
+                name: "Level 2: Contractions and 하다",
+                questions: [
+                    { root: "하다", answer: "해요", options: ["하아요", "해요", "하어요"] },
+                    { root: "배우다", answer: "배워요", options: ["배와요", "배우어요", "배워요"] },
+                    { root: "오다", answer: "와요", options: ["오아요", "와요", "워요"] },
+                    { root: "기다리다", answer: "기다려요", options: ["기다려요", "기다리아요", "기다라요"] },
+                    { root: "마시다", answer: "마셔요", options: ["마셔요", "마시어요", "마사요"] },
+                ]
+            },
+            // Level 3: Irregular Verbs (ㅂ, ㄷ, 르)
+            {
+                name: "Level 3: Irregular Verbs",
+                questions: [
+                    // ㅂ irregular (춥다 -> 추워요)
+                    { root: "춥다", answer: "추워요", options: ["춥어요", "추워요", "추와요"] },
+                    // ㄷ irregular (걷다 -> 걸어요)
+                    { root: "걷다", answer: "걸어요", options: ["걷아요", "걸어요", "거워요"] },
+                    // 르 irregular (부르다 -> 불러요)
+                    { root: "부르다", answer: "불러요", options: ["부러요", "부르아요", "불러요"] },
+                    // ㅂ irregular (돕다 -> 도와요)
+                    { root: "돕다", answer: "도와요", options: ["도와요", "돕어요", "도우어요"] },
+                    // ㄷ irregular (듣다 -> 들어요)
+                    { root: "듣다", answer: "들어요", options: ["들어요", "듣어요", "드러요"] },
+                ]
+            }
+        ];
+
+        // --- Game State Variables ---
+        let currentLevel = 0;
+        let currentQuestionIndex = -1; // -1 indicates initial start state
+        let score = 0;
+        let isGameActive = false;
+        let answered = false;
+
+        // --- DOM Elements ---
+        const verbRootDisplay = document.getElementById('verb-root-display');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const levelDisplay = document.getElementById('level-display');
+        const scoreDisplay = document.getElementById('score-display');
+        const startNextButton = document.getElementById('start-next-button');
+
+        // --- Utility Functions ---
+
+        // Fisher-Yates (Knuth) Shuffle Algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- Game Logic ---
+
+        function initGame() {
+            currentLevel = 0;
+            currentQuestionIndex = 0;
+            score = 0;
+            isGameActive = true;
+            answered = false;
+
+            updateScoreDisplay();
+            startNextButton.style.display = 'none';
+            feedbackMessage.textContent = '';
+            loadQuestion();
+        }
+
+        function updateScoreDisplay() {
+            levelDisplay.textContent = gameData[currentLevel] ? gameData[currentLevel].name : "Game Over";
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function loadQuestion() {
+            if (!isGameActive) return;
+
+            const levelQuestions = gameData[currentLevel].questions;
+            const q = levelQuestions[currentQuestionIndex];
+
+            // Reset state
+            answered = false;
+            feedbackMessage.textContent = '';
+            startNextButton.style.display = 'none';
+
+            // Display verb root
+            verbRootDisplay.textContent = q.root;
+
+            // Display options
+            optionsContainer.innerHTML = '';
+            let shuffledOptions = shuffleArray([...q.options]);
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, q.answer);
+                optionsContainer.appendChild(button);
+            });
+
+            // Ensure buttons are visible
+            optionsContainer.classList.remove('hidden');
+        }
+
+        function checkAnswer(selectedOption, correctAnswer) {
+            if (answered) return; // Prevent double clicking
+            answered = true;
+
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === correctAnswer) {
+                    button.style.backgroundColor = varCss('correct-color');
+                } else if (button.textContent === selectedOption) {
+                    button.style.backgroundColor = varCss('incorrect-color');
+                } else {
+                     button.style.opacity = 0.5;
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                feedbackMessage.textContent = '정답입니다! (Correct!)';
+                feedbackMessage.className = 'feedback correct';
+                score += 10;
+            } else {
+                feedbackMessage.textContent = `틀렸습니다! 정답은 ${correctAnswer}입니다. (Wrong!)`;
+                feedbackMessage.className = 'feedback incorrect';
+            }
+
+            updateScoreDisplay();
+            startNextButton.textContent = '다음 문제 (Next Question)';
+            startNextButton.style.display = 'block';
+        }
+
+        function startOrNext() {
+            if (!isGameActive) {
+                // Initial start
+                initGame();
+                return;
+            }
+
+            // Move to next question
+            currentQuestionIndex++;
+            const levelQuestions = gameData[currentLevel].questions;
+
+            if (currentQuestionIndex < levelQuestions.length) {
+                loadQuestion();
+            } else {
+                // Level transition or Game end
+                currentLevel++;
+                currentQuestionIndex = 0;
+
+                if (currentLevel < gameData.length) {
+                    // Move to next level
+                    alert(`Level Cleared! Moving to ${gameData[currentLevel].name}`);
+                    updateScoreDisplay();
+                    loadQuestion();
+                } else {
+                    endGame();
+                }
+            }
+        }
+
+        function endGame() {
+            isGameActive = false;
+            verbRootDisplay.textContent = '게임 끝! 수고하셨습니다!';
+            verbRootDisplay.className = 'verb-root game-over-message';
+            optionsContainer.classList.add('hidden');
+            feedbackMessage.textContent = `최종 점수: ${score}점`;
+            feedbackMessage.className = 'feedback correct';
+            startNextButton.textContent = '다시 시작 (Restart)';
+            startNextButton.style.display = 'block';
+            levelDisplay.textContent = 'Finished';
+        }
+
+        function varCss(name) {
+             return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
+        }
+
+        // Initialize the start state UI
+        function initializeUI() {
+            isGameActive = false;
+            verbRootDisplay.textContent = 'Click to Start';
+            optionsContainer.classList.add('hidden');
+            startNextButton.textContent = '게임 시작 (Start Game)';
+            startNextButton.style.display = 'block';
+            levelDisplay.textContent = 'Ready';
+            scoreDisplay.textContent = 'Score: 0';
+        }
+
+        window.onload = initializeUI;
+    </script>
+
+</body>
+</html>
