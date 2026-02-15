@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script><style>.game-card-item {
+    @apply relative overflow-hidden rounded-xl shadow-2xl transition duration-500 ease-in-out transform hover:scale-[1.03] cursor-pointer border-4 border-gray-700 bg-gray-800;
+    /* Korean/Arcade border effect */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.game-card-item:hover {
+    @apply border-yellow-500;
+}
+
+/* Specific hover colors for cards */
+#memory-card:hover {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+#verb-card:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn-play {
+    @apply text-white font-semibold py-3 px-6 rounded-lg uppercase tracking-wider text-center transition duration-300 shadow-lg block;
+    /* Neon style effect on button */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.btn-play:hover {
+    @apply brightness-110;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Subtle Korean Pattern Background (optional, requires complex CSS which is outside standard Tailwind setup, so we stick to utility classes for simplicity, but simulating depth) */
+</style></head><body><div id="korean-arcade-home" class="min-h-screen bg-gray-900 text-white font-sans antialiased">
+    <!-- Header: Korean Temple Gate/Arcade Top Bar Style -->
+    <header class="bg-gray-800 border-b-4 border-red-600 shadow-2xl p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-4xl font-extrabold tracking-wider text-yellow-300 drop-shadow-lg">
+                <i class="fas fa-kiwi-bird mr-3 text-red-600"></i> HANGEUL ARCADE
+            </h1>
+            <nav>
+                <a href="#" class="text-lg px-4 py-2 hover:text-red-500 transition duration-200 border-b-2 border-transparent hover:border-red-500">Classifica</a>
+                <a href="#" class="text-lg px-4 py-2 hover:text-red-500 transition duration-200 border-b-2 border-transparent hover:border-red-500">Profilo</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section: Welcome -->
+    <section class="py-16 px-4 text-center bg-blue-900/30 border-b-8 border-gray-700/50">
+        <h2 class="text-5xl md:text-6xl font-black mb-4 text-red-400 drop-shadow-xl">
+            Sfida la Lingua Coreana!
+        </h2>
+        <p class="text-xl max-w-3xl mx-auto text-gray-300">
+            Seleziona un gioco per iniziare il tuo viaggio nel coreano, tra ideogrammi, verbi e sfide di velocità.
+        </p>
+    </section>
+
+    <!-- Game Card Grid -->
+    <main class="container mx-auto p-8 lg:p-12">
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+            <!-- Game Card 1: Memory (기억 - Gieok) -->
+            <div id="memory-card" class="game-card-item">
+                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-brain text-6xl text-red-500 mb-4"></i>
+                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">기억 맞추기</h3>
+                        <p class="text-red-400 text-lg">(Hangeul Memory Match)</p>
+                    </div>
+                    <p class="text-gray-300 mb-6">Abbina le sillabe Hangeul ai rispettivi significati. Un test di memoria e rapidità di riconoscimento.</p>
+                    <a href="#" class="btn-play bg-red-600 hover:bg-red-700">
+                        <i class="fas fa-play mr-2"></i> Inizia la Sfida
+                    </a>
+                </div>
+            </div>
+
+            <!-- Game Card 2: Verb Reconstruction (동사 재구성 - Dongsa Jae-guseong) -->
+            <div id="verb-card" class="game-card-item">
+                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-puzzle-piece text-6xl text-blue-500 mb-4"></i>
+                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">동사 재구성</h3>
+                        <p class="text-blue-400 text-lg">(Verb Builder)</p>
+                    </div>
+                    <p class="text-gray-300 mb-6">Ricostruisci i verbi coreani corretti unendo radici e desinenze. Padroneggia la coniugazione!</p>
+                    <a href="#" class="btn-play bg-blue-600 hover:bg-blue-700">
+                        <i class="fas fa-play mr-2"></i> Costruisci il Verbo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Placeholder Card 3: Vocabulary Quiz (어휘 퀴즈 - Eohwi Kwi-jeu) -->
+            <div id="quiz-card" class="game-card-item opacity-75">
+                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-scroll text-6xl text-green-500 mb-4"></i>
+                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">어휘 퀴즈</h3>
+                        <p class="text-green-400 text-lg">(Vocabulary Challenge)</p>
+                    </div>
+                    <p class="text-gray-300 mb-6">Testa la tua conoscenza del vocabolario coreano in un quiz a tempo. Prossimamente!</p>
+                    <a href="#" class="btn-play bg-gray-500 cursor-not-allowed">
+                        <i class="fas fa-lock mr-2"></i> Non Disponibile
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 p-6 text-center bg-gray-800 border-t-4 border-yellow-500/50">
+        <p class="text-sm text-gray-400">&copy; 2024 Hangeul Arcade. Apprendimento Gamificato del Coreano.</p>
+    </footer>
+</div><script>document.addEventListener('DOMContentLoaded', () => {
+    console.log('Hangeul Arcade Homepage Caricata.');
+
+    // Simulated game card initialization (for interactive feedback)
+    const cards = document.querySelectorAll('.game-card-item');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Prevent navigation if the link is disabled
+            if (e.target.closest('.cursor-not-allowed')) {
+                e.preventDefault();
+                alert('Questo gioco non è ancora disponibile. Torna presto!');
+                return;
+            }
+            
+            // Simple visual feedback on click
+            card.classList.add('ring-4', 'ring-offset-2', 'ring-yellow-300', 'ring-offset-gray-900');
+            setTimeout(() => {
+                card.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-300', 'ring-offset-gray-900');
+            }, 500);
+        });
+    });
+});</script></body></html>
