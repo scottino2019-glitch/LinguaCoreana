@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Vocabulary Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --color-primary: #FF7F50; /* Coral */
+            --color-secondary: #4682B4; /* Steel Blue */
+            --color-success: #3CB371; /* Medium Sea Green */
+            --color-fail: #DC143C; /* Crimson */
+            --color-background: #F8F8FF; /* Ghost White */
+            --font-korean: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--color-secondary);
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-family: var(--font-korean);
+        }
+
+        /* Setup Screen */
+        #setup-screen p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .level-buttons button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .level-buttons button:hover {
+            background-color: #e86a3e;
+        }
+
+        .level-buttons button.selected {
+            background-color: var(--color-secondary);
+            transform: scale(1.05);
+        }
+
+        #start-button {
+            margin-top: 25px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background-color: var(--color-secondary);
+        }
+
+        #start-button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* Game Screen */
+        #game-screen {
+            display: none;
+        }
+
+        #stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        #timer, #score {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        #timer { color: var(--color-primary); }
+
+        #question-area {
+            margin: 40px 0;
+        }
+
+        #korean-word {
+            font-family: var(--font-korean);
+            font-size: 4em;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        #instruction {
+            font-size: 1.1em;
+            color: #777;
+        }
+
+        #options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .option-button {
+            padding: 15px 10px;
+            background-color: #eee;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.1s;
+        }
+
+        .option-button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+
+        .option-button:disabled {
+            cursor: default;
+        }
+
+        .option-button.correct {
+            background-color: var(--color-success);
+            color: white;
+            border-color: var(--color-success);
+        }
+
+        .option-button.incorrect {
+            background-color: var(--color-fail);
+            color: white;
+            border-color: var(--color-fail);
+        }
+
+        #feedback-message {
+            margin-top: 20px;
+            font-size: 1.3em;
+            min-height: 20px;
+            font-weight: bold;
+        }
+        
+        #feedback-message.success {
+            color: var(--color-success);
+        }
+
+        /* Results Screen */
+        #results-screen {
+            display: none;
+        }
+
+        #results-screen h2 {
+            color: var(--color-primary);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #final-score {
+            font-size: 3em;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        #restart-button {
+            margin-top: 30px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <h1>Korean Vocabulary Challenge</h1>
+
+        <!-- 1. Setup Screen -->
+        <div id="setup-screen">
+            <p>Seleziona il livello di difficoltà per iniziare il quiz a tempo:</p>
+            
+            <div class="level-buttons">
+                <button data-level="easy" onclick="selectLevel('easy')">Facile (60s)</button>
+                <button data-level="medium" onclick="selectLevel('medium')">Medio (50s)</button>
+                <button data-level="hard" onclick="selectLevel('hard')">Difficile (40s)</button>
+            </div>
+            
+            <button id="start-button" onclick="startGame()" disabled>Inizia il Challenge</button>
+        </div>
+
+        <!-- 2. Game Screen -->
+        <div id="game-screen">
+            <div id="stats">
+                <div>Tempo: <span id="timer">--</span>s</div>
+                <div>Punteggio: <span id="score">0</span></div>
+            </div>
+
+            <div id="question-area">
+                <div id="korean-word">...</div>
+                <div id="instruction">Trova la traduzione corretta:</div>
+            </div>
+
+            <div id="options-container">
+                <!-- Options buttons injected here -->
+            </div>
+
+            <div id="feedback-message"></div>
+        </div>
+
+        <!-- 3. Results Screen -->
+        <div id="results-screen">
+            <h2>Tempo scaduto!</h2>
+            <p>Il tuo punteggio finale è:</p>
+            <div id="final-score">0</div>
+            <button id="restart-button" onclick="resetGame()">Riprova</button>
+        </div>
+
+    </div>
+
+    <script>
+        const vocabulary = {
+            easy: [
+                { k: "안녕하세요", t: "Ciao/Hello" },
+                { k: "감사합니다", t: "Grazie" },
+                { k: "네", t: "Sì" },
+                { k: "아니요", t: "No" },
+                { k: "물", t: "Acqua" },
+                { k: "사랑", t: "Amore" },
+                { k: "밥", t: "Riso/Pasto" },
+                { k: "학교", t: "Scuola" },
+            ],
+            medium: [
+                { k: "도서관", t: "Biblioteca" },
+                { k: "공부하다", t: "Studiare" },
+                { k: "날씨", t: "Meteo" },
+                { k: "선생님", t: "Insegnante" },
+                { k: "약속", t: "Promessa/Appuntamento" },
+                { k: "친구", t: "Amico" },
+                { k: "힘들다", t: "Essere difficile" },
+                { k: "계산", t: "Conto/Calcolo" },
+            ],
+            hard: [
+                { k: "존경하다", t: "Rispettare" },
+                { k: "편안하다", t: "Essere comodo" },
+                { k: "창의적", t: "Creativo" },
+                { k: "현대", t: "Moderno" },
+                { k: "경험", t: "Esperienza" },
+                { k: "복잡하다", t: "Essere complicato" },
+                { k: "자연", t: "Natura" },
+                { k: "경제", t: "Economia" },
+            ]
+        };
+
+        const TIME_LIMITS = { easy: 60, medium: 50, hard: 40 };
+
+        let currentLevel = null;
+        let score = 0;
+        let timeRemaining = 0;
+        let timerInterval;
+        let questionTimeout;
+        let currentVocabulary = [];
+        let allTranslations = [];
+        let currentQuestionIndex = -1;
+
+        // DOM Elements
+        const setupScreen = document.getElementById('setup-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startButton = document.getElementById('start-button');
+        const levelButtons = document.querySelectorAll('.level-buttons button');
+        const timerDisplay = document.getElementById('timer');
+        const scoreDisplay = document.getElementById('score');
+        const koreanWordDisplay = document.getElementById('korean-word');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const finalScoreDisplay = document.getElementById('final-score');
+
+        // --- Utility Functions ---
+
+        // Get all unique translations for generating distractors
+        function compileAllTranslations() {
+            allTranslations = [];
+            Object.values(vocabulary).forEach(levelVocab => {
+                levelVocab.forEach(item => {
+                    if (!allTranslations.includes(item.t)) {
+                        allTranslations.push(item.t);
+                    }
+                });
+            });
+        }
+
+        // Shuffle array helper
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // --- Game Setup and Control ---
+
+        function selectLevel(level) {
+            currentLevel = level;
+            levelButtons.forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.level === level) {
+                    btn.classList.add('selected');
+                }
+            });
+            startButton.disabled = false;
+        }
+
+        function startGame() {
+            if (!currentLevel) return;
+
+            // Initialize state
+            score = 0;
+            currentQuestionIndex = 0;
+            currentVocabulary = [...vocabulary[currentLevel]];
+            shuffle(currentVocabulary); // Randomize questions
+            timeRemaining = TIME_LIMITS[currentLevel];
+            
+            // UI transition
+            setupScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            resultsScreen.style.display = 'none';
+
+            scoreDisplay.textContent = score;
+            compileAllTranslations();
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            timerDisplay.textContent = timeRemaining;
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                timerDisplay.textContent = timeRemaining;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        function gameOver() {
+            clearInterval(timerInterval);
+            clearTimeout(questionTimeout);
+
+            gameScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+            finalScoreDisplay.textContent = score;
+        }
+        
+        function resetGame() {
+            // Reset state
+            currentLevel = null;
+            levelButtons.forEach(btn => btn.classList.remove('selected'));
+            startButton.disabled = true;
+
+            // UI transition
+            setupScreen.style.display = 'block';
+            gameScreen.style.display = 'none';
+            resultsScreen.style.display = 'none';
+        }
+
+
+        // --- Question Handling ---
+
+        function getDistractors(correctAnswer, totalPool, count = 3) {
+            const distractors = totalPool.filter(t => t !== correctAnswer);
+            shuffle(distractors);
+            return distractors.slice(0, count);
+        }
+
+        function loadQuestion() {
+            clearTimeout(questionTimeout);
+            feedbackMessage.textContent = '';
+            
+            if (currentQuestionIndex >= currentVocabulary.length) {
+                // If all questions answered before time runs out
+                gameOver();
+                document.getElementById('results-screen h2').textContent = "Complimenti! Hai finito il quiz!";
+                return;
+            }
+
+            const question = currentVocabulary[currentQuestionIndex];
+            koreanWordDisplay.textContent = question.k;
+
+            const correctAnswer = question.t;
+            const distractors = getDistractors(correctAnswer, allTranslations, 3);
+            const options = [...distractors, correctAnswer];
+            shuffle(options);
+
+            optionsContainer.innerHTML = '';
+
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = option;
+                button.onclick = () => checkAnswer(button, option, correctAnswer);
+                optionsContainer.appendChild(button);
+            });
+        }
+        
+        function checkAnswer(buttonClicked, selectedTranslation, correctAnswer) {
+            // Disable all buttons immediately
+            Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
+
+            const isCorrect = selectedTranslation === correctAnswer;
+
+            if (isCorrect) {
+                buttonClicked.classList.add('correct');
+                score += 10;
+                feedbackMessage.textContent = 'Corretto!';
+                feedbackMessage.classList.add('success');
+            } else {
+                buttonClicked.classList.add('incorrect');
+                score = Math.max(0, score - 5); // Penalty
+                feedbackMessage.textContent = 'Sbagliato. La risposta era: ' + correctAnswer;
+                feedbackMessage.classList.remove('success');
+
+                // Highlight the correct one
+                Array.from(optionsContainer.children).forEach(btn => {
+                    if (btn.textContent === correctAnswer) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            scoreDisplay.textContent = score;
+
+            // Move to the next question after a short delay
+            currentQuestionIndex++;
+            questionTimeout = setTimeout(loadQuestion, 1200);
+        }
+        
+        // Ensure initial compilation of translations
+        compileAllTranslations(); 
+    </script>
+</body>
+</html>
