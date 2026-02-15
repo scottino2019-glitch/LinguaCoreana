@@ -1,101 +1,36 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script><style>
-    .game-card-item {
-        @apply relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 border-4 border-gray-700 bg-gray-800;
-    }
-    /* NO scale su mobile, solo hover desktop */
-    @media (hover: hover) {
-        .game-card-item:hover {
-            transform: scale(1.03);
-            border-color: #eab308;
-        }
-    }
-    /* Border effect */
-    .game-card-item {
-        box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.08);
-    }
-    /* Hover colors solo desktop */
-    @media (hover: hover) {
-        #memory-card:hover { box-shadow: 0 0 40px rgba(239,68,68,0.8), inset 0 0 15px rgba(255,255,255,0.15); }
-        #verb-card:hover { box-shadow: 0 0 40px rgba(59,130,246,0.8), inset 0 0 15px rgba(255,255,255,0.15); }
-        #quiz-card:hover { box-shadow: 0 0 40px rgba(34,197,94,0.8), inset 0 0 15px rgba(255,255,255,0.15); }
-    }
-    .btn-play {
-        @apply block w-full text-white font-bold py-5 px-8 rounded-xl uppercase tracking-wide text-center transition-all duration-300 shadow-xl text-lg;
-        min-height: 60px; /* Tap target grande */
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .btn-play:active {
-        transform: translateY(2px);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    }
     
-    /* MOBILE PRIME - GRANDI DIMENSIONI */
-    @media (max-width: 768px) {
-        body { font-size: 16px; } /* Base font grande */
-        
-        /* Header compatto MA grande */
-        header h1 { 
-            font-size: 2rem !important; 
-            line-height: 1.2; 
-        }
-        header nav { 
-            display: flex; 
-            gap: 0.5rem; 
-        }
-        header nav a { 
-            font-size: 0.95rem !important; 
-            padding: 0.75rem 1rem; 
-            white-space: nowrap; 
-        }
-        
-        /* Hero grande */
-        section.py-16 { padding: 3rem 1rem !important; }
-        h2 { 
-            font-size: 2.5rem !important; 
-            line-height: 1.1; 
-        }
-        section p { font-size: 1.2rem !important; }
-        
-        /* GRID 1 colonna + padding ENORME */
-        main { padding: 1.5rem !important; }
-        main .grid { 
-            grid-template-columns: 1fr !important; 
-            gap: 2rem !important; 
-            max-width: 100%; 
-        }
-        
-        /* CARDS GRANDI */
-        .game-card-item div { 
-            padding: 2.5rem 2rem !important; 
-            gap: 1.5rem; 
-        }
-        
-        /* Icone ENORMI */
-        .fas.fa-brain, .fas.fa-puzzle-piece, .fas.fa-scroll {
-            font-size: 4.5rem !important; /* Più grandi */
-            width: 4.5rem;
-            height: 4.5rem;
-        }
-        
-        /* Titoli GRANDI */
-        h3 { 
-            font-size: 2rem !important; 
-            line-height: 1.2; 
-        }
-        .text-lg { font-size: 1.3rem !important; }
-        p.text-gray-300 { 
-            font-size: 1.15rem !important; 
-            line-height: 1.5; 
-        }
-        
-        footer { padding: 2rem 1rem !important; }
-    }
-    
-    /* Tablet */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        main .grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-        .game-card-item div { padding: 2rem !important; }
-    }
+    .game-card-item {
+    @apply relative overflow-hidden rounded-xl shadow-2xl transition duration-500 ease-in-out transform hover:scale-[1.03] cursor-pointer border-4 border-gray-700 bg-gray-800;
+    /* Korean/Arcade border effect */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.game-card-item:hover {
+    @apply border-yellow-500;
+}
+
+/* Specific hover colors for cards */
+#memory-card:hover {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+#verb-card:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn-play {
+    @apply text-white font-semibold py-3 px-6 rounded-lg uppercase tracking-wider text-center transition duration-300 shadow-lg block;
+    /* Neon style effect on button */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.btn-play:hover {
+    @apply brightness-110;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Subtle Korean Pattern Background (optional, requires complex CSS which is outside standard Tailwind setup, so we stick to utility classes for simplicity, but simulating depth) */
+
 </style></head><body><div id="korean-arcade-home" class="min-h-screen bg-gray-900 text-white font-sans antialiased">
     <!-- Header: Korean Temple Gate/Arcade Top Bar Style -->
     <header class="bg-gray-800 border-b-4 border-red-600 shadow-2xl p-4">
