@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Coreano-Italiano</title>
+    <style>
+        :root {
+            --card-width: 120px;
+            --card-height: 120px;
+            --grid-cols: 4;
+            --grid-gap: 10px;
+            --board-padding: 20px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #ff5733;
+            margin-bottom: 10px;
+        }
+
+        #level-selector {
+            margin-bottom: 20px;
+        }
+
+        #level-selector button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #level-selector button:hover {
+            background-color: #45a049;
+        }
+
+        #game-board-container {
+            perspective: 1000px;
+            padding: var(--board-padding);
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(var(--grid-cols), var(--card-width));
+            gap: var(--grid-gap);
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .card.matched .card-face {
+            border: 2px solid #5733ff;
+            background-color: #e0e0ff;
+            box-shadow: 0 0 15px #5733ff;
+        }
+
+        .card-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+        }
+
+        .card-front {
+            background-color: #ffb380;
+            color: white;
+            line-height: 1.2;
+            padding: 5px;
+        }
+
+        .card-back {
+            background-color: #ffffff;
+            color: #333;
+            transform: rotateY(180deg);
+            border: 2px solid #ff5733;
+            line-height: 1.2;
+            padding: 5px;
+            font-size: 16px; 
+        }
+
+        .korean-text {
+            font-size: 22px; 
+            color: #ff5733;
+        }
+
+        #info-bar {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        #win-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        #win-message button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #ff5733;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            :root {
+                --card-width: 80px;
+                --card-height: 80px;
+                --grid-gap: 8px;
+            }
+            .korean-text {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 400px) {
+             :root {
+                --card-width: 70px;
+                --card-height: 70px;
+                --grid-gap: 5px;
+                --board-padding: 10px;
+            }
+            .korean-text {
+                font-size: 16px;
+            }
+            #level-selector button {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Memory Coreano 🇰🇷</h1>
+
+    <div id="level-selector">
+        <button onclick="initGame('easy')">Facile (6 Paia)</button>
+        <button onclick="initGame('medium')">Medio (10 Paia)</button>
+        <button onclick="initGame('hard')">Difficile (15 Paia)</button>
+    </div>
+
+    <div id="info-bar">
+        Tempo: <span id="time">0</span>s | Tentativi: <span id="moves">0</span>
+    </div>
+
+    <div id="game-board-container">
+        <div id="game-board">
+            <!-- Cards will be injected here -->
+        </div>
+    </div>
+
+    <div id="win-message">
+        <h2>Complimenti! Hai vinto!</h2>
+        <p>Tempo totale: <span id="final-time"></span></p>
+        <p>Tentativi totali: <span id="final-moves"></span></p>
+        <button onclick="location.reload()">Ricomincia</button>
+    </div>
+
+    <script>
+        const vocabulary = {
+            1: { it: "Ciao", kr: "안녕하세요" },
+            2: { it: "Grazie", kr: "감사합니다" },
+            3: { it: "Sì", kr: "네" },
+            4: { it: "No", kr: "아니요" },
+            5: { it: "Amore", kr: "사랑" },
+            6: { it: "Acqua", kr: "물" },
+            7: { it: "Per favore", kr: "주세요" },
+            8: { it: "Scusa", kr: "죄송합니다" },
+            9: { it: "Mangiare", kr: "먹다" },
+            10: { it: "Casa", kr: "집" },
+            11: { it: "Bello", kr: "아름다운" },
+            12: { it: "Studente", kr: "학생" },
+            13: { it: "Uno", kr: "하나" },
+            14: { it: "Dieci", kr: "열" },
+            15: { it: "Fiume", kr: "강" },
+            16: { it: "Dottore", kr: "의사" },
+        };
+
+        const board = document.getElementById('game-board');
+        const root = document.documentElement.style;
+        const timeDisplay = document.getElementById('time');
+        const movesDisplay = document.getElementById('moves');
+        const winMessage = document.getElementById('win-message');
+
+        let flippedCards = [];
+        let lockBoard = false;
+        let matchesFound = 0;
+        let totalPairs = 0;
+        let totalMoves = 0;
+        let timer = null;
+        let seconds = 0;
+
+        // --- Core Game Functions ---
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createDeck(numPairs) {
+            const keys = shuffle(Object.keys(vocabulary)).slice(0, numPairs);
+            let deck = [];
+
+            keys.forEach(key => {
+                const item = vocabulary[key];
+                // IT card
+                deck.push({ id: key, lang: 'IT', text: item.it });
+                // KR card
+                deck.push({ id: key, lang: 'KR', text: item.kr });
+            });
+
+            return shuffle(deck);
+        }
+
+        function renderCards(deck) {
+            board.innerHTML = '';
+            deck.forEach(item => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.match = item.id;
+                cardElement.addEventListener('click', flipCard);
+
+                const frontFace = document.createElement('div');
+                frontFace.classList.add('card-face', 'card-front');
+                frontFace.textContent = (item.lang === 'IT') ? item.text : 'Coreano';
+
+                const backFace = document.createElement('div');
+                backFace.classList.add('card-face', 'card-back');
+                backFace.innerHTML = (item.lang === 'KR') 
+                    ? `<span class="korean-text">${item.text}</span>` 
+                    : item.text;
+
+                cardElement.appendChild(frontFace);
+                cardElement.appendChild(backFace);
+                board.appendChild(cardElement);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === flippedCards[0]) return; // Prevents double clicking the same card
+
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                totalMoves++;
+                movesDisplay.textContent = totalMoves;
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            lockBoard = true;
+            const [card1, card2] = flippedCards;
+
+            const isMatch = card1.dataset.match === card2.dataset.match;
+
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            flippedCards.forEach(card => {
+                card.removeEventListener('click', flipCard);
+                card.classList.add('matched');
+            });
+
+            matchesFound++;
+            resetBoard();
+            checkWin();
+        }
+
+        function unflipCards() {
+            setTimeout(() => {
+                flippedCards.forEach(card => {
+                    card.classList.remove('flipped');
+                });
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [flippedCards, lockBoard] = [[], false];
+        }
+
+        function checkWin() {
+            if (matchesFound === totalPairs) {
+                clearInterval(timer);
+                document.getElementById('final-time').textContent = seconds + 's';
+                document.getElementById('final-moves').textContent = totalMoves;
+                winMessage.style.display = 'flex';
+            }
+        }
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            seconds = 0;
+            timeDisplay.textContent = seconds;
+            timer = setInterval(() => {
+                seconds++;
+                timeDisplay.textContent = seconds;
+            }, 1000);
+        }
+
+        // --- Initialization and Level Management ---
+
+        function initGame(level) {
+            resetGameStats();
+
+            let numPairs;
+            let gridCols;
+
+            switch (level) {
+                case 'easy':
+                    numPairs = 6;
+                    gridCols = 4;
+                    break;
+                case 'medium':
+                    numPairs = 10;
+                    gridCols = 5;
+                    break;
+                case 'hard':
+                    numPairs = 15;
+                    gridCols = 6;
+                    break;
+                default:
+                    numPairs = 6;
+                    gridCols = 4;
+            }
+
+            totalPairs = numPairs;
+            root.setProperty('--grid-cols', gridCols);
+
+            const deck = createDeck(numPairs);
+            renderCards(deck);
+            startTimer();
+        }
+
+        function resetGameStats() {
+            clearInterval(timer);
+            winMessage.style.display = 'none';
+            matchesFound = 0;
+            totalMoves = 0;
+            seconds = 0;
+            movesDisplay.textContent = 0;
+            timeDisplay.textContent = 0;
+            resetBoard();
+        }
+
+        // Initialize with the easy level on load
+        window.onload = () => initGame('easy');
+
+    </script>
+</body>
+</html>
