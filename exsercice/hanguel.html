@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangul Trainer</title>
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --background-light: #f8f9fa;
+            --text-dark: #212529;
+            --border-color: #ced4da;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        #app {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 650px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 2.5em;
+        }
+
+        /* --- Mode Selector --- */
+        #mode-selector {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mode-button {
+            background-color: #e9ecef;
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .mode-button:hover {
+            background-color: #dee2e6;
+        }
+
+        .mode-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* --- Main Exercise Area --- */
+        #main-exercise {
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        #question {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            min-height: 60px;
+        }
+        
+        #question.roman {
+            font-size: 1.8em;
+            color: var(--primary-color);
+        }
+
+        #input-area {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        #user-input {
+            padding: 12px;
+            font-size: 1.5em;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 300px;
+            transition: border-color 0.2s;
+        }
+        #user-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* --- Feedback & Buttons --- */
+        #feedback {
+            font-size: 1.5em;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .feedback-success {
+            color: var(--success-color);
+        }
+
+        .feedback-error {
+            color: var(--error-color);
+        }
+
+        .action-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin: 5px;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Jamo Options (Mode 1 & 2) --- */
+        #jamo-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .jamo-option {
+            background-color: #fff;
+            border: 2px solid var(--border-color);
+            padding: 15px 20px;
+            font-size: 1.8em;
+            min-width: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .jamo-option:hover {
+            background-color: #f1f1f1;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <header>
+            <h1>한글 학습기 (Hangul Trainer)</h1>
+        </header>
+
+        <div id="mode-selector">
+            <button class="mode-button active" data-mode="JAMO">1. 문자 매칭 (ㄱ, ㅏ)</button>
+            <button class="mode-button" data-mode="SYLLABLE_BUILD">2. 음절 구성 (가, 나)</button>
+            <button class="mode-button" data-mode="TEXT_PRACTICE">3. 단어 연습 (하나)</button>
+        </div>
+
+        <div id="main-exercise">
+            <div id="question"></div>
+            
+            <div id="input-area">
+                <!-- Dynamic content based on mode -->
+            </div>
+
+            <div id="feedback"></div>
+        </div>
+        
+        <div id="controls">
+             <button id="check-button" class="action-button" style="display: none;">확인 (Check)</button>
+             <button id="next-button" class="action-button">다음 (Next)</button>
+        </div>
+    </div>
+
+    <script>
+        const JAMO = {
+            CHO: [
+                { r: 'G', h: 'ㄱ' }, { r: 'N', h: 'ㄴ' }, { r: 'D', h: 'ㄷ' }, { r: 'R/L', h: 'ㄹ' },
+                { r: 'M', h: 'ㅁ' }, { r: 'B', h: 'ㅂ' }, { r: 'S', h: 'ㅅ' }, { r: 'NG', h: 'ㅇ' },
+                { r: 'J', h: 'ㅈ' }, { r: 'CH', h: 'ㅊ' }, { r: 'K', h: 'ㅋ' }, { r: 'T', h: 'ㅌ' },
+                { r: 'P', h: 'ㅍ' }, { r: 'H', h: 'ㅎ' }
+            ],
+            JUNG: [
+                { r: 'A', h: 'ㅏ' }, { r: 'YA', h: 'ㅑ' }, { r: 'EO', h: 'ㅓ' }, { r: 'YEO', h: 'ㅕ' },
+                { r: 'O', h: 'ㅗ' }, { r: 'YO', h: 'ㅛ' }, { r: 'U', h: 'ㅜ' }, { r: 'YU', h: 'ㅠ' },
+                { r: 'EU', h: 'ㅡ' }, { r: 'I', h: 'ㅣ' }
+            ],
+            // Only used for lookup/display, not full syllable construction logic here
+        };
+
+        const COMMON_WORDS = [
+            { r: 'Hana', h: '하나' },
+            { r: 'Nara', h: '나라' },
+            { r: 'Bab', h: '밥' },
+            { r: 'Sarang', h: '사랑' },
+            { r: 'Gom', h: '곰' },
+            { r: 'Guk', h: '국' },
+            { r: 'Mun', h: '문' },
+            { r: 'I', h: '이' },
+        ];
+
+        let state = {
+            mode: 'JAMO',
+            currentQuestion: null,
+            score: 0,
+            questionCount: 0
+        };
+
+        // DOM Elements
+        const $app = document.getElementById('app');
+        const $question = document.getElementById('question');
+        const $inputArea = document.getElementById('input-area');
+        const $feedback = document.getElementById('feedback');
+        const $checkButton = document.getElementById('check-button');
+        const $nextButton = document.getElementById('next-button');
+
+        // --- Core Hangul Syllable Generation ---
+        // This simplified function maps Cho and Jung indices to a Hangul syllable.
+        // It assumes no Jong (final consonant) for simplicity in beginner mode.
+        function combineJamo(choIndex, jungIndex) {
+            const HANGUL_START = 0xAC00;
+            const JUNG_COUNT = 28; // Number of Jong (finals) + 1 (none)
+
+            // Formula: AC00 + (Cho Index * 588) + (Jung Index * 28) + Jong Index
+            // Since Jong Index is 0 (none), we omit the last term.
+            const charCode = HANGUL_START + (choIndex * 588) + (jungIndex * JUNG_COUNT);
+            return String.fromCharCode(charCode);
+        }
+
+        // --- Exercise Generation Logic ---
+
+        function generateJamoExercise() {
+            const allJamo = [...JAMO.CHO, ...JAMO.JUNG];
+            const correctJamo = allJamo[Math.floor(Math.random() * allJamo.length)];
+            
+            // Generate options (4 total, including correct one)
+            const options = new Set([correctJamo]);
+            while (options.size < 4) {
+                const randomJamo = allJamo[Math.floor(Math.random() * allJamo.length)];
+                options.add(randomJamo);
+            }
+
+            const optionsArray = Array.from(options).sort(() => Math.random() - 0.5);
+
+            state.currentQuestion = {
+                type: 'JAMO',
+                prompt: correctJamo.r,
+                answer: correctJamo.h,
+                options: optionsArray
+            };
+        }
+
+        function generateSyllableExercise() {
+            // Pick random Cho (Initial) and Jung (Medial)
+            const choIndex = Math.floor(Math.random() * JAMO.CHO.length);
+            const jungIndex = Math.floor(Math.random() * JAMO.JUNG.length);
+
+            const cho = JAMO.CHO[choIndex];
+            const jung = JAMO.JUNG[jungIndex];
+            
+            const syllable = combineJamo(choIndex, jungIndex);
+
+            state.currentQuestion = {
+                type: 'SYLLABLE_BUILD',
+                prompt: `${cho.h} + ${jung.h}`,
+                answer: syllable
+            };
+        }
+
+        function generateTextPracticeExercise() {
+            const word = COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)];
+            
+            state.currentQuestion = {
+                type: 'TEXT_PRACTICE',
+                prompt: word.r,
+                answer: word.h
+            };
+        }
+
+        // --- UI Rendering ---
+
+        function renderExercise() {
+            $feedback.textContent = '';
+            
+            if (!state.currentQuestion) {
+                // Should not happen, but a safeguard
+                $question.textContent = 'Loading...';
+                return;
+            }
+
+            const q = state.currentQuestion;
+
+            if (q.type === 'JAMO') {
+                $question.className = 'roman';
+                $question.textContent = `[ ${q.prompt} ]`;
+                
+                $inputArea.innerHTML = '<div id="jamo-options"></div>';
+                const $optionsContainer = document.getElementById('jamo-options');
+
+                q.options.forEach(opt => {
+                    const button = document.createElement('button');
+                    button.className = 'jamo-option';
+                    button.textContent = opt.h;
+                    button.onclick = () => checkJamoAnswer(opt.h);
+                    $optionsContainer.appendChild(button);
+                });
+
+                $checkButton.style.display = 'none';
+            
+            } else if (q.type === 'SYLLABLE_BUILD') {
+                $question.className = '';
+                $question.textContent = q.prompt;
+                
+                $inputArea.innerHTML = `<input type="text" id="user-input" placeholder="Enter Hangul" maxlength="1" autofocus>`;
+                document.getElementById('user-input').addEventListener('keypress', handleKeyPress);
+                $checkButton.style.display = 'inline-block';
+
+            } else if (q.type === 'TEXT_PRACTICE') {
+                $question.className = 'roman';
+                $question.textContent = q.prompt;
+
+                $inputArea.innerHTML = `<input type="text" id="user-input" placeholder="Write in Hangul" autofocus>`;
+                document.getElementById('user-input').addEventListener('keypress', handleKeyPress);
+                $checkButton.style.display = 'inline-block';
+            }
+            
+            $nextButton.disabled = true;
+            $checkButton.disabled = false;
+        }
+
+        // --- Answer Checking ---
+
+        function checkJamoAnswer(selection) {
+            const correct = selection === state.currentQuestion.answer;
+            processResult(correct);
+            
+            // Visually highlight options
+            document.querySelectorAll('.jamo-option').forEach(btn => {
+                btn.onclick = null; // Disable further clicks
+                if (btn.textContent === state.currentQuestion.answer) {
+                    btn.style.backgroundColor = varCss('--success-color');
+                    btn.style.color = 'white';
+                } else if (btn.textContent === selection) {
+                    btn.style.backgroundColor = varCss('--error-color');
+                    btn.style.color = 'white';
+                }
+            });
+        }
+
+        function checkInputAnswer() {
+            const $input = document.getElementById('user-input');
+            if (!$input) return;
+
+            const userInput = $input.value.trim().toLowerCase();
+            const correct = userInput === state.currentQuestion.answer.toLowerCase();
+            
+            processResult(correct);
+            $input.disabled = true;
+            $checkButton.disabled = true;
+        }
+
+        function processResult(isCorrect) {
+            state.questionCount++;
+            $nextButton.disabled = false;
+
+            if (isCorrect) {
+                state.score++;
+                $feedback.className = 'feedback-success';
+                $feedback.textContent = 'O 정답! (Correct!)';
+            } else {
+                $feedback.className = 'feedback-error';
+                $feedback.textContent = `X 오답. 정답은: ${state.currentQuestion.answer}`;
+            }
+        }
+
+        // --- Control Flow ---
+
+        function loadNextExercise() {
+            const mode = state.mode;
+
+            if (mode === 'JAMO') {
+                generateJamoExercise();
+            } else if (mode === 'SYLLABLE_BUILD') {
+                generateSyllableExercise();
+            } else if (mode === 'TEXT_PRACTICE') {
+                generateTextPracticeExercise();
+            }
+            
+            renderExercise();
+        }
+
+        function switchMode(newMode) {
+            state.mode = newMode;
+            document.querySelectorAll('.mode-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-mode') === newMode) {
+                    btn.classList.add('active');
+                }
+            });
+            // Reset score/count display (if implemented)
+            loadNextExercise();
+        }
+
+        // --- Event Handlers ---
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                if (!$nextButton.disabled) {
+                    loadNextExercise();
+                } else if (!$checkButton.disabled && state.mode !== 'JAMO') {
+                    checkInputAnswer();
+                }
+            }
+        }
+
+        function varCss(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        function init() {
+            // Mode Selector Listeners
+            document.querySelectorAll('.mode-button').forEach(btn => {
+                btn.addEventListener('click', () => switchMode(btn.getAttribute('data-mode')));
+            });
+
+            // Action Button Listeners
+            $nextButton.addEventListener('click', loadNextExercise);
+            $checkButton.addEventListener('click', checkInputAnswer);
+
+            // Initial load
+            loadNextExercise();
+        }
+
+        init();
+
+    </script>
+</body>
+</html>
