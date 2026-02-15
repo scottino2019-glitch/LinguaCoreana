@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizi Verbi Coreani</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --bg-color: #f4f4f9;
+            --text-color: #333;
+            --error-color: #D32F2F;
+            --success-color: #1B5E20;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        #app {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        header h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* Tense Selector */
+        #tense-selector {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        #tense-selector button {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #tense-selector button.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        #tense-selector button:hover:not(.active) {
+            background-color: #e8f5e9;
+        }
+
+        /* Quiz Area */
+        #quiz-container {
+            text-align: center;
+        }
+
+        #tense-instruction {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        #question-area p {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        #current-verb {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 10px 0 20px 0;
+            color: var(--secondary-color);
+        }
+
+        /* Input Form */
+        #input-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        #user-input {
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        #user-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        #submit-btn {
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        #submit-btn:hover:not(:disabled) {
+            background-color: var(--secondary-color);
+        }
+        
+        #submit-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* Feedback and Navigation */
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        #feedback.correct {
+            background-color: #e6ffed;
+            color: var(--success-color);
+        }
+
+        #feedback.incorrect {
+            background-color: #ffeded;
+            color: var(--error-color);
+        }
+
+        #next-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <header>
+        <h1>Verbi Coreani - Conjugazione</h1>
+        <div id="tense-selector">
+            <button data-tense="present" class="active">Presente</button>
+            <button data-tense="past">Passato</button>
+            <button data-tense="future">Futuro</button>
+        </div>
+    </header>
+
+    <main id="quiz-container">
+        <p id="tense-instruction">Coniuga al Presente (Forma Cortese: -아요/-어요)</p>
+        
+        <div id="question-area">
+            <p>Verbo all'infinito:</p>
+            <h2 id="current-verb"></h2>
+        </div>
+
+        <form id="input-form">
+            <input type="text" id="user-input" placeholder="La tua risposta (es. 가요)" autocomplete="off" lang="ko">
+            <button type="submit" id="submit-btn">Verifica</button>
+        </form>
+
+        <p id="feedback" class="hidden"></p>
+
+        <button id="next-btn" class="hidden">Prossimo Verbo</button>
+    </main>
+</div>
+
+<script>
+    const verbs = [
+        // Verbi standard
+        { dict: "하다", present: "해요", past: "했어요", future: "할 거예요" },
+        { dict: "가다", present: "가요", past: "갔어요", future: "갈 거예요" },
+        { dict: "먹다", present: "먹어요", past: "먹었어요", future: "먹을 거예요" },
+        { dict: "오다", present: "와요", past: "왔어요", future: "올 거예요" },
+        { dict: "보다", present: "봐요", past: "봤어요", future: "볼 거예요" },
+        { dict: "자다", present: "자요", past: "잤어요", future: "잘 거예요" },
+        { dict: "읽다", present: "읽어요", past: "읽었어요", future: "읽을 거예요" },
+        // Irregolari e comuni
+        { dict: "마시다", present: "마셔요", past: "마셨어요", future: "마실 거예요" },
+        { dict: "배우다", present: "배워요", past: "배웠어요", future: "배울 거예요" },
+        { dict: "듣다", present: "들어요", past: "들었어요", future: "들을 거예요" }, // Irregolare 'ㄷ'
+        { dict: "살다", present: "살아요", past: "살았어요", future: "살 거예요" },
+        { dict: "만들다", present: "만들어요", past: "만들었어요", future: "만들 거예요" },
+        { dict: "쓰다", present: "써요", past: "썼어요", future: "쓸 거예요" },
+        { dict: "예쁘다", present: "예뻐요", past: "예뻤어요", future: "예쁠 거예요" },
+        { dict: "춥다", present: "추워요", past: "추웠어요", future: "추울 거예요" }, // Irregolare 'ㅂ'
+        { dict: "돕다", present: "도와요", past: "도왔어요", future: "도울 거예요" }, // Irregolare 'ㅂ' (eccezione)
+        { dict: "짓다", present: "지어요", past: "지었어요", future: "지을 거예요" }, // Irregolare 'ㅅ'
+        { dict: "공부하다", present: "공부해요", past: "공부했어요", future: "공부할 거예요" }
+    ];
+
+    let currentTense = 'present';
+    let currentVerb = null;
+    let currentCorrectAnswer = '';
+
+    const elements = {
+        tenseSelector: document.getElementById('tense-selector'),
+        currentVerbDisplay: document.getElementById('current-verb'),
+        tenseInstruction: document.getElementById('tense-instruction'),
+        inputForm: document.getElementById('input-form'),
+        userInput: document.getElementById('user-input'),
+        submitBtn: document.getElementById('submit-btn'),
+        feedback: document.getElementById('feedback'),
+        nextBtn: document.getElementById('next-btn')
+    };
+
+    const instructions = {
+        present: "Coniuga al Presente (Forma Cortese: -아요/-어요)",
+        past: "Coniuga al Passato (Forma Cortese: -았어요/-었어요)",
+        future: "Coniuga al Futuro (Forma Cortese: -(을/ㄹ) 거예요)"
+    };
+    
+    // Funzione per selezionare un nuovo verbo casuale
+    function loadNewQuestion() {
+        const index = Math.floor(Math.random() * verbs.length);
+        currentVerb = verbs[index];
+
+        currentCorrectAnswer = currentVerb[currentTense];
+
+        // Aggiorna UI
+        elements.tenseInstruction.textContent = instructions[currentTense];
+        elements.currentVerbDisplay.textContent = currentVerb.dict;
+        elements.userInput.value = '';
+        
+        elements.feedback.classList.add('hidden');
+        elements.nextBtn.classList.add('hidden');
+        elements.submitBtn.disabled = false;
+        elements.userInput.focus();
+    }
+
+    // Funzione per normalizzare e verificare la risposta
+    function checkAnswer(event) {
+        event.preventDefault();
+        
+        if (elements.submitBtn.disabled) return;
+
+        // Normalizza la risposta (rimuove spazi in eccesso o variazioni di spacing)
+        const userAnswer = elements.userInput.value.trim().replace(/\s+/g, ' ');
+        const correctAnswer = currentCorrectAnswer.replace(/\s+/g, ' ');
+
+        elements.feedback.classList.remove('hidden');
+        elements.submitBtn.disabled = true;
+        elements.nextBtn.classList.remove('hidden');
+
+        if (userAnswer === correctAnswer) {
+            elements.feedback.textContent = `Corretto! 🎉 La risposta è: ${currentCorrectAnswer}`;
+            elements.feedback.className = 'correct';
+        } else {
+            elements.feedback.textContent = `Sbagliato. La risposta corretta è: ${currentCorrectAnswer}`;
+            elements.feedback.className = 'incorrect';
+        }
+    }
+
+    // Gestione della selezione del tempo verbale
+    elements.tenseSelector.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            document.querySelectorAll('#tense-selector button').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            currentTense = e.target.dataset.tense;
+            loadNewQuestion();
+        }
+    });
+
+    // Gestione del submit
+    elements.inputForm.addEventListener('submit', checkAnswer);
+
+    // Gestione del bottone 'Prossimo'
+    elements.nextBtn.addEventListener('click', loadNewQuestion);
+
+    // Inizializza l'applicazione al caricamento
+    document.addEventListener('DOMContentLoaded', loadNewQuestion);
+
+</script>
+
+</body>
+</html>
