@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Pop 가사: Impara il Coreano</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;700&display=swap');
+
+        :root {
+            --bg-color: #1a1a2e;
+            --card-color: #2c2c49;
+            --accent-color: #ff69b4; /* Hot Pink/Magenta */
+            --text-color: #e4e4f0;
+            --success-color: #64ffda;
+            --error-color: #ff4d4d;
+            --font-kr: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            transition: background-color 0.5s;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: var(--card-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+        
+        h2 {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0;
+            font-weight: 300;
+        }
+
+        .lyric-card {
+            border: 2px solid var(--accent-color);
+            border-radius: 15px;
+            padding: 20px 15px;
+            margin: 25px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .hangul-text {
+            font-family: var(--font-kr);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            min-height: 50px;
+        }
+
+        .translation-text {
+            font-style: italic;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            padding: 5px 10px;
+            border-left: 3px solid var(--accent-color);
+            text-align: left;
+        }
+
+        .hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Input and Button Styling */
+        #answerInput {
+            width: 90%;
+            padding: 12px;
+            margin: 15px 0 10px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-family: var(--font-kr);
+            background-color: var(--card-color);
+            color: var(--text-color);
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #answerInput:focus {
+            border-color: var(--success-color);
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #ff85c1;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Feedback and Score */
+        #feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .feedback-success {
+            color: var(--success-color);
+        }
+
+        .feedback-error {
+            color: var(--error-color);
+        }
+
+        #scoreDisplay {
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+        
+        .song-info {
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>K-Pop 가사</h1>
+        <h2>Impara il Coreano Attraverso i Testi</h2>
+
+        <div id="scoreDisplay">Punti: 0</div>
+        
+        <div class="lyric-card">
+            <div id="lyricDisplay" class="hangul-text">... Caricamento ...</div>
+            <div id="translationDisplay" class="translation-text"></div>
+        </div>
+        
+        <input type="text" id="answerInput" placeholder="Digita la parola mancante (in Coreano)">
+        <p class="hint">Suggerimento: Concentrati sul significato in Italiano.</p>
+
+        <button onclick="checkAnswer()">Verifica</button>
+        <button onclick="nextLyric()" id="nextButton" style="display: none;">Prossimo</button>
+
+        <div id="feedback"></div>
+
+        <div id="songInfo" class="song-info"></div>
+    </div>
+
+    <script>
+        const lyricsData = [
+            {
+                artist: "BTS",
+                song: "Spring Day (봄날)",
+                full_hangul: "보고 싶다.",
+                translation: "Mi manchi.",
+                missing_word: "보고", // The word 'to see'/'longing'
+                clue: "La parola per 'longing' / 'vedere'."
+            },
+            {
+                artist: "BLACKPINK",
+                song: "DDU-DU DDU-DU",
+                full_hangul: "지금 당장 널 원해.",
+                translation: "Voglio subito te.",
+                missing_word: "원해", // The word 'to want'
+                clue: "La parola per 'volere' / 'desiderare'."
+            },
+            {
+                artist: "TWICE",
+                song: "Cheer Up",
+                full_hangul: "Cheer up, baby! 힘을 내!",
+                translation: "Fatti coraggio, baby! Sii forte!",
+                missing_word: "힘을", // Strength/Power
+                clue: "La parola per 'forza' / 'energia'."
+            },
+            {
+                artist: "EXO",
+                song: "Growl",
+                full_hangul: "나만 볼 수 있어.",
+                translation: "Solo io posso vedere.",
+                missing_word: "나만", // Only me
+                clue: "La parola per 'solo io'."
+            },
+            {
+                artist: "IU",
+                song: "Good Day",
+                full_hangul: "조금만 더 힘을 내요.",
+                translation: "Solo un po' di più, sii forte.",
+                missing_word: "더", // More
+                clue: "La parola per 'di più' / 'ancora'."
+            }
+        ];
+
+        let currentLyric = null;
+        let score = 0;
+
+        const lyricDisplay = document.getElementById('lyricDisplay');
+        const translationDisplay = document.getElementById('translationDisplay');
+        const answerInput = document.getElementById('answerInput');
+        const feedback = document.getElementById('feedback');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const nextButton = document.getElementById('nextButton');
+        const checkButton = document.querySelector('button[onclick="checkAnswer()"]');
+        const songInfo = document.getElementById('songInfo');
+
+        function getRandomLyric() {
+            const randomIndex = Math.floor(Math.random() * lyricsData.length);
+            return lyricsData[randomIndex];
+        }
+
+        function loadLyric() {
+            currentLyric = getRandomLyric();
+            
+            // Generate the blanked phrase
+            const obscuredHangul = currentLyric.full_hangul.replace(currentLyric.missing_word, "____");
+            
+            lyricDisplay.textContent = obscuredHangul;
+            translationDisplay.textContent = `Traduzione (Parola mancante in grassetto): ${currentLyric.translation.replace(currentLyric.missing_word, `<b>${currentLyric.missing_word}</b>`)}`;
+            
+            songInfo.textContent = `${currentLyric.artist} - ${currentLyric.song}`;
+
+            answerInput.value = '';
+            feedback.textContent = '';
+            answerInput.disabled = false;
+            checkButton.style.display = 'inline-block';
+            nextButton.style.display = 'none';
+            answerInput.focus();
+        }
+
+        function checkAnswer() {
+            if (!currentLyric) return;
+
+            const userAnswer = answerInput.value.trim();
+            const correctAnswer = currentLyric.missing_word;
+
+            if (userAnswer === '') {
+                feedback.textContent = "Inserisci una risposta!";
+                feedback.className = 'feedback-error';
+                return;
+            }
+
+            // Simple comparison (case and space sensitive, but Korean is usually standard)
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = "Corretto! 🎉 Ottimo lavoro.";
+                feedback.className = 'feedback-success';
+                score++;
+            } else {
+                feedback.textContent = `Sbagliato. La parola corretta era: ${correctAnswer}`;
+                feedback.className = 'feedback-error';
+            }
+
+            scoreDisplay.textContent = `Punti: ${score}`;
+            
+            // Reveal the full lyric
+            lyricDisplay.textContent = currentLyric.full_hangul;
+
+            // Disable input and buttons
+            answerInput.disabled = true;
+            checkButton.style.display = 'none';
+            nextButton.style.display = 'inline-block';
+        }
+        
+        function nextLyric() {
+            loadLyric();
+        }
+
+        // Initialize the game
+        window.onload = loadLyric;
+        
+        // Allow Enter key to check answer
+        answerInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && answerInput.disabled === false) {
+                checkAnswer();
+            } else if (e.key === 'Enter' && nextButton.style.display !== 'none') {
+                nextLyric();
+            }
+        });
+
+    </script>
+</body>
+</html>
