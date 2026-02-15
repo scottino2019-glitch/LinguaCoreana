@@ -204,17 +204,26 @@
 
     <script>
         const JAMO = {
-            CHO: [
-                { r: 'G', h: 'ㄱ' }, { r: 'N', h: 'ㄴ' }, { r: 'D', h: 'ㄷ' }, { r: 'R/L', h: 'ㄹ' },
-                { r: 'M', h: 'ㅁ' }, { r: 'B', h: 'ㅂ' }, { r: 'S', h: 'ㅅ' }, { r: 'NG', h: 'ㅇ' },
-                { r: 'J', h: 'ㅈ' }, { r: 'CH', h: 'ㅊ' }, { r: 'K', h: 'ㅋ' }, { r: 'T', h: 'ㅌ' },
-                { r: 'P', h: 'ㅍ' }, { r: 'H', h: 'ㅎ' }
-            ],
-            JUNG: [
-                { r: 'A', h: 'ㅏ' }, { r: 'YA', h: 'ㅑ' }, { r: 'EO', h: 'ㅓ' }, { r: 'YEO', h: 'ㅕ' },
-                { r: 'O', h: 'ㅗ' }, { r: 'YO', h: 'ㅛ' }, { r: 'U', h: 'ㅜ' }, { r: 'YU', h: 'ㅠ' },
-                { r: 'EU', h: 'ㅡ' }, { r: 'I', h: 'ㅣ' }
-            ],
+    CHO: [
+        { r: 'G', h: 'ㄱ' }, { r: 'GG', h: 'ㄲ' }, { r: 'N', h: 'ㄴ' },
+        { r: 'D', h: 'ㄷ' }, { r: 'DD', h: 'ㄸ' }, { r: 'R/L', h: 'ㄹ' },
+        { r: 'M', h: 'ㅁ' }, { r: 'B', h: 'ㅂ' }, { r: 'BB', h: 'ㅃ' },
+        { r: 'S', h: 'ㅅ' }, { r: 'SS', h: 'ㅆ' }, { r: 'NG', h: 'ㅇ' },
+        { r: 'J', h: 'ㅈ' }, { r: 'JJ', h: 'ㅉ' }, { r: 'CH', h: 'ㅊ' },
+        { r: 'K', h: 'ㅋ' }, { r: 'T', h: 'ㅌ' }, { r: 'P', h: 'ㅍ' },
+        { r: 'H', h: 'ㅎ' }
+    ],
+    JUNG: [
+        { r: 'A', h: 'ㅏ' }, { r: 'AE', h: 'ㅐ' }, { r: 'YA', h: 'ㅑ' }, 
+        { r: 'YAE', h: 'ㅒ' }, { r: 'EO', h: 'ㅓ' }, { r: 'E', h: 'ㅔ' }, 
+        { r: 'YEO', h: 'ㅕ' }, { r: 'YE', h: 'ㅖ' }, { r: 'O', h: 'ㅗ' }, 
+        { r: 'WA', h: 'ㅘ' }, { r: 'WAE', h: 'ㅙ' }, { r: 'OE', h: 'ㅚ' }, 
+        { r: 'YO', h: 'ㅛ' }, { r: 'U', h: 'ㅜ' }, { r: 'WEO', h: 'ㅝ' }, 
+        { r: 'WE', h: 'ㅞ' }, { r: 'WI', h: 'ㅟ' }, { r: 'YU', h: 'ㅠ' }, 
+        { r: 'EU', h: 'ㅡ' }, { r: 'UI', h: 'ㅢ' }, { r: 'I', h: 'ㅣ' }
+    ]
+
+
             // Only used for lookup/display, not full syllable construction logic here
         };
 
@@ -227,6 +236,21 @@
             { r: 'Guk', h: '국' },
             { r: 'Mun', h: '문' },
             { r: 'I', h: '이' },
+            { r: 'Uyu', h: '우유' },    
+            { r: 'Mo-ja', h: '모자' },     
+           { r: 'Banana', h: '바나나' }, 
+            { r: 'Gilcha', h: '기차' },    
+    { r: 'Sagwa', h: '사과' },    
+    { r: 'Mul', h: '물' },    
+    { r: 'San', h: '산' },         
+    { r: 'Zip', h: '집' },       
+    { r: 'An-nyeong', h: '안녕' },
+    { r: 'Hanguk', h: '한국' },   
+    { r: 'Gabang', h: '가방' },   
+    { r: 'Haneul', h: '하늘' },  
+    { r: 'Bada', h: '바다' },     
+    { r: 'Kopi', h: '커피' },     
+    { r: 'Usan', h: '우산' }     
         ];
 
         let state = {
