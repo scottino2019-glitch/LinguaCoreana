@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sogang Grammar Master</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --error: #e74c3c;
+            --success: #2ecc71;
+            --dark: #2c3e50;
+            --bg: #f4f7f6;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--dark); }
+        #app { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        h1 { text-align: center; color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        #italian-sentence { background: var(--dark); color: white; padding: 20px; border-radius: 10px; text-align: center; font-size: 1.4em; margin-bottom: 25px; }
+
+        #korean-builder { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 80px; padding: 20px; background: #fff; border: 2px dashed #cbd5e0; border-radius: 10px; margin-bottom: 20px; }
+        
+        .slot { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .slot-label { font-size: 0.7em; color: #7f8c8d; text-transform: uppercase; }
+        .word-box { min-width: 80px; height: 45px; border: 2px solid #edf2f7; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; background: #f8fafc; transition: all 0.3s; }
+        .word-box.active { border-color: var(--primary); background: #ebf8ff; }
+        .word-box.error-highlight { border-color: var(--error); background: #fff5f5; color: var(--error); }
+
+        .options-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .option-group { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .option-group h4 { margin: 0 0 10px 0; font-size: 0.85em; color: var(--primary); }
+        
+        .opt-btn { width: 100%; margin-bottom: 5px; padding: 8px; border: 1px solid #cbd5e0; border-radius: 4px; background: white; cursor: pointer; transition: 0.2s; }
+        .opt-btn:hover { background: #edf2f7; }
+        .opt-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+
+        #feedback { margin: 20px 0; padding: 15px; border-radius: 8px; display: none; text-align: center; font-weight: bold; }
+        .show-feedback { display: block !important; }
+
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .main-btn { padding: 12px 30px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
+        #check-btn { background: var(--primary); color: white; }
+        #next-btn { background: var(--success); color: white; display: none; }
+        .main-btn:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <h1>Sogang Sentence Builder</h1>
+    <div id="italian-sentence">...</div>
+    
+    <div id="korean-builder" id="builder">
+        </div>
+
+    <div id="feedback"></div>
+
+    <div class="options-container" id="options">
+        </div>
+
+    <div class="controls">
+        <button id="check-btn" class="main-btn" disabled>Controlla Risposta</button>
+        <button id="next-btn" class="main-btn">Prossima Frase</button>
+    </div>
+</div>
+
+<script>
+        
+    const LESSON_DATA = [
+        // UNITÀ 1 & 2: Azioni quotidiane e Oggetti
+        {
+            it: "Oggi io mangio la mela.",
+            structure: ["Soggetto", "P.Sogg", "Avverbio", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["저", "는", "오늘", "사과", "를", "먹어요"],
+            options: {
+                "Soggetto": ["저", "친구", "동생"], "P.Sogg": ["는", "은", "가", "이"],
+                "Avverbio": ["오늘", "내일", "지금"], "Oggetto": ["사과", "책", "밥"],
+                "P.Ogg": ["를", "을"], "Verbo": ["먹어요", "읽어요", "사요"]
+            }
+        },
+        {
+            it: "Minsu legge un libro in biblioteca.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["민수", "는", "도서관", "에서", "책", "을", "읽어요"],
+            options: {
+                "Soggetto": ["민수", "영미", "저"], "P.Sogg": ["는", "은", "가", "이"],
+                "Luogo": ["도서관", "학교", "집"], "P.Luogo": ["에서", "에"],
+                "Oggetto": ["책", "물", "사과"], "P.Ogg": ["을", "를"],
+                "Verbo": ["읽어요", "공부해요", "사요"]
+            }
+        },
+        // UNITÀ 3: Luoghi e Movimento
+        {
+            it: "Domani vado al mercato.",
+            structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+            correct: ["내일", "저", "는", "시장", "에", "가요"],
+            options: {
+                "Avverbio": ["내일", "오늘", "어제"], "Soggetto": ["저", "우리", "동생"],
+                "P.Sogg": ["는", "은", "가", "이"], "Luogo": ["시장", "백화점", "공원"],
+                "P.Luogo": ["에", "에서"], "Verbo": ["가요", "와요", "있어요"]
+            }
+        },
+        {
+            it: "Il mio amico compra il pane al negozio.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["친구", "가", "가게", "에서", "빵", "을", "사요"],
+            options: {
+                "Soggetto": ["친구", "언니", "형"], "P.Sogg": ["가", "이", "는", "은"],
+                "Luogo": ["가게", "편의점", "식당"], "P.Luogo": ["에서", "에"],
+                "Oggetto": ["빵", "우유", "커피"], "P.Ogg": ["을", "를"],
+                "Verbo": ["사요", "마셔요", "만들어요"]
+            }
+        },
+        // UNITÀ 4: Studio e Tempo libero
+        {
+            it: "Adesso io studio coreano a casa.",
+            structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["지금", "저", "는", "집", "에서", "한국어", "를", "공부해요"],
+            options: {
+                "Avverbio": ["지금", "항상", "자주"], "Soggetto": ["저", "나", "학생"],
+                "P.Sogg": ["는", "은", "가", "이"], "Luogo": ["집", "교실", "방"],
+                "P.Luogo": ["에서", "에"], "Oggetto": ["한국어", "영어", "수학"],
+                "P.Ogg": ["를", "을"], "Verbo": ["공부해요", "해요", "가르쳐요"]
+            }
+        },
+        {
+            it: "L'insegnante beve il tè in ufficio.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["선생님", "이", "사무실", "에서", "차", "를", "마셔요"],
+            options: {
+                "Soggetto": ["선생님", "요리사", "의사"], "P.Sogg": ["이", "가", "은", "는"],
+                "Luogo": ["사무실", "커피숍", "식당"], "P.Luogo": ["에서", "에"],
+                "Oggetto": ["차", "커피", "콜라"], "P.Ogg": ["를", "을"],
+                "Verbo": ["마셔요", "마셔요", "줘요"]
+            }
+        },
+        {
+            it: "Minsu incontra un amico al cinema.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["민수", "는", "영화관", "에서", "친구", "를", "만나요"],
+            options: {
+                "Soggetto": ["민수", "영미", "동생"], "P.Sogg": ["는", "은", "가", "이"],
+                "Luogo": ["영화관", "백화점", "학교"], "P.Luogo": ["에서", "에"],
+                "Oggetto": ["친구", "선생님", "동생"], "P.Ogg": ["를", "을"],
+                "Verbo": ["만나요", "봐요", "기다려요"]
+            }
+        },
+        {
+            it: "Oggi io compro i vestiti al centro commerciale.",
+            structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["오늘", "저", "는", "백화점", "에서", "옷", "을", "사요"],
+            options: {
+                "Avverbio": ["오늘", "내일", "항상"], "Soggetto": ["저", "친구", "우리"],
+                "P.Sogg": ["는", "은", "가", "이"], "Luogo": ["백화점", "시장", "가게"],
+                "P.Luogo": ["에서", "에"], "Oggetto": ["옷", "가방", "구두"],
+                "P.Ogg": ["을", "를"], "Verbo": ["사요", "구경해요", "팔아요"]
+            }
+        },
+        {
+            it: "Mio fratello dorme a casa.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+            correct: ["오빠", "가", "집", "에서", "자요"],
+            options: {
+                "Soggetto": ["오빠", "형", "남동생"], "P.Sogg": ["가", "이", "는", "은"],
+                "Luogo": ["집", "방", "거실"], "P.Luogo": ["에서", "에"],
+                "Verbo": ["자요", "쉬어요", "있어요"]
+            }
+        },
+        {
+            it: "Io guardo un film a casa.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+            correct: ["저", "는", "집", "에서", "영화", "를", "봐요"],
+            options: {
+                "Soggetto": ["저", "나", "친구"], "P.Sogg": ["는", "은", "가", "이"],
+                "Luogo": ["집", "방", "영화관"], "P.Luogo": ["에서", "에"],
+                "Oggetto": ["영화", "드라마", "뉴스"], "P.Ogg": ["를", "을"],
+                "Verbo": ["봐요", "들어요", "해요"]
+            }
+        },
+        {
+            it: "Il gatto è sopra il tavolo.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "Posizione", "P.Luogo", "Verbo"],
+            correct: ["고양이", "가", "책상", "위", "에", "있어요"],
+            options: {
+                "Soggetto": ["고양이", "강아지", "책"], "P.Sogg": ["가", "이", "는", "은"],
+                "Luogo": ["책상", "침대", "의자"], "Posizione": ["위", "밑", "옆"],
+                "P.Luogo": ["에", "에서"], "Verbo": ["있어요", "없어요", "가요"]
+            }
+        },
+        {
+            it: "Minsu lavora in banca.",
+            structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+            correct: ["민수", "는", "은행", "에서", "일해요"],
+            options: {
+                "Soggetto": ["민수", "영미", "아버지"], "P.Sogg": ["는", "은", "가", "이"],
+                "Luogo": ["은행", "회사", "병원"], "P.Luogo": ["에서", "에"],
+                "Verbo": ["일해요", "공부해요", "운동해요"]
+            }
+        }
+    ];
+
+
+    
+
+    let currentIdx = 0;
+    let userSelections = [];
+
+    function loadSentence() {
+        const data = LESSON_DATA[currentIdx];
+        document.getElementById('italian-sentence').textContent = data.it;
+        userSelections = new Array(data.structure.length).fill(null);
+        
+        // Reset UI
+        document.getElementById('feedback').className = '';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('check-btn').style.display = 'inline-block';
+        document.getElementById('check-btn').disabled = true;
+        
+        renderBuilder();
+        renderOptions();
+    }
+
+    function renderBuilder() {
+        const builder = document.getElementById('korean-builder');
+        builder.innerHTML = '';
+        const data = LESSON_DATA[currentIdx];
+        
+        data.structure.forEach((label, i) => {
+            const div = document.createElement('div');
+            div.className = 'slot';
+            div.innerHTML = `
+                <span class="slot-label">${label}</span>
+                <div class="word-box" id="box-${i}">${userSelections[i] || ''}</div>
+            `;
+            builder.appendChild(div);
+        });
+    }
+
+    function renderOptions() {
+        const container = document.getElementById('options');
+        container.innerHTML = '';
+        const data = LESSON_DATA[currentIdx];
+        
+        data.structure.forEach((type, slotIdx) => {
+            const group = document.createElement('div');
+            group.className = 'option-group';
+            group.innerHTML = `<h4>${type}</h4>`;
+            
+            data.options[type].forEach(val => {
+                const btn = document.createElement('button');
+                btn.className = `opt-btn ${userSelections[slotIdx] === val ? 'selected' : ''}`;
+                btn.textContent = val;
+                btn.onclick = () => selectWord(slotIdx, val);
+                group.appendChild(btn);
+            });
+            container.appendChild(group);
+        });
+    }
+
+    function selectWord(idx, val) {
+        userSelections[idx] = val;
+        renderBuilder();
+        renderOptions();
+        
+        const isComplete = userSelections.every(s => s !== null);
+        document.getElementById('check-btn').disabled = !isComplete;
+    }
+
+    function checkAnswer() {
+        const data = LESSON_DATA[currentIdx];
+        const feedback = document.getElementById('feedback');
+        let errors = [];
+
+        userSelections.forEach((choice, i) => {
+            const box = document.getElementById(`box-${i}`);
+            box.classList.remove('error-highlight');
+            
+            if (choice !== data.correct[i]) {
+                box.classList.add('error-highlight');
+                errors.push(data.structure[i]);
+            }
+        });
+
+        if (errors.length === 0) {
+            feedback.textContent = "Eccellente! Frase perfetta. 🎉";
+            feedback.className = "show-feedback success-msg"; // (Stili nel CSS aggiornati)
+            feedback.style.color = "var(--success)";
+            document.getElementById('check-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+        } else {
+            feedback.innerHTML = `C'è un errore! Controlla questi elementi: <br> ⚠️ <strong>${[...new Set(errors)].join(', ')}</strong>`;
+            feedback.className = "show-feedback error-msg";
+            feedback.style.color = "var(--error)";
+        }
+    }
+
+    document.getElementById('check-btn').onclick = checkAnswer;
+    document.getElementById('next-btn').onclick = () => {
+        currentIdx = (currentIdx + 1) % LESSON_DATA.length;
+        loadSentence();
+    };
+
+    loadSentence();
+</script>
+</body>
+</html>
