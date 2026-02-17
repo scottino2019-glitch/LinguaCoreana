@@ -69,7 +69,6 @@
 <script>
         
     const LESSON_DATA = [
-        // UNITÀ 1 & 2: Azioni quotidiane e Oggetti
         {
             it: "Oggi io mangio la mela.",
             structure: ["Soggetto", "P.Sogg", "Avverbio", "Oggetto", "P.Ogg", "Verbo"],
@@ -91,7 +90,6 @@
                 "Verbo": ["읽어요", "공부해요", "사요"]
             }
         },
-        // UNITÀ 3: Luoghi e Movimento
         {
             it: "Domani vado al mercato.",
             structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
@@ -113,7 +111,6 @@
                 "Verbo": ["사요", "마셔요", "만들어요"]
             }
         },
-        // UNITÀ 4: Studio e Tempo libero
         {
             it: "Adesso io studio coreano a casa.",
             structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
@@ -197,8 +194,172 @@
                 "Soggetto": ["민수", "영미", "아버지"], "P.Sogg": ["는", "은", "가", "이"],
                 "Luogo": ["은행", "회사", "병원"], "P.Luogo": ["에서", "에"],
                 "Verbo": ["일해요", "공부해요", "운동해요"]
-            }
-        }
+            },
+{
+    it: "Ieri ho dormito.",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Verbo"],
+    correct: ["어제", "저", "는", "잤어요"],
+    options: {
+        "Avverbio": ["어제", "오늘", "아까"], 
+        "Soggetto": ["저", "나", "친구"], "P.Sogg": ["는", "은", "가"],
+        "Verbo": ["잤어요", "자요", "먹었어요"]
+    }
+},
+{
+    it: "Ho mangiato il pane.",
+    structure: ["Soggetto", "P.Sogg", "Oggetto", "P.Ogg", "Verbo"],
+    correct: ["저", "는", "빵", "을", "먹었어요"],
+    options: {
+        "Soggetto": ["저", "우리", "민수"], "P.Sogg": ["는", "은", "가"],
+        "Oggetto": ["빵", "밥", "우유"], "P.Ogg": ["을", "를"],
+        "Verbo": ["먹었어요", "마셨어요", "봤어요"]
+    }
+},
+{
+    it: "Minsu è andato a scuola.",
+    structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+    correct: ["민수", "는", "학교", "에", "갔어요"],
+    options: {
+        "Soggetto": ["민수", "영미", "선생님"], "P.Sogg": ["는", "은", "가"],
+        "Luogo": ["학교", "집", "공원"], "P.Luogo": ["에", "에서"],
+        "Verbo": ["갔어요", "왔어요", "있었어요"]
+    }
+},
+{
+    it: "Ieri ho visto un film al cinema.",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+    correct: ["어제", "저", "는", "영화관", "에서", "영화", "를", "봤어요"],
+    options: {
+        "Avverbio": ["어제", "오늘", "아까"], "Soggetto": ["저", "우리"], "P.Sogg": ["는", "은"],
+        "Luogo": ["영화관", "집", "학교"], "P.Luogo": ["에서", "에"],
+        "Oggetto": ["영화", "책", "빵"], "P.Ogg": ["를", "을"],
+        "Verbo": ["봤어요", "읽었어요", "샀어요"]
+    }
+},
+{
+    it: "Mio fratello ha comprato un regalo al mercato.",
+    structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Oggetto", "P.Ogg", "Verbo"],
+    correct: ["오빠", "가", "시장", "에서", "선물", "을", "샀어요"],
+    options: {
+        "Soggetto": ["오빠", "형", "언니"], "P.Sogg": ["가", "이", "는"],
+        "Luogo": ["시장", "백화점", "가게"], "P.Luogo": ["에서", "에"],
+        "Oggetto": ["선물", "옷", "가방"], "P.Ogg": ["을", "를"],
+        "Verbo": ["샀어요", "줬어요", "받았어요"]
+    }
+},
+{
+    it: "Ho studiato coreano con un amico (insieme).",
+    structure: ["Soggetto", "P.Sogg", "Compagnia", "Avverbio", "Oggetto", "P.Ogg", "Verbo"],
+    correct: ["저", "는", "친구하고", "같이", "한국어", "를", "공부했어요"],
+    options: {
+        "Soggetto": ["저", "우리"], "P.Sogg": ["는", "은"],
+        "Compagnia": ["친구하고", "선생님하고", "동생하고"], "Avverbio": ["같이", "혼자"],
+        "Oggetto": ["한국어", "영어", "수학"], "P.Ogg": ["를", "을"],
+        "Verbo": ["공부했어요", "했어요", "가르쳤어요"]
+    }
+},
+{
+    it: "Domenica scorsa ho lavorato in ufficio.",
+    structure: ["Tempo", "Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+    correct: ["지난 일요일에", "저", "는", "사무실", "에서", "일했어요"],
+    options: {
+        "Tempo": ["지난 일요일에", "어제", "지난주에"], "Soggetto": ["저", "아버지"], "P.Sogg": ["는", "은"],
+        "Luogo": ["사무실", "은행", "회사"], "P.Luogo": ["에서", "에"],
+        "Verbo": ["일했어요", "쉬었어요", "공부했어요"]
+    }
+},
+{
+    it: "Il gatto non c'era in casa.",
+    structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo"],
+    correct: ["고양이", "가", "집", "에", "없었어요"],
+    options: {
+        "Soggetto": ["고양이", "강아지"], "P.Sogg": ["가", "이"],
+        "Luogo": ["집", "방", "공원"], "P.Luogo": ["에", "에서"],
+        "Verbo": ["없었어요", "있었어요", "갔어요"]
+    }
+},
+{
+    it: "Ieri ho bevuto molto caffè.",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Quantità", "Oggetto", "P.Ogg", "Verbo"],
+    correct: ["어제", "저", "는", "많이", "커피", "를", "마셨어요"],
+    options: {
+        "Avverbio": ["어제", "아까"], "Soggetto": ["저", "친구"], "P.Sogg": ["는", "은"],
+        "Quantità": ["많이", "조금"], "Oggetto": ["커피", "물", "차"], "P.Ogg": ["를", "을"],
+        "Verbo": ["마셨어요", "먹었어요", "샀어요"]
+    }
+},
+{
+    it: "Il tempo era bello.",
+    structure: ["Soggetto", "P.Sogg", "Verbo(Agg)"],
+    correct: ["날씨", "가", "좋았어요"],
+    options: {
+        "Soggetto": ["날씨", "기분", "음식"], "P.Sogg": ["가", "이"],
+        "Verbo(Agg)": ["좋았어요", "나빴어요", "추웠어요"]
+    }
+},
+{
+    it: "Ieri non ho mangiato la cena.",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Oggetto", "P.Ogg", "Negazione", "Verbo"],
+    correct: ["어제", "저", "는", "저녁", "을", "안", "먹었어요"],
+    options: {
+        "Avverbio": ["어제", "아까", "오늘"], "Soggetto": ["저", "나"], "P.Sogg": ["는", "은"],
+        "Oggetto": ["저녁", "점심", "아침"], "P.Ogg": ["을", "를"],
+        "Negazione": ["안", "못"], "Verbo": ["먹었어요", "했어요", "갔어요"]
+    }
+},
+{
+    it: "Minsu è andato a scuola?",
+    structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Verbo?"],
+    correct: ["민수", "는", "학교", "에", "갔어요?"],
+    options: {
+        "Soggetto": ["민수", "영미", "친구"], "P.Sogg": ["는", "은", "가"],
+        "Luogo": ["학교", "집", "회사"], "P.Luogo": ["에", "에서"],
+        "Verbo?": ["갔어요?", "왔어요?", "있었어요?"]
+    }
+},
+{
+    it: "Ieri non hai studiato?",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Oggetto", "Negazione", "Verbo?"],
+    correct: ["어제", "너", "는", "공부", "안", "했어요?"],
+    options: {
+        "Avverbio": ["어제", "아까", "벌써"], "Soggetto": ["너", "우리"], "P.Sogg": ["는", "은"],
+        "Oggetto": ["공부", "운동", "일"], 
+        "Negazione": ["안", "못"], "Verbo?": ["했어요?", "갔어요?", "먹었어요?"]
+    }
+},
+{
+    it: "Cosa hai comprato al mercato?",
+    structure: ["Soggetto", "P.Sogg", "Luogo", "P.Luogo", "Interrogativo", "P.Ogg", "Verbo?"],
+    correct: ["저", "는", "시장", "에서", "무엇", "을", "샀어요?"],
+    options: {
+        "Soggetto": ["저", "당신", "누구"], "P.Sogg": ["는", "은"],
+        "Luogo": ["시장", "백화점", "마트"], "P.Luogo": ["에서", "에"],
+        "Interrogativo": ["무엇", "어디", "누구"], "P.Ogg": ["을", "를"],
+        "Verbo?": ["샀어요?", "봤어요?", "먹었어요?"]
+    }
+},
+{
+    it: "Non ho incontrato l'amico.",
+    structure: ["Soggetto", "P.Sogg", "Oggetto", "P.Ogg", "Negazione", "Verbo"],
+    correct: ["저", "는", "친구", "를", "안", "만났어요"],
+    options: {
+        "Soggetto": ["저", "나"], "P.Sogg": ["는", "은"],
+        "Oggetto": ["친구", "선생님", "동생"], "P.Ogg": ["를", "을"],
+        "Negazione": ["안", "못"], "Verbo": ["만났어요", "봤어요", "기다렸어요"]
+    }
+},
+{
+    it: "Dove sei andato ieri?",
+    structure: ["Avverbio", "Soggetto", "P.Sogg", "Interrogativo", "P.Luogo", "Verbo?"],
+    correct: ["어제", "당신", "은", "어디", "에", "갔어요?"],
+    options: {
+        "Avverbio": ["어제", "오늘", "지난주에"], "Soggetto": ["당신", "너", "민수"], "P.Sogg": ["은", "는", "이"],
+        "Interrogativo": ["어디", "무엇", "언제"], "P.Luogo": ["에", "에서"],
+        "Verbo?": ["갔어요?", "왔어요?", "있었어요?"]
+    }
+}
+
+        
     ];
 
 
