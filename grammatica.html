@@ -816,7 +816,22 @@
       </div>
      </div>
     </section>
-   </main><!-- Footer -->
+   </main>
+<button id="nextPageButton"
+                class="star-button relative w-20 h-20 bg-yellow-500 text-white rounded-full flex items-center justify-center
+                       shadow-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75
+                       transform rotate-0"
+                aria-label="Vai alla pagina successiva">
+            
+            <!-- SVG della stella -->
+            <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 18.896l-7.416 3.917 1.48-8.279-6.064-5.828 8.332-1.151z"/>
+            </svg>
+            <span class="relative z-10 text-xs font-bold pointer-events-none">PROSSIMO</span>
+        </button>
+    </div>
+
+<!-- Footer -->
    <footer class="bg-amber-800 text-amber-100 p-4 mt-8">
     <div class="max-w-6xl mx-auto text-center font-handwriting">
      <p class="text-lg">화이팅! 💪 Buono studio!</p>
@@ -825,6 +840,14 @@
    </footer>
   </div>
   <script>
+document.getElementById('nextPageButton').addEventListener('click', function() {
+            
+            window.location.href = 'grammatica-completa.html'; 
+            
+        });
+
+        
+
     // Config e SDK
     const defaultConfig = {
       main_title: '한국어 학교',
@@ -1198,6 +1221,7 @@
     }
 
     init();
+
   </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d37fe21864cee5f',t:'MTc3MjAzMDc5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
