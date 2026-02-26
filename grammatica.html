@@ -100,6 +100,42 @@
     .exercise-card:hover {
       transform: translateY(-2px);
     }
+.card-shape {
+                    width: 128px;
+                    height: 114px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 1rem;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Example: Tailwind shadow-xl */
+                    transition: all 0.3s ease-in-out;
+                    box-sizing: border-box;
+                    position: relative;
+                }
+            .card-shape { clip-path: polygon(50% 0%, 61.8% 38.1%, 100% 38.1%, 72.4% 61.8%, 85.3% 100%, 50% 76.4%, 14.7% 100%, 27.6% 61.8%, 0% 38.1%, 38.2% 38.1%); border-radius: 0; }.card-shape { background: #000000; }
+                .card-text {
+                    color: #ffffff;
+                    font-family: Caveat, cursive;
+                    font-size: 1.25rem; /* Equivalent to text-xl */
+                    line-height: 1.75rem; /* Equivalent to leading-7 */
+                    position: relative;
+                    z-index: 10;
+                    max-width: 100%;
+                    max-height: 100%;
+                    overflow: hidden;
+                }
+            
+                    .card-sticker {
+                        position: absolute;
+                        font-size: 3rem; /* Equivalent to text-5xl */
+                        opacity: 0.7;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 5;
+                    }
+
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -817,34 +853,29 @@
      </div>
     </section>
    </main>
-<button id="nextPageButton"
-                class="star-button relative w-20 h-20 bg-yellow-500 text-white rounded-full flex items-center justify-center
-                       shadow-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75
-                       transform rotate-0"
-                aria-label="Vai alla pagina successiva">
-            
-            <!-- SVG della stella -->
-            <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 18.896l-7.416 3.917 1.48-8.279-6.064-5.828 8.332-1.151z"/>
-            </svg>
-            <span class="relative z-10 text-xs font-bold pointer-events-none">PROSSIMO</span>
-        </button>
+
     </div>
+
 
 <!-- Footer -->
    <footer class="bg-amber-800 text-amber-100 p-4 mt-8">
     <div class="max-w-6xl mx-auto text-center font-handwriting">
-     <p class="text-lg">화이팅! 💪 Buono studio!</p>
-     <p class="text-sm mt-1 opacity-75">한국어 학교 - Scuola di Coreano</p>
-    </div>
+     <p class="text-lg">Approfondimenti</p>
+<a href="verbi.html">
+<button class="card-shape">
+        <p class="card-text">Verbi</p>
+        <span class="card-sticker">✨</span>
+    </button><a/>
+<a href="numeri.html">
+<div class="card-shape">
+        <p class="card-text">Numeri</p>
+        <span class="card-sticker">✨</span>
+    </button></a>
+</div>
    </footer>
   </div>
   <script>
-document.getElementById('nextPageButton').addEventListener('click', function() {
-            
-            window.location.href = 'grammatica-completa.html'; 
-            
-        });
+
 
         
 
