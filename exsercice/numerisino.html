@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizi: Numeri Sino-Coreani</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-4">
+
+    <div class="container mx-auto p-4 bg-white rounded-lg shadow-xl max-w-2xl mt-4">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Esercizi: Numeri Sino-Coreani</h1>
+        
+        <!-- Minuti -->
+        <div class="mb-6 p-4 border border-blue-200 rounded-lg bg-blue-50 text-center">
+            <h2 class="text-xl font-semibold text-blue-700 mb-2">Minuti (분)</h2>
+            <p class="text-lg mb-4">Traduci: <span id="minutes-display" class="font-bold text-2xl">--</span> min</p>
+            <input type="text" id="minutes-input" class="w-full p-2 border border-gray-300 rounded mb-2 text-center" placeholder="Hangeul">
+            <button id="minutes-btn" class="w-full bg-blue-500 text-white font-bold py-2 rounded">Verifica</button>
+            <p id="minutes-feedback" class="mt-2 font-bold min-h-[1.5rem]"></p>
+        </div>
+
+        <!-- Costi -->
+        <div class="mb-6 p-4 border border-green-200 rounded-lg bg-green-50 text-center">
+            <h2 class="text-xl font-semibold text-green-700 mb-2">Costi (원)</h2>
+            <p class="text-lg mb-4">Traduci: <span id="cost-display" class="font-bold text-2xl">--</span> ₩</p>
+            <input type="text" id="cost-input" class="w-full p-2 border border-gray-300 rounded mb-2 text-center" placeholder="Hangeul">
+            <button id="cost-btn" class="w-full bg-green-500 text-white font-bold py-2 rounded">Verifica</button>
+            <p id="cost-feedback" class="mt-2 font-bold min-h-[1.5rem]"></p>
+        </div>
+
+        <!-- Mesi -->
+        <div class="mb-6 p-4 border border-purple-200 rounded-lg bg-purple-50 text-center">
+            <h2 class="text-xl font-semibold text-purple-700 mb-2">Mesi (월)</h2>
+            <p class="text-lg mb-4">Traduci: Mese <span id="month-display" class="font-bold text-2xl">--</span></p>
+            <input type="text" id="month-input" class="w-full p-2 border border-gray-300 rounded mb-2 text-center" placeholder="Hangeul">
+            <button id="month-btn" class="w-full bg-purple-500 text-white font-bold py-2 rounded">Verifica</button>
+            <p id="month-feedback" class="mt-2 font-bold min-h-[1.5rem]"></p>
+        </div>
+
+        <!-- Giorni -->
+        <div class="mb-6 p-4 border border-red-200 rounded-lg bg-red-50 text-center">
+            <h2 class="text-xl font-semibold text-red-700 mb-2">Giorni (일)</h2>
+            <p class="text-lg mb-4">Traduci: Giorno <span id="day-display" class="font-bold text-2xl">--</span></p>
+            <input type="text" id="day-input" class="w-full p-2 border border-gray-300 rounded mb-2 text-center" placeholder="Hangeul">
+            <button id="day-btn" class="w-full bg-red-500 text-white font-bold py-2 rounded">Verifica</button>
+            <p id="day-feedback" class="mt-2 font-bold min-h-[1.5rem]"></p>
+        </div>
+    </div>
+
+    <script>
+        function toSino(num, isMonth = false) {
+            if (isMonth) {
+                if (num === 6) return "유";
+                if (num === 10) return "시";
+            }
+            const units = ["", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구"];
+            let n = num;
+            let res = "";
+            if (n >= 10000) { let m = Math.floor(n/10000); res += (m===1?"":units[m]) + "만"; n %= 10000; }
+            if (n >= 1000) { let c = Math.floor(n/1000); res += (c===1?"":units[c]) + "천"; n %= 1000; }
+            if (n >= 100) { let b = Math.floor(n/100); res += (b===1?"":units[b]) + "백"; n %= 100; }
+            if (n >= 10) { let s = Math.floor(n/10); res += (s===1?"":units[s]) + "십"; n %= 10; }
+            if (n > 0) res += units[n];
+            
+            // Correzione per 10, 100, 1000, 10000 (non si dice "uno-dieci" ma solo "dieci")
+            return res.replace(/^일십/, "십").replace(/^일백/, "백").replace(/^일천/, "천").replace(/^일만/, "만") || "영";
+        }
+
+        function setup(id, min, max, unit, isMonth = false) {
+            const display = document.getElementById(id + '-display');
+            const input = document.getElementById(id + '-input');
+            const btn = document.getElementById(id + '-btn');
+            const feed = document.getElementById(id + '-feedback');
+
+            let currentVal;
+            let correctSino;
+
+            function next() {
+                currentVal = Math.floor(Math.random() * (max - min + 1)) + min;
+                if (id === 'cost') currentVal = Math.floor(currentVal / 100) * 100;
+                correctSino = toSino(currentVal, isMonth);
+                display.innerText = currentVal.toLocaleString();
+                input.value = "";
+                input.disabled = false;
+                feed.innerText = "";
+                btn.innerText = "Verifica";
+                btn.classList.remove('bg-gray-500');
+            }
+
+            function check() {
+                if (btn.innerText === "Prossimo") {
+                    next();
+                    return;
+                }
+                const user = input.value.trim().replace(/\s/g, '');
+                if (!user) return;
+
+                // Accetta sia il numero puro che numero + unità
+                if (user === correctSino || user === (correctSino + unit)) {
+                    feed.innerHTML = `<span class="text-green-600">✅ Esatto! ${correctSino}${unit}</span>`;
+                } else {
+                    feed.innerHTML = `<span class="text-red-600">❌ Errato: ${correctSino}${unit}</span>`;
+                }
+                btn.innerText = "Prossimo";
+                btn.classList.add('bg-gray-500');
+                input.disabled = true;
+            }
+
+            btn.onclick = check;
+            input.onkeyup = (e) => { if(e.key === 'Enter') check(); };
+            next();
+        }
+
+        window.onload = () => {
+            setup('minutes', 1, 59, '분');
+            setup('cost', 1000, 99000, '원');
+            setup('month', 1, 12, '월', true);
+            setup('day', 1, 31, '일');
+        };
+    </script>
+</body>
+</html>
+
