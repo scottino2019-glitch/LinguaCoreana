@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizi Vocabolario Coreano-Italiano</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Noto Sans KR (Korean font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif, 'Arial', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .korean-text {
+            font-size: 3.5rem;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        .italian-text {
+            font-size: 1.5rem;
+            color: #4a5568;
+        }
+        .romanization-text {
+            font-size: 1.1rem;
+            color: #718096;
+            font-style: italic;
+        }
+        .fade-in {
+            transition: opacity 0.5s ease-out;
+        }
+        .fade-in.hidden {
+            opacity: 0;
+            display: none;
+        }
+        .scale-102:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-indigo-200 min-h-screen flex items-center justify-center py-10 px-4">
+
+    <div class="container max-w-2xl bg-white shadow-2xl rounded-xl p-8 md:p-12 text-center border-t-4 border-blue-500">
+        <h1 class="text-3xl font-extrabold text-blue-700 mb-4 leading-tight">
+            Vocabolario Coreano
+        </h1>
+        <p class="text-gray-600 mb-8">
+            Clicca sulla parola per la pronuncia. Usa i tasti per scoprire il significato.
+        </p>
+
+        <div id="word-card" class="bg-blue-50 p-8 md:p-10 rounded-lg shadow-inner mb-8 transition-all duration-300 transform scale-102 min-h-[250px] flex flex-col justify-center">
+            <p id="korean-word" class="korean-text text-gray-800 mb-4 cursor-pointer hover:text-blue-600 transition-colors duration-200" title="Clicca per ascoltare">
+                ...
+            </p>
+            <p id="romanization" class="romanization-text mb-2 fade-in hidden">
+                (Romanizzazione)
+            </p>
+            <p id="italian-translation" class="italian-text font-medium fade-in hidden">
+                Traduzione
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button id="pronounce-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all active:scale-95 focus:outline-none">
+                🔊 Pronuncia
+            </button>
+            <button id="reveal-btn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all active:scale-95 focus:outline-none">
+                Mostra
+            </button>
+            <button id="next-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all active:scale-95 focus:outline-none">
+                Prossima →
+            </button>
+        </div>
+
+        <div class="mt-8 flex justify-between items-center text-sm text-gray-500">
+            <span id="progress-info">Parola 1 di X</span>
+            <button onclick="init()" class="text-blue-500 hover:underline">Mescola di nuovo</button>
+        </div>
+    </div>
+
+    <script>
+        // Vocabolario estratto dallo screenshot
+        const words = [
+            // Sezione Paesi (나라)
+            { korean: "나라", romanization: "Nara", italian: "Paesi" },
+            { korean: "한국", romanization: "Hanguk", italian: "Corea" },
+            { korean: "이태리", romanization: "Itaeri", italian: "Italia (variante)" },
+            { korean: "이탈리아", romanization: "Itallia", italian: "Italia" },
+            { korean: "일본", romanization: "Ilbon", italian: "Giappone" },
+            
+            // Sezione Lavori (직업)
+            { korean: "직업", romanization: "Jigeop", italian: "Lavori, Occupazioni" },
+            { korean: "선생님", romanization: "Seonsaengnim", italian: "Maestro / Insegnante" },
+            { korean: "요리사", romanization: "Yorisat", italian: "Chef / Cuoco" },
+            { korean: "의사", romanization: "Uisa", italian: "Dottore" },
+            { korean: "학생", romanization: "Haksaeng", italian: "Studente" },
+            { korean: "회사원", romanization: "Hoesawon", italian: "Impiegato Ufficio" },
+            { korean: "학교", romanization: "Hakgyo", italian: "Scuola" },
+            
+            // Sezione Espressioni (표현)
+            { korean: "반갑습니다", romanization: "Bangapseumnida", italian: "Piacere di conoscerti" },
+            { korean: "안녕", romanization: "Annyeong", italian: "Ciao (informale)" },
+            { korean: "안녕하세요", romanization: "Annyeonghaseyo", italian: "Buongiorno / Buonasera (saluto)" },
+            { korean: "이름이 뭐예요?", romanization: "Ireumi mwoyeyo?", italian: "Come ti chiami?" },
+            { korean: "한국 사람이에요", romanization: "Hanguk saramieyo", italian: "Sono una persona coreana" },
+            { korean: "네", romanization: "Ne", italian: "Sì" },
+            { korean: "아니요", romanization: "Aniyo", italian: "No" },
+            
+            // Sezione Cartoleria (준비 2과)
+            { korean: "문구", romanization: "Mungu", italian: "Oggetti di cartoleria" },
+            { korean: "볼펜", romanization: "Bolpen", italian: "Penna" },
+            { korean: "사전", romanization: "Sajeon", italian: "Dizionario" },
+            { korean: "연필", romanization: "Yeonpil", italian: "Matita" },
+  { korean: "의자", romanization: "Uija", italian: "Sedia" },
+    { korean: "책", romanization: "Chaek", italian: "Libro" },
+    { korean: "책상", romanization: "Chaeksang", italian: "Scrivania" },
+    { korean: "가방", romanization: "Gabang", italian: "Borsa" },
+    { korean: "구두", romanization: "Gudu", italian: "Scarpe (formali)" },
+    { korean: "모자", romanization: "Moja", italian: "Cappello" },
+    { korean: "시계", romanization: "Sigye", italian: "Orologio" },
+    { korean: "안경", romanization: "Angyeong", italian: "Occhiali" },
+    
+    // --- TECNOLOGIA E MACCHINE ---
+    { korean: "기계", romanization: "Gigye", italian: "Macchina / Meccanismo" },
+    { korean: "카메라", romanization: "Kamera", italian: "Macchina fotografica" },
+    { korean: "컴퓨터", romanization: "Keompyuteo", italian: "Computer" },
+    { korean: "스마트폰", romanization: "Seumateupon", italian: "Smartphone" },
+
+    // --- CATEGORIE E POSSESSO ---
+    { korean: "소지품", romanization: "Sojipum", italian: "Oggetti personali" },
+    { korean: "누구 거예요?", romanization: "Nugu geoyeyo?", italian: "Di chi è?" },
+    { korean: "제 거예요", romanization: "Je geoyeyo", italian: "È mio" },
+    { korean: "이게 뭐예요?", romanization: "Ige mwoyeyo?", italian: "Cos'è questo?" },
+
+    // --- NUMERI (Sino-Coreani/Nativi) ---
+    { korean: "하나", romanization: "Hana", italian: "Uno" },
+    { korean: "둘", romanization: "Dul", italian: "Due" },
+    { korean: "셋", romanization: "Set", italian: "Tre" },
+    { korean: "넷", romanization: "Net", italian: "Quattro" },
+    { korean: "다섯", romanization: "Daseot", italian: "Cinque" },
+    { korean: "여섯", romanization: "Yeoseot", italian: "Sei" },
+    { korean: "일곱", romanization: "Ilgop", italian: "Sette" },
+    { korean: "여덟", romanization: "Yeodeol", italian: "Otto" },
+    { korean: "아홉", romanization: "Ahop", italian: "Nove" },
+    { korean: "열", romanization: "Yeol", italian: "Dieci" },
+
+    // --- CIBO E BEVANDE ---
+    { korean: "물", romanization: "Mul", italian: "Acqua" },
+    { korean: "맥주", romanization: "Maekju", italian: "Birra" },
+    { korean: "사이다", romanization: "Saida", italian: "Gassosa (Cider)" },
+    { korean: "커피", romanization: "Keopi", italian: "Caffè" },
+    { korean: "쥬스", romanization: "Jyusu", italian: "Spremuta / Succo" },
+
+    // --- ESPRESSIONI E CORTESIA ---
+    { korean: "표현", romanization: "Pyohyeon", italian: "Espressioni" },
+    { korean: "고마워요", romanization: "Gomawoyo", italian: "Grazie (informale)" },
+    { korean: "감사합니다", romanization: "Gamsahamnida", italian: "Grazie (formale)" },
+    { korean: "미안해요", romanization: "Mianhaeyo", italian: "Mi scuso / Scusa" },
+    { korean: "여기요!", romanization: "Yeogiyo!", italian: "Qui! (per chiamare cameriere)" },
+    { korean: "주세요", romanization: "Juseyo", italian: "Mi dia... / Per favore" },
+    { korean: "실례합니다", romanization: "Sillyehamnida", italian: "Mi scusi (permesso)" },
+  { korean: "교실", romanization: "Gyosil", italian: "Aula studio" },
+    { korean: "극장", romanization: "Geukjang", italian: "Cinema" },
+    { korean: "대사관", romanization: "Daesagwan", italian: "Ambasciata" },
+    { korean: "도서관", romanization: "Doseogwan", italian: "Biblioteca" },
+    { korean: "문구점", romanization: "Mungujeom", italian: "Negozio di cancelleria" },
+    { korean: "병원", romanization: "Byeongwon", italian: "Ospedale" },
+    { korean: "수영장", romanization: "Suyeongjang", italian: "Piscina (complesso)" },
+    { korean: "식당", romanization: "Sikdang", italian: "Ristorante" },
+    { korean: "은행", romanization: "Eunhaeng", italian: "Banca" },
+    { korean: "학교", romanization: "Hakgyo", italian: "Scuola" },
+    { korean: "화장실", romanization: "Hwajangsil", italian: "Bagno/servizi" },
+    { korean: "실례합니다", romanization: "Sillyehamnida", italian: "Mi scusi" },
+    { korean: "어디에 있어요?", romanization: "Eodie isseoyo?", italian: "Dove è? Dove si trova?" },
+    { korean: "잠실 알아요?", romanization: "Jamsil arayo?", italian: "A: Conosci Jamsil?" },
+    { korean: "네, 알아요", romanization: "Ne, arayo", italian: "B: Sì, la conosco" },
+    { korean: "공", romanization: "Gong", italian: "Zero (00)" },
+    { korean: "일", romanization: "Il", italian: "Uno" },
+    { korean: "이", romanization: "I", italian: "Due" },
+    { korean: "삼", romanization: "Sam", italian: "Tre" },
+    { korean: "사", romanization: "Sa", italian: "Quattro" },
+    { korean: "오", romanization: "O", italian: "Cinque" },
+    { korean: "육", romanization: "Yuk", italian: "Sei" },
+    { korean: "칠", romanization: "Chil", italian: "Sette" },
+    { korean: "팔", romanization: "Pal", italian: "Otto" },
+    { korean: "구", romanization: "Gu", italian: "Nove" },
+    { korean: "십", romanization: "Sip", italian: "Dieci" },
+    { korean: "백", romanization: "Baek", italian: "Cento" },
+    { korean: "천", romanization: "Cheon", italian: "Mille" },
+    { korean: "만", romanization: "Man", italian: "Diecimila" },
+    { korean: "내일", romanization: "Naeil", italian: "Domani" },
+    { korean: "생일", romanization: "Saengil", italian: "Compleanno" },
+    { korean: "원", romanization: "Won", italian: "Won / Moneta" },
+    { korean: "전화번호", romanization: "Jeonhwabeonho", italian: "Numero di telefono" },
+    { korean: "표", romanization: "Pyo", italian: "Biglietto" },
+    { korean: "맞아요?", romanization: "Majayo?", italian: "È corretto?" },
+    { korean: "네, 맞아요", romanization: "Ne, majayo", italian: "Sì, è corretto" },
+    { korean: "생일이 며칠이에요?", romanization: "Saengiri myeochirieyo?", italian: "Quando è il tuo compleanno?" },
+    { korean: "어서 오세요", romanization: "Eoseo oseyo", italian: "Benvenuto/a (per accogliere)" },
+    { korean: "얼마예요?", romanization: "Eolmayeyo?", italian: "Quanto è?" },
+    { korean: "전화번호가 몇 번이에요?", romanization: "Jeonhwabeonhoga myeot beon-ieyo?", italian: "Qual è il suo numero di telefono?" },
+    { korean: "생일 축하합니다", romanization: "Saengil chukahamnida", italian: "Buon compleanno" },
+    { korean: "신문", romanization: "Sinmun", italian: "Giornale" },
+    { korean: "이메일", romanization: "Imeil", italian: "Email" },
+    { korean: "집", romanization: "Jip", italian: "Casa" },
+    { korean: "친구", romanization: "Chingu", italian: "Amico/a" },
+    { korean: "핸드폰 번호", romanization: "Haendeupon beonho", italian: "Numero di cellulare" },
+    { korean: "친구가 많아요", romanization: "Chinguga manayo", italian: "Ho tanti amici" },
+    { korean: "지금", romanization: "Jigeum", italian: "Adesso" },
+    { korean: "시간 있어요?", romanization: "Sigan isseoyo?", italian: "Ha tempo?" },
+    { korean: "실례지만, 누구세요?", romanization: "Sillyejiman, nuguseyo?", italian: "Mi scusi, chi è lei?" },
+    { korean: "-씨 좀 바꿔 주세요", romanization: "-ssi jom bakkwo juseyo", italian: "Mi può passare il/la Sig./ra -?" },
+    { korean: "-씨 집이에요?", romanization: "-ssi jibieyo?", italian: "È casa del/della Sig./ra -?" },
+    { korean: "아, 그래요?", romanization: "A, geuraeyo?", italian: "Ah, davvero?" },
+    { korean: "여보세요?", romanization: "Yeoboseyo?", italian: "Pronto?" },
+    { korean: "왜요?", romanization: "Waeyo?", italian: "Perché?" },
+    { korean: "오전", romanization: "Ojeon", italian: "Mattina (A.M.)" },
+    { korean: "오후", romanization: "Ohu", italian: "Pomeriggio (P.M.)" },
+    { korean: "아침", romanization: "Achim", italian: "Mattina" },
+    { korean: "점심", romanization: "Jeomsim", italian: "Pranzo" },
+    { korean: "저녁", romanization: "Jeonyeok", italian: "Sera" },
+    { korean: "밤", romanization: "Bam", italian: "Notte" },
+    { korean: "시", romanization: "Si", italian: "Ora (punto nel tempo)" },
+    { korean: "분", romanization: "Bun", italian: "Minuto" },
+    { korean: "지금 몇 시예요?", romanization: "Jigeum myeot siyeyo?", italian: "Che ora è adesso?" },
+    { korean: "여덟 시 반이에요", romanization: "Yeodeol si ban-ieyo", italian: "Sono le otto e mezza" },
+    { korean: "공부하다", romanization: "Gongbuhada", italian: "Studiare" },
+    { korean: "세수하다", romanization: "Sesuhada", italian: "Lavarsi la faccia" },
+    { korean: "쇼핑하다", romanization: "Syopinghada", italian: "Fare shopping" },
+    { korean: "숙제하다", romanization: "Sukjehada", italian: "Fare i compiti" },
+    { korean: "운동하다", romanization: "Undonghada", italian: "Fare sport" },
+    { korean: "이야기하다", romanization: "Iyagihada", italian: "Fare conversazione" },
+    { korean: "일하다", romanization: "Ilhada", italian: "Lavorare" },
+    { korean: "전화하다", romanization: "Jeonhwahada", italian: "Telefonare" },
+    { korean: "아침 식사하다", romanization: "Achim siksahada", italian: "Fare colazione" },
+    { korean: "점심 식사하다", romanization: "Jeomsim siksahada", italian: "Fare pranzo" },
+    { korean: "저녁 식사하다", romanization: "Jeonyeok siksahada", italian: "Fare cena" },
+    { korean: "(장소)에 가다", romanization: "(jangso)e gada", italian: "Andare in un (luogo)" },
+    { korean: "오늘", romanization: "Oneul", italian: "Oggi" },
+    { korean: "우체국", romanization: "Ucheguk", italian: "Poste" },
+    { korean: "보통", romanization: "Botong", italian: "Di solito" },
+    { korean: "그럼, 뭐 해요?", romanization: "Geureom, mwo haeyo?", italian: "Quindi, cosa fai?" },
+    { korean: "잘 가요", romanization: "Jal gayo", italian: "Arrivederci" },
+    { korean: "지금 어디에 가요?", romanization: "Jigeum eodie gayo?", italian: "Adesso dove va?" },
+    { korean: "길", romanization: "Gil", italian: "Strada" },
+    { korean: "방", romanization: "Bang", italian: "Stanza" },
+    { korean: "사람", romanization: "Saram", italian: "Persona" },
+    { korean: "자동차", romanization: "Jadongcha", italian: "Automobile" },
+    { korean: "수업", romanization: "Sueop", italian: "Lezione" },
+    { korean: "정말", romanization: "Jeongmal", italian: "Veramente / Davvero" },
+    { korean: "미안해요", romanization: "Mianhaeyo", italian: "Mi scusi" },
+    { korean: "-하고", romanization: "-hago", italian: "Con / Insieme a" },
+    { korean: "요즘 잘 지내요?", romanization: "Yojeum jal jinaeyo?", italian: "Come te la stai passando ultimamente?" },
+    { korean: "네, 잘 지내요", romanization: "Ne, jal jinaeyo", italian: "Sì, sto bene" },
+    { korean: "요즘", romanization: "Yojeum", italian: "Ultimamente" },
+    { korean: "안녕히 계세요", romanization: "Annyeonghi gyeseyo", italian: "Arrivederci (a chi resta)" },
+    { korean: "받다", romanization: "Batda", italian: "Ricevere" },
+    { korean: "마시다", romanization: "Masida", italian: "Bere" },
+    { korean: "보다", romanization: "Boda", italian: "Vedere" },
+    { korean: "듣다", romanization: "Deutda", italian: "Ascoltare" },
+    { korean: "가르치다", romanization: "Gareuchida", italian: "Insegnare" },
+    { korean: "빌리다", romanization: "Billida", italian: "Prestare" },
+    { korean: "읽다", romanization: "Ikda", italian: "Leggere" },
+    { korean: "춤을 추다", romanization: "Chumeul chuda", italian: "Ballare" },
+    { korean: "만나다", romanization: "Mannada", italian: "Incontrare" },
+    { korean: "치다", romanization: "Chida", italian: "Colpire / Suonare" },
+    { korean: "바쁘다", romanization: "Bappeuda", italian: "Essere impegnati" },
+    { korean: "끝나다", romanization: "Kkeutnada", italian: "Finire" },
+    { korean: "모르다", romanization: "Moreuda", italian: "Non sapere" },
+    { korean: "재미있다", romanization: "Jaemiitda", italian: "Essere divertente" },
+    { korean: "좋다", romanization: "Jota", italian: "Essere buono / Piacere" },
+    { korean: "그리고", romanization: "Geurigo", italian: "E / Inoltre" },
+    { korean: "같이", romanization: "Gachi", italian: "Insieme" },
+    { korean: "무슨", romanization: "Museun", italian: "Quale / Cosa" },
+    { korean: "대화", romanization: "Daehwa", italian: "Dialogo" },
+    { korean: "일본어", romanization: "Ilboneo", italian: "Lingua giapponese" },
+    { korean: "한국어", romanization: "Hangugeo", italian: "Lingua coreana" },
+    { korean: "주말", romanization: "Jumal", italian: "Fine settimana" },
+    { korean: "체육관", romanization: "Cheyukgwan", italian: "Palestra" },
+    { korean: "커피숍", romanization: "Keopisyop", italian: "Caffè (luogo)" },
+    { korean: "저도", romanization: "Jeodo", italian: "Anche io" },
+    { korean: "공항", romanization: "Gonghang", italian: "Aeroporto" },
+    { korean: "백화점", romanization: "Baekhwajeom", italian: "Grande magazzino" },
+    { korean: "여행을 하다", romanization: "Yeohaengeul hada", italian: "Viaggiare" },
+    { korean: "역", romanization: "Yeok", italian: "Stazione" },
+    { korean: "아주", romanization: "Aju", italian: "Molto" },
+    { korean: "오늘 같이 영화를 봐요", romanization: "Oneul gachi yeonghwareul bwayo", italian: "Oggi guardiamo un film insieme" }
+        ];
+
+        let currentWordIndex = 0;
+        let shuffledWords = [];
+
+        const koreanWordEl = document.getElementById('korean-word');
+        const romanizationEl = document.getElementById('romanization');
+        const italianTranslationEl = document.getElementById('italian-translation');
+        const pronounceBtn = document.getElementById('pronounce-btn');
+        const revealBtn = document.getElementById('reveal-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressInfoEl = document.getElementById('progress-info');
+
+        function shuffleArray(array) {
+            let newArr = [...array];
+            for (let i = newArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            }
+            return newArr;
+        }
+
+        function displayWord() {
+            if (shuffledWords.length === 0) return;
+
+            const word = shuffledWords[currentWordIndex];
+            koreanWordEl.textContent = word.korean;
+            romanizationEl.textContent = `[ ${word.romanization} ]`;
+            italianTranslationEl.textContent = word.italian;
+
+            // Reset visibilità
+            italianTranslationEl.classList.add('hidden');
+            romanizationEl.classList.add('hidden');
+            revealBtn.textContent = "Mostra";
+            
+            updateProgress();
+        }
+
+        function revealTranslation() {
+            if (italianTranslationEl.classList.contains('hidden')) {
+                italianTranslationEl.classList.remove('hidden');
+                romanizationEl.classList.remove('hidden');
+                revealBtn.textContent = "Nascondi";
+            } else {
+                italianTranslationEl.classList.add('hidden');
+                romanizationEl.classList.add('hidden');
+                revealBtn.textContent = "Mostra";
+            }
+        }
+
+        function speakKorean() {
+            const textToSpeak = shuffledWords[currentWordIndex].korean;
+            if ('speechSynthesis' in window) {
+                // Ferma eventuali pronunce in corso
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'ko-KR';
+                utterance.rate = 0.85;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        function nextWord() {
+            currentWordIndex = (currentWordIndex + 1) % shuffledWords.length;
+            displayWord();
+        }
+
+        function updateProgress() {
+            progressInfoEl.textContent = `Parola ${currentWordIndex + 1} di ${shuffledWords.length}`;
+        }
+
+        function init() {
+            shuffledWords = shuffleArray(words);
+            currentWordIndex = 0;
+            displayWord();
+        }
+
+        pronounceBtn.addEventListener('click', speakKorean);
+        revealBtn.addEventListener('click', revealTranslation);
+        nextBtn.addEventListener('click', nextWord);
+        koreanWordEl.addEventListener('click', speakKorean);
+
+        // Inizializza al caricamento
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+
