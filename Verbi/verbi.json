@@ -62,6 +62,6 @@
   { "base": "춤추다", "translation": "ballare", "type": "action", "polite": "춤춰요", "formal": "춤춥니다", "irr": "none", "example": "클럽에서 춤추다." },
   { "base": "노래하다", "translation": "cantare", "type": "action", "polite": "노래해요", "formal": "노래합니다", "irr": "none", "example": "노래를 노래해요." },
   { "base": "많다", "translation": "abbondare / essere molti", "type": "descriptive", "polite": "많아요", "formal": "많습니다", "irr": "none", "example": "사람이 많아요." },
-{"base": "이다",translation": "Essere (copula, identità)","type":"descriptive",
+{"base": "이다","translation": "Essere","type":"descriptive",
 "polite": "이에요","formal": "입니다","irr": "none", "example": "저는 학생이에요."}
 ]
