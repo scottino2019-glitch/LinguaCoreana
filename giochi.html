@@ -56,59 +56,52 @@
     </section>
 
     <!-- Game Card Grid -->
-    <main class="container mx-auto p-8 lg:p-12">
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <main class="container mx-auto p-6 lg:p-12">
+    <div class="grid gap-12 md:grid-cols-1 lg:grid-cols-2 max-w-6xl mx-auto">
 
-            <!-- Game Card 1: Memory (기억 - Gieok) -->
-            <div id="memory-card" class="game-card-item">
-                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-brain text-6xl text-red-500 mb-4"></i>
-                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">기억 맞추기</h3>
-                        <p class="text-red-400 text-lg">(Hangeul Memory Match)</p>
-                    </div>
-                    <p class="text-gray-300 mb-6">Abbina le sillabe Hangeul ai rispettivi significati. Un test di memoria e rapidità di riconoscimento.</p>
-                    <a href="giochi/Memory.html" class="btn-play bg-red-600 hover:bg-red-700">
-                        <i class="fas fa-play mr-2"></i> Inizia la Sfida
-                    </a>
+        <div id="memory-card" class="game-card-item min-h-[450px] flex flex-col">
+            <div class="p-10 flex flex-col justify-between h-full">
+                <div class="text-center mb-8">
+                    <i class="fas fa-brain text-8xl text-red-500 mb-6 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"></i>
+                    <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">기억 맞추기</h3>
+                    <p class="text-red-400 text-2xl font-bold tracking-widest">(MEMORY MATCH)</p>
                 </div>
-            </div>
-
-            <!-- Game Card 2: Verb Reconstruction (동사 재구성 - Dongsa Jae-guseong) -->
-            <div id="verb-card" class="game-card-item">
-                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-puzzle-piece text-6xl text-blue-500 mb-4"></i>
-                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">동사 재구성</h3>
-                        <p class="text-blue-400 text-lg">(Verb Builder)</p>
-                    </div>
-                    <p class="text-gray-300 mb-6">Ricostruisci i verbi coreani corretti unendo radici e desinenze. Padroneggia la coniugazione!</p>
-                    <a href="giochi/verbi2.html" class="btn-play bg-blue-600 hover:bg-blue-700">
-                        <i class="fas fa-play mr-2"></i> Costruisci il Verbo
-                    </a>
-                </div>
-            </div>
-
-            <!-- Placeholder Card 3: Vocabulary Quiz (어휘 퀴즈 - Eohwi Kwi-jeu)--> 
-             <div id="quiz-card" class="game-card-item">
-                <div class="p-6 lg:p-8 flex flex-col justify-between h-full">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-scroll text-6xl text-green-500 mb-4"></i>
-                        <h3 class="text-3xl font-bold mb-1 tracking-wider text-yellow-300">어휘 퀴즈</h3>
-                        <p class="text-green-400 text-lg">(Vocabulary Challenge)</p>
-                    </div>
-                    <p class="text-gray-300 mb-6">
-                        Testa la tua conoscenza del vocabolario coreano in un quiz a tempo.
+                
+                <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-red-600">
+                    <p class="text-gray-200 text-xl leading-relaxed">
+                        Abbina le sillabe Hangeul ai rispettivi significati. Un test di memoria e velocità di riconoscimento per veri campioni.
                     </p>
-                    <a href="giochi/vocab.html" class="btn-play bg-green-600 hover:bg-green-700">
-                        <i class="fas fa-play mr-2"></i>
-                        Inizia il Quiz
-                    </a>
                 </div>
-            </div>
 
+                <a href="giochi/Memory.html" class="btn-play bg-red-600 hover:bg-red-700 text-2xl py-5">
+                    <i class="fas fa-play mr-3"></i> INSERISCI GETTONE
+                </a>
+            </div>
         </div>
-    </main>
+
+        <div id="verb-card" class="game-card-item min-h-[450px] flex flex-col">
+            <div class="p-10 flex flex-col justify-between h-full">
+                <div class="text-center mb-8">
+                    <i class="fas fa-puzzle-piece text-8xl text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"></i>
+                    <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">동사 재구성</h3>
+                    <p class="text-blue-400 text-2xl font-bold tracking-widest">(VERB BUILDER)</p>
+                </div>
+
+                <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-blue-600">
+                    <p class="text-gray-200 text-xl leading-relaxed">
+                        Ricostruisci i verbi coreani unendo radici e desinenze. Domina la grammatica e sblocca nuovi livelli di dialogo!
+                    </p>
+                </div>
+
+                <a href="giochi/verbi2.html" class="btn-play bg-blue-600 hover:bg-blue-700 text-2xl py-5">
+                    <i class="fas fa-play mr-3"></i> GIOCA ORA
+                </a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
 
     <!-- Footer -->
     <footer class="mt-16 p-6 text-center bg-gray-800 border-t-4 border-yellow-500/50">
