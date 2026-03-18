@@ -1,205 +1,157 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"></script><style>
-    
-    .game-card-item {
-    @apply relative overflow-hidden rounded-xl shadow-2xl transition duration-500 ease-in-out transform hover:scale-[1.03] cursor-pointer border-4 border-gray-700 bg-gray-800;
-    /* Korean/Arcade border effect */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05);
-}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangeul Arcade - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Effetto profondità per le Card Arcade */
+        .game-card-item {
+            @apply relative overflow-hidden rounded-[3rem] shadow-2xl transition duration-500 ease-in-out transform border-8 border-gray-800 bg-gray-900 flex flex-col;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
 
-.game-card-item:hover {
-    @apply border-yellow-500;
-}
+        .game-card-item:hover {
+            @apply scale-[1.02] border-yellow-500;
+            box-shadow: 0 0 40px rgba(234, 179, 8, 0.3);
+        }
 
-/* Specific hover colors for cards */
-#memory-card:hover {
-    box-shadow: 0 0 30px rgba(220, 38, 38, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
-}
-#verb-card:hover {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.1);
-}
+        /* Effetto pulsante 3D */
+        .btn-arcade {
+            @apply text-white font-black py-6 px-8 rounded-2xl uppercase tracking-tighter text-center transition-all duration-200 block text-3xl italic;
+        }
 
-.btn-play {
-    @apply text-white font-semibold py-3 px-6 rounded-lg uppercase tracking-wider text-center transition duration-300 shadow-lg block;
-    /* Neon style effect on button */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
+        .btn-arcade:active {
+            @apply translate-y-2;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans antialiased">
 
-.btn-play:hover {
-    @apply brightness-110;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-}
-
-/* Subtle Korean Pattern Background (optional, requires complex CSS which is outside standard Tailwind setup, so we stick to utility classes for simplicity, but simulating depth) */
-
-</style></head><body><div id="korean-arcade-home" class="min-h-screen bg-gray-900 text-white font-sans antialiased">
-    <!-- Header: Korean Temple Gate/Arcade Top Bar Style -->
-    <header class="bg-gray-800 border-b-4 border-red-600 shadow-2xl p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-4xl font-extrabold tracking-wider text-yellow-300 drop-shadow-lg">
-                <i class="fas fa-kiwi-bird mr-3 text-red-600"></i> HANGEUL ARCADE
+    <header class="bg-gray-800 border-b-8 border-red-600 shadow-[0_10px_30px_rgba(220,38,38,0.3)] p-8">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <h1 class="text-6xl font-black tracking-tighter text-yellow-300 drop-shadow-[0_5px_0_rgba(0,0,0,0.5)] uppercase italic">
+                <i class="fas fa-kiwi-bird mr-4 text-red-600 animate-bounce"></i> HANGEUL ARCADE
             </h1>
-            <nav>
-                <a href="#" class="text-lg px-4 py-2 hover:text-red-500 transition duration-200 border-b-2 border-transparent hover:border-red-500">Classifica</a>
-                <a href="#" class="text-lg px-4 py-2 hover:text-red-500 transition duration-200 border-b-2 border-transparent hover:border-red-500">Profilo</a>
+            <nav class="flex gap-10">
+                <a href="#" class="text-2xl font-bold uppercase tracking-widest text-gray-400 hover:text-red-500 transition border-b-4 border-transparent hover:border-red-500 pb-2">Classifica</a>
+                <a href="#" class="text-2xl font-bold uppercase tracking-widest text-gray-400 hover:text-red-500 transition border-b-4 border-transparent hover:border-red-500 pb-2">Profilo</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section: Welcome -->
-    <section class="py-16 px-4 text-center bg-blue-900/30 border-b-8 border-gray-700/50">
-        <h2 class="text-5xl md:text-6xl font-black mb-4 text-red-400 drop-shadow-xl">
-            Sfida la Lingua Coreana!
-        </h2>
-        <p class="text-xl max-w-3xl mx-auto text-gray-300">
-            Seleziona un gioco per iniziare il tuo viaggio nel coreano, tra ideogrammi, verbi e sfide di velocità.
-        </p>
+    <section class="py-24 px-4 text-center bg-gradient-to-b from-blue-900/40 to-transparent border-b-8 border-gray-800">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-7xl md:text-8xl font-black mb-6 text-red-500 drop-shadow-[0_8px_0_rgba(0,0,0,0.8)] uppercase tracking-tighter">
+                Sfida la Lingua <span class="text-white">Coreana!</span>
+            </h2>
+            <div class="bg-black/30 p-8 rounded-3xl border-2 border-dashed border-gray-700 max-w-4xl mx-auto">
+                <p class="text-3xl md:text-4xl font-medium text-gray-300 leading-relaxed italic">
+                    Seleziona un <span class="text-yellow-300 font-bold">CABINATO</span> per iniziare il tuo viaggio: tra ideogrammi, verbi e sfide di velocità pura.
+                </p>
+            </div>
+        </div>
     </section>
 
-    <!-- Game Card Grid -->
-    <main class="container mx-auto p-6 lg:p-12">
-    <div class="grid gap-12 md:grid-cols-1 lg:grid-cols-2 max-w-6xl mx-auto">
+    <main class="container mx-auto p-8 lg:p-16">
+        <div class="grid gap-16 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 max-w-[1600px] mx-auto">
 
-        <div id="memory-card" class="game-card-item min-h-[480px] flex flex-col">
-            <div class="p-10 flex flex-col justify-between h-full">
-                <div class="text-center mb-8">
-                    <i class="fas fa-brain text-8xl text-red-500 mb-6 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"></i>
-                    <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">기억 맞추기</h3>
-                    <p class="text-red-400 text-2xl font-bold tracking-widest">(MEMORY MATCH)</p>
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-brain text-9xl text-red-500 mb-8 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">기억 맞추기</h3>
+                        <p class="text-red-400 text-2xl font-black tracking-widest uppercase">(MEMORY MATCH)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-red-600">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Abbina le sillabe Hangeul ai significati. Test di memoria estremo.</p>
+                    </div>
+                    <a href="giochi/Memory.html" class="btn-arcade bg-red-600 shadow-[0_10px_0_#991b1b]">GIOCA ORA</a>
                 </div>
-                
-                <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-red-600">
-                    <p class="text-gray-200 text-xl leading-relaxed">
-                        Abbina le sillabe Hangeul ai rispettivi significati. Un test di memoria e velocità di riconoscimento per veri campioni.
-                    </p>
-                </div>
-
-                <a href="giochi/Memory.html" class="btn-play bg-red-600 hover:bg-red-700 text-2xl py-5">
-                    <i class="fas fa-play mr-3"></i> INSERISCI GETTONE
-                </a>
             </div>
-        </div>
 
-        <div id="verb-card" class="game-card-item min-h-[480px] flex flex-col">
-            <div class="p-10 flex flex-col justify-between h-full">
-                <div class="text-center mb-8">
-                    <i class="fas fa-puzzle-piece text-8xl text-blue-500 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"></i>
-                    <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">동사 재구성</h3>
-                    <p class="text-blue-400 text-2xl font-bold tracking-widest">(VERB BUILDER)</p>
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-puzzle-piece text-9xl text-blue-500 mb-8 drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">동사 재구성</h3>
+                        <p class="text-blue-400 text-2xl font-black tracking-widest uppercase">(VERB BUILDER)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-blue-600">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Unisci radici e desinenze. Domina la grammatica coreana.</p>
+                    </div>
+                    <a href="giochi/verbi2.html" class="btn-arcade bg-blue-600 shadow-[0_10px_0_#1e40af]">GIOCA ORA</a>
                 </div>
-
-                <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-blue-600">
-                    <p class="text-gray-200 text-xl leading-relaxed">
-                        Ricostruisci i verbi coreani unendo radici e desinenze. Domina la grammatica e sblocca nuovi livelli di dialogo!
-                    </p>
-                </div>
-
-                <a href="giochi/verbi2.html" class="btn-play bg-blue-600 hover:bg-blue-700 text-2xl py-5">
-                    <i class="fas fa-play mr-3"></i> GIOCA ORA
-                </a>
             </div>
-        </div>
 
-        <div id="quiz-card" class="game-card-item min-h-[480px] flex flex-col lg:col-span-2 lg:max-w-[50%] lg:mx-auto">
-            <div class="p-10 flex flex-col justify-between h-full">
-                <div class="text-center mb-8">
-                    <i class="fas fa-scroll text-8xl text-green-500 mb-6 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]"></i>
-                    <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">어휘 퀴즈</h3>
-                    <p class="text-green-400 text-2xl font-bold tracking-widest">(VOCAB CHALLENGE)</p>
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-scroll text-9xl text-green-500 mb-8 drop-shadow-[0_0_20px_rgba(34,197,94,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">어휘 퀴즈</h3>
+                        <p class="text-green-400 text-2xl font-black tracking-widest uppercase">(VOCAB QUIZ)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-green-600">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Quante parole conosci? Sfida il tempo in questo quiz frenetico.</p>
+                    </div>
+                    <a href="giochi/vocab.html" class="btn-arcade bg-green-600 shadow-[0_10px_0_#166534]">GIOCA ORA</a>
                 </div>
-
-                <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-green-600">
-                    <p class="text-gray-200 text-xl leading-relaxed">
-                        Testa la tua conoscenza del vocabolario coreano in un quiz a tempo. Quante parole riuscirai a tradurre?
-                    </p>
-                </div>
-
-                <a href="giochi/vocab.html" class="btn-play bg-green-600 hover:bg-green-700 text-2xl py-5">
-                    <i class="fas fa-play mr-3"></i> AVVIA QUIZ
-                </a>
             </div>
-        </div>
-<div id="rain-card" class="game-card-item min-h-[480px] flex flex-col">
-    <div class="p-10 flex flex-col justify-between h-full">
-        <div class="text-center mb-8">
-            <i class="fas fa-cloud-showers-heavy text-8xl text-cyan-400 mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]"></i>
-            <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">한글 비</h3>
-            <p class="text-cyan-400 text-2xl font-bold tracking-widest">(HANGEUL RAIN)</p>
-        </div>
-        <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-cyan-500">
-            <p class="text-gray-200 text-xl leading-relaxed">
-                Digita le sillabe prima che tocchino terra! Proteggi la tua base e migliora la tua velocità di lettura.
-            </p>
-        </div>
-        <a href="giochi/rain.html" class="btn-play bg-cyan-600 hover:bg-cyan-700 text-2xl py-5">
-            <i class="fas fa-play mr-3"></i> DIFENDI LA BASE
-        </a>
-    </div>
-</div>
 
-<div id="speed-card" class="game-card-item min-h-[480px] flex flex-col">
-    <div class="p-10 flex flex-col justify-between h-full">
-        <div class="text-center mb-8">
-            <i class="fas fa-bolt text-8xl text-orange-500 mb-6 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]"></i>
-            <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">빨리 번역</h3>
-            <p class="text-orange-500 text-2xl font-bold tracking-widest">(SPEED CHECK)</p>
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-cloud-showers-heavy text-9xl text-cyan-400 mb-8 drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">한글 비</h3>
+                        <p class="text-cyan-400 text-2xl font-black tracking-widest uppercase">(HANGEUL RAIN)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-cyan-500">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Difendi la base! Colpisci le sillabe prima che tocchino terra.</p>
+                    </div>
+                    <a href="giochi/rain.html" class="btn-arcade bg-cyan-600 shadow-[0_10px_0_#155e75]">DIFENDI</a>
+                </div>
+            </div>
+
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-bolt text-9xl text-orange-500 mb-8 drop-shadow-[0_0_20px_rgba(249,115,22,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">빨리 번역</h3>
+                        <p class="text-orange-500 text-2xl font-black tracking-widest uppercase">(SPEED CHECK)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-orange-500">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Vero o Falso? Istinto puro e velocità di traduzione.</p>
+                    </div>
+                    <a href="giochi/speed-trans.html" class="btn-arcade bg-orange-600 shadow-[0_10px_0_#9a3412]">REAGISCI!</a>
+                </div>
+            </div>
+
+            <div class="game-card-item">
+                <div class="p-12 flex flex-col justify-between h-full">
+                    <div class="text-center mb-10">
+                        <i class="fas fa-cubes text-9xl text-purple-500 mb-8 drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]"></i>
+                        <h3 class="text-5xl font-black mb-4 tracking-tighter text-yellow-300 uppercase italic">문장 만들기</h3>
+                        <p class="text-purple-400 text-2xl font-black tracking-widest uppercase">(PARTICLE BUILD)</p>
+                    </div>
+                    <div class="bg-black/40 p-8 rounded-2xl mb-10 border-l-8 border-purple-600">
+                        <p class="text-gray-200 text-2xl leading-tight italic">Costruisci frasi perfette. Incastra le particelle corrette.</p>
+                    </div>
+                    <a href="giochi/particles.html" class="btn-arcade bg-purple-600 shadow-[0_10px_0_#6b21a8]">COSTRUISCI</a>
+                </div>
+            </div>
+
         </div>
-        <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-orange-500">
-            <p class="text-gray-200 text-xl leading-relaxed">
-                Vero o Falso? Hai solo 2 secondi per decidere. Un gioco di puro istinto per il tuo vocabolario.
-            </p>
-        </div>
-        <a href="giochi/speed-trans.html" class="btn-play bg-orange-600 hover:bg-orange-700 text-2xl py-5">
-            <i class="fas fa-play mr-3"></i> REAGISCI!
-        </a>
-    </div>
-</div>
+    </main>
 
-<div id="particle-card" class="game-card-item min-h-[480px] flex flex-col">
-    <div class="p-10 flex flex-col justify-between h-full">
-        <div class="text-center mb-8">
-            <i class="fas fa-cubes text-8xl text-purple-500 mb-6 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"></i>
-            <h3 class="text-4xl font-black mb-2 tracking-tighter text-yellow-300 uppercase">문장 만들기</h3>
-            <p class="text-purple-400 text-2xl font-bold tracking-widest">(PARTICLE BUILD)</p>
-        </div>
-        <div class="bg-black/40 p-6 rounded-lg mb-8 border-l-4 border-purple-600">
-            <p class="text-gray-200 text-xl leading-relaxed">
-                Incastra le parole e le particelle nell'ordine corretto. Costruisci frasi perfette come un mattoncino alla volta.
-            </p>
-        </div>
-        <a href="giochi/particles.html" class="btn-play bg-purple-600 hover:bg-purple-700 text-2xl py-5">
-            <i class="fas fa-play mr-3"></i> COSTRUISCI
-        </a>
-    </div>
-</div>
-
-    </div>
-</main>
-
-
-
-    <!-- Footer -->
-    <footer class="mt-16 p-6 text-center bg-gray-800 border-t-4 border-yellow-500/50">
-        <p class="text-sm text-gray-400">&copy; 2024 Hangeul Arcade. Apprendimento Gamificato del Coreano.</p>
+    <footer class="mt-24 p-12 text-center bg-gray-800 border-t-8 border-yellow-500">
+        <p class="text-2xl font-bold text-gray-400 uppercase tracking-[0.3em]">
+            &copy; 2026 HANGEUL ARCADE <br> 
+            <span class="text-yellow-500 text-lg italic">Insert Coin to Continue Your Journey</span>
+        </p>
     </footer>
-</div><script>document.addEventListener('DOMContentLoaded', () => {
-    console.log('Hangeul Arcade Homepage Caricata.');
 
-    // Simulated game card initialization (for interactive feedback)
-    const cards = document.querySelectorAll('.game-card-item');
-    cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Prevent navigation if the link is disabled
-            if (e.target.closest('.cursor-not-allowed')) {
-                e.preventDefault();
-                alert('Questo gioco non è ancora disponibile. Torna presto!');
-                return;
-            }
-            
-            // Simple visual feedback on click
-            card.classList.add('ring-4', 'ring-offset-2', 'ring-yellow-300', 'ring-offset-gray-900');
-            setTimeout(() => {
-                card.classList.remove('ring-4', 'ring-offset-2', 'ring-yellow-300', 'ring-offset-gray-900');
-            }, 500);
-        });
-    });
-});</script></body></html>
+</body>
+</html>
