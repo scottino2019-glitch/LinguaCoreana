@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangeul Rain - Tap Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .word-drop {
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s linear;
+        }
+        #game-area {
+            position: relative;
+            height: 65vh;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.5);
+            border-bottom: 8px solid #06b6d4;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .correct-flash { animation: pop 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-hidden">
+
+    <div class="min-h-screen flex flex-col p-4">
+        <div class="p-6 bg-gray-800 rounded-2xl mb-4 border-b-4 border-cyan-500 shadow-2xl text-center">
+            <div class="text-gray-400 uppercase text-sm font-bold tracking-widest mb-1">TROVA LA PAROLA:</div>
+            <div id="target-word" class="text-5xl font-black text-yellow-300 drop-shadow-md">---</div>
+        </div>
+
+        <div class="flex justify-between px-4 mb-2 font-bold text-lg">
+            <div class="text-cyan-400">Punti: <span id="score">0</span></div>
+            <div class="text-red-500">Vite: <span id="lives">❤️❤️❤️</span></div>
+        </div>
+
+        <div id="game-area" class="rounded-2xl border-4 border-gray-700"></div>
+
+        <a href="../index.html" class="mt-auto py-4 text-center text-gray-500 hover:text-white transition">
+            <i class="fas fa-arrow-left mr-2"></i> Esci
+        </a>
+    </div>
+
+    <script>
+        const vocabulary = [
+    {kr: "물", it: "ACQUA"}, {kr: "불", it: "FUOCO"},
+    {kr: "산", it: "MONTAGNA"}, {kr: "해", it: "SOLE"},
+    {kr: "달", it: "LUNA"}, {kr: "집", it: "CASA"},
+    {kr: "빵", it: "PANE"}, {kr: "눈", it: "OCCHIO"}
+];
+
+let score = 0;
+let lives = 3;
+let target = {};
+let activeWords = [];
+const gameArea = document.getElementById('game-area');
+
+function setNextTarget() {
+    target = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+    document.getElementById('target-word').innerText = target.it;
+}
+
+function createWord() {
+    if (lives <= 0) return;
+
+    // --- FIX: Controllo Coincidenza ---
+    // Controlliamo se la parola target è già a schermo
+    const isTargetPresent = activeWords.some(w => w.kr === target.kr);
+    
+    let wordData;
+    // Se la parola target non c'è, la forziamo a cadere con una probabilità del 50%
+    if (!isTargetPresent && Math.random() > 0.5) {
+        wordData = target;
+    } else {
+        wordData = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+    }
+
+    const wordEl = document.createElement('div');
+    // Stile: se è la parola corretta, le diamo un bordo giallo neon
+    const isTarget = wordData.kr === target.kr;
+    wordEl.className = `word-drop px-6 py-3 rounded-xl font-bold text-2xl shadow-xl transition-all ${
+        isTarget ? 'bg-cyan-500 border-4 border-yellow-300 scale-110 z-10' : 'bg-gray-800 border-2 border-cyan-800 text-gray-400'
+    }`;
+    
+    wordEl.innerText = wordData.kr;
+    const x = Math.random() * (gameArea.clientWidth - 150);
+    wordEl.style.left = x + 'px';
+    wordEl.style.top = '-60px';
+
+    wordEl.onclick = () => {
+        if (wordData.kr === target.kr) {
+            score += 10;
+            document.getElementById('score').innerText = score;
+            removeWord(wordEl);
+            setNextTarget(); // Cambia subito parola da cercare
+        } else {
+            lives--;
+            updateLives();
+            wordEl.classList.add('bg-red-600', 'shake');
+            setTimeout(() => removeWord(wordEl), 200);
+        }
+    };
+
+    gameArea.appendChild(wordEl);
+    activeWords.push({ 
+        el: wordEl, 
+        kr: wordData.kr, 
+        y: -60, 
+        speed: 1.0 + (score / 300) // Velocità più bilanciata
+    });
+}
+
+function removeWord(el) {
+    activeWords = activeWords.filter(w => w.el !== el);
+    if (el.parentNode) gameArea.removeChild(el);
+}
+
+function updateLives() {
+    document.getElementById('lives').innerText = "❤️".repeat(Math.max(0, lives));
+    if (lives <= 0) {
+        alert("GAME OVER! Score: " + score);
+        location.reload();
+    }
+}
+
+function updateGame() {
+    for (let i = activeWords.length - 1; i >= 0; i--) {
+        let w = activeWords[i];
+        w.y += w.speed;
+        w.el.style.top = w.y + 'px';
+
+        if (w.y > gameArea.clientHeight) {
+            // Se la parola target scappa, perdi vita e cambi target
+            if (w.kr === target.kr) {
+                lives--;
+                updateLives();
+                setNextTarget();
+            }
+            removeWord(w.el);
+        }
+    }
+    requestAnimationFrame(updateGame);
+}
+
+// Inizio
+setNextTarget();
+setInterval(createWord, 1800); // Un po' più lento per non affollare
+updateGame();
+
+    </script>
+</body>
+</html>
