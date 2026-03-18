@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Translator - Hangeul Arcade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+
+.myButton {
+	box-shadow: 3px 4px 0px 0px #8a2a21;
+	background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+	background-color:#c62d1f;
+	border-radius:18px;
+	border:1px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:7px 25px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+	background-color:#f24437;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .shake { animation: shake 0.2s ease-in-out 0s 2; }
+        .timer-bar { transition: width 0.1s linear; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-hidden">
+
+    <div id="game-container" class="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300">
+        
+        <div class="absolute top-8 flex justify-between w-full px-12">
+            <div class="text-2xl font-bold text-yellow-300">SCORE: <span id="score">0</span></div>
+            <div class="text-2xl font-bold text-red-500">LIFE: <span id="lives">❤️❤️❤️</span></div>
+        </div>
+
+        <div id="quiz-card" class="bg-gray-800 border-4 border-gray-700 p-12 rounded-3xl shadow-2xl text-center max-w-lg w-full">
+            <div id="timer-container" class="w-full h-4 bg-gray-700 rounded-full mb-8 overflow-hidden">
+                <div id="timer-bar" class="timer-bar h-full bg-orange-500" style="width: 100%"></div>
+            </div>
+
+            <h1 id="kr-word" class="text-7xl font-black mb-4 text-white">물</h1>
+            <div class="text-4xl text-gray-400 mb-8">significa</div>
+            <h2 id="it-word" class="text-5xl font-bold text-yellow-300 uppercase tracking-widest">ACQUA</h2>
+        </div>
+
+        <div class="flex gap-8 mt-12 w-full max-w-lg">
+            <button onclick="checkAnswer(false)" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-4xl py-8 rounded-2xl shadow-lg transform active:scale-95 transition">
+                <i class="fas fa-times"></i>
+            </button>
+            <button onclick="checkAnswer(true)" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-4xl py-8 rounded-2xl shadow-lg transform active:scale-95 transition">
+                <i class="fas fa-check"></i>
+            </button>
+        </div>
+<br>
+<br>
+<br>
+        <a href="https://linguacoreana.netlify.app/giochi.html" class="absolute bottom-6 text-gray-500 hover:text-white transition"><button class="inline-flex items-center justify-center rounded-md px-4 py-2 text-base text-white font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 bg-gradient-to-r from-red-500 to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:transform active:scale-95">
+            <i class="fas fa-arrow-left mr-2"></i> Torna all'Arcade</button>
+        </a>
+    </div>
+
+    <script>
+        const words = [
+            {kr: "물", it: "Acqua", correct: true},
+            {kr: "불", it: "Fuoco", correct: true},
+            {kr: "사과", it: "Mela", correct: true},
+            {kr: "우유", it: "Pane", correct: false}, // Sbagliata
+            {kr: "고양이", it: "Cane", correct: false}, // Sbagliata
+            {kr: "학교", it: "Scuola", correct: true},
+            {kr: "빵", it: "Latte", correct: false}, // Sbagliata
+            {kr: "바다", it: "Mare", correct: true}
+        ];
+
+        let currentQuestion = {};
+        let score = 0;
+        let lives = 3;
+        let timer;
+        let timeLeft;
+        const baseTime = 8000; // 3 secondi per rispondere
+
+        function nextQuestion() {
+            if (lives <= 0) return gameOver();
+            
+            // Scegli una parola a caso
+            currentQuestion = words[Math.floor(Math.random() * words.length)];
+            
+            // Aggiorna l'interfaccia
+            document.getElementById('kr-word').innerText = currentQuestion.kr;
+            document.getElementById('it-word').innerText = currentQuestion.it;
+            document.getElementById('game-container').classList.remove('bg-green-900', 'bg-red-900');
+            
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 100;
+            const step = 100; // ms
+            const decrement = (step / baseTime) * 100;
+
+            timer = setInterval(() => {
+                timeLeft -= decrement;
+                document.getElementById('timer-bar').style.width = timeLeft + "%";
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    wrongAnswer();
+                }
+            }, step);
+        }
+
+        function checkAnswer(userAnswer) {
+            clearInterval(timer);
+            if (userAnswer === currentQuestion.correct) {
+                score += 10;
+                document.getElementById('score').innerText = score;
+                document.getElementById('game-container').classList.add('bg-green-900');
+                setTimeout(nextQuestion, 200);
+            } else {
+                wrongAnswer();
+            }
+        }
+
+        function wrongAnswer() {
+            lives--;
+            document.getElementById('lives').innerText = "❤️".repeat(lives);
+            document.getElementById('game-container').classList.add('bg-red-900');
+            document.getElementById('quiz-card').classList.add('shake');
+            
+            setTimeout(() => {
+                document.getElementById('quiz-card').classList.remove('shake');
+                if (lives > 0) nextQuestion();
+                else gameOver();
+            }, 500);
+        }
+
+        function gameOver() {
+            alert("GAME OVER! Punteggio finale: " + score);
+            location.reload();
+        }
+
+        // Avvia il gioco
+        nextQuestion();
+    </script>
+</body>
+</html>
