@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Particle Build - Hangeul Arcade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .brick {
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 #4c1d95;
+        }
+        .brick:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #4c1d95;
+        }
+        .drop-zone {
+    min-height: 120px; /* Aumentato da 80px */
+    background: rgba(0,0,0,0.4);
+    border: 4px dashed #6d28d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-5xl bg-gray-800 border-8 border-purple-900 rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col h-[90vh]">
+        
+        <div class="bg-purple-900/50 p-8 border-b-4 border-purple-500 text-center">
+            <span class="text-purple-400 uppercase tracking-[0.3em] text-sm font-black mb-2 block">TRADUCI QUESTA FRASE</span>
+            <h2 id="it-sentence" class="text-5xl md:text-6xl font-black text-yellow-300 drop-shadow-[0_4px_0_rgba(0,0,0,0.5)] italic">
+                "Io mangio la mela"
+            </h2>
+        </div>
+
+        <div class="flex-grow flex flex-col p-6 justify-center bg-black/20">
+            <div id="build-area" class="min-h-[160px] w-full bg-black/40 border-4 border-dashed border-purple-500/30 rounded-3xl flex flex-wrap items-center justify-center gap-4 p-6 shadow-inner">
+                <p id="placeholder-text" class="text-gray-600 text-2xl font-bold uppercase tracking-widest">Incastra i pezzi qui sotto...</p>
+            </div>
+        </div>
+
+        <div class="p-8 bg-gray-800 border-t-4 border-gray-700">
+            <div id="pieces-area" class="flex flex-wrap justify-center gap-6">
+                </div>
+        </div>
+
+        <div class="p-6 bg-purple-900 flex justify-between items-center px-10">
+            <button onclick="resetLevel()" class="text-purple-300 hover:text-white font-bold text-xl transition">
+                <i class="fas fa-undo mr-2"></i> RESET
+            </button>
+            
+            <button onclick="checkSentence()" class="bg-yellow-400 hover:bg-yellow-300 text-purple-900 px-12 py-4 rounded-2xl font-black text-3xl shadow-[0_6px_0_#b45309] active:translate-y-1 active:shadow-none transition-all uppercase tracking-tighter">
+                CONFERMA <i class="fas fa-check-circle ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const levels = [
+            { it: "Io mangio la mela", correct: ["나", "는", "사과", "를", "먹어요"], distractors: ["가", "을"] },
+            { it: "Il gatto beve l'acqua", correct: ["고양이", "가", "물", "을", "마셔요"], distractors: ["는", "를"] }
+        ];
+
+        let currentLevel = 0;
+        let userSentence = [];
+
+        function loadLevel() {
+            const level = levels[currentLevel];
+            document.getElementById('it-sentence').innerText = `"${level.it}"`;
+            document.getElementById('build-area').innerHTML = "";
+            userSentence = [];
+
+            const allPieces = [...level.correct, ...level.distractors].sort(() => Math.random() - 0.5);
+            const piecesArea = document.getElementById('pieces-area');
+            piecesArea.innerHTML = "";
+
+            allPieces.forEach(p => {
+                const btn = document.createElement('button');
+                // Tasti Giganti con effetto 3D
+                btn.className = "bg-purple-600 hover:bg-purple-500 text-white text-5xl font-black px-10 py-6 rounded-2xl shadow-[0_8px_0_#4c1d95] active:translate-y-2 active:shadow-none transition-all border-2 border-purple-400/30";
+                btn.innerText = p;
+                btn.onclick = () => addToSentence(p, btn);
+                piecesArea.appendChild(btn);
+            });
+        }
+
+        function addToSentence(word, btn) {
+            userSentence.push(word);
+            const box = document.createElement('div');
+            // Mattoncini nella zona di costruzione
+            box.className = "bg-yellow-400 text-purple-900 px-8 py-4 rounded-xl font-black text-5xl shadow-xl animate-bounce border-2 border-yellow-200";
+            box.innerText = word;
+            document.getElementById('build-area').appendChild(box);
+            btn.style.visibility = "hidden"; // Nascondi invece di eliminare per non far saltare il layout
+        }
+
+        function resetLevel() { loadLevel(); }
+
+        function checkSentence() {
+            const level = levels[currentLevel];
+            if (JSON.stringify(userSentence) === JSON.stringify(level.correct)) {
+                alert("ECCELLENTE! +100 PUNTI 🎉");
+                currentLevel = (currentLevel + 1) % levels.length;
+                loadLevel();
+            } else {
+                alert("ERRORE! La struttura della frase è sbagliata. ❌");
+                resetLevel();
+            }
+        }
+
+        loadLevel();
+    </script>
+</body>
+
+
+    
+</html>
