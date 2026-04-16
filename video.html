@@ -158,98 +158,136 @@
         </nav>
     </div>
 
-    <script>
-        // Variabile globale per memorizzare i dati del JSON
-        let videoData = { continuaGuardare: [], lezioni: [] };
+    
+      <script>
+    let videoData = { continuaGuardare: [], lezioni: [] };
 
-        function loadVideo(videoUrl, title, desc) {
-            const player = document.getElementById('mainPlayer');
-            document.getElementById('videoSource').src = videoUrl;
-            player.load();
-            document.getElementById('nowPlayingTitle').textContent = title;
-            document.getElementById('nowPlayingDesc').textContent = desc;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            player.play().catch(e => console.log("Autoplay attende utente", e));
-        }
-
-        // Funzione per disegnare l'HTML in base agli array passati
-        function renderVideoLists(datiContinua, datiLezioni) {
-            const historyContainer = document.getElementById('historyList');
-            const lezioniContainer = document.getElementById('lezioniList');
-            const sectionHistory = document.getElementById('sectionHistory');
-
-            // 1. Renderizza "Continua a guardare" (Nascondi la sezione se vuota durante la ricerca)
-            if (datiContinua.length === 0) {
-                sectionHistory.style.display = 'none';
-            } else {
-                sectionHistory.style.display = 'block';
-                historyContainer.innerHTML = datiContinua.map(video => `
-                    <div class="history-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
-                        <div class="history-cover" style="background-image: url('${video.coverUrl}');">
-                            <div class="play-overlay"></div>
-                            <span class="duration-badge">${video.durata}</span>
-                            <div class="progress-bar"><div class="progress-fill" style="width: ${video.progresso}%;"></div></div>
-                        </div>
-                        <h4 class="history-title">${video.titolo}</h4>
-                        <p class="history-ep">${video.testoAggiuntivo}</p>
-                    </div>
-                `).join('');
-            }
-
-            // 2. Renderizza "Lezioni"
-            if (datiLezioni.length === 0) {
-                lezioniContainer.innerHTML = `<div class="no-results">Nessuna lezione trovata.</div>`;
-            } else {
-                lezioniContainer.innerHTML = datiLezioni.map((video, index) => `
-                    <div class="ranking-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
-                        <div class="rank-number">${index + 1}</div>
-                        <div class="rank-cover" style="background-image: url('${video.coverUrl}');">
-                            <div class="play-overlay" style="width: 24px; height: 24px;"></div>
-                            <span class="duration-badge" style="bottom: 4px; right: 4px;">${video.durata}</span>
-                        </div>
-                        <div class="rank-info">
-                            <h4 class="rank-title">${video.titolo}</h4>
-                            <p class="rank-author">${video.autore}</p>
-                            <span class="rank-views">${video.visualizzazioni}</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // Recupera i dati dal JSON all'avvio
-        async function caricaDati() {
-            try {
-                const response = await fetch('data.json');
-                videoData = await response.json(); // Salva i dati nella variabile globale
-                renderVideoLists(videoData.continuaGuardare, videoData.lezioni); // Disegna tutto
-            } catch (error) {
-                console.error("Errore caricamento JSON:", error);
-            }
-        }
-
-        // --- LOGICA DELLA RICERCA ---
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const query = e.target.value.toLowerCase(); // Testo digitato in minuscolo
+    // --- FUNZIONE MAGICA 2.0 (Cover + Durata automatica) ---
+    function analizzaVideo(videoUrl, coverDivId, durataBadgeId) {
+        const video = document.createElement('video');
+        video.src = videoUrl;
+        video.crossOrigin = "anonymous";
+        video.muted = true;
+        
+        // 1. Appena il browser legge i dati del video...
+        video.addEventListener('loadedmetadata', function() {
+            // Calcola la durata automatica (es. 01:15)
+            const minuti = Math.floor(video.duration / 60);
+            const secondi = Math.floor(video.duration % 60);
+            const testoDurata = `${minuti}:${secondi.toString().padStart(2, '0')}`;
             
-            // Filtra l'array "continuaGuardare"
-            const filteredContinua = videoData.continuaGuardare.filter(video => 
-                video.titolo.toLowerCase().includes(query) || 
-                video.descrizione.toLowerCase().includes(query)
-            );
+            // Inserisce la durata nel badge
+            const badge = document.getElementById(durataBadgeId);
+            if (badge) badge.textContent = testoDurata;
 
-            // Filtra l'array "lezioni"
-            const filteredLezioni = videoData.lezioni.filter(video => 
-                video.titolo.toLowerCase().includes(query) || 
-                video.descrizione.toLowerCase().includes(query)
-            );
-
-            // Ridisegna l'interfaccia con i risultati filtrati
-            renderVideoLists(filteredContinua, filteredLezioni);
+            // Sposta il cursore al 30% della durata esatta del video
+            video.currentTime = video.duration * 0.3; 
         });
 
-        // Inizializza
-        document.addEventListener('DOMContentLoaded', caricaDati);
+        // 2. Appena il cursore arriva al punto giusto, scatta la foto!
+        video.addEventListener('seeked', function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageUrl = canvas.toDataURL('image/jpeg');
+            document.getElementById(coverDivId).style.backgroundImage = `url(${imageUrl})`;
+        }, { once: true });
+    }
+
+    function loadVideo(videoUrl, title, desc) {
+        const player = document.getElementById('mainPlayer');
+        document.getElementById('videoSource').src = videoUrl;
+        player.load();
+        document.getElementById('nowPlayingTitle').textContent = title;
+        document.getElementById('nowPlayingDesc').textContent = desc;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        player.play().catch(e => console.log("Autoplay attende utente", e));
+    }
+
+    function renderVideoLists(datiContinua, datiLezioni) {
+        const historyContainer = document.getElementById('historyList');
+        const lezioniContainer = document.getElementById('lezioniList');
+        const sectionHistory = document.getElementById('sectionHistory');
+
+        if (datiContinua.length === 0) {
+            sectionHistory.style.display = 'none';
+        } else {
+            sectionHistory.style.display = 'block';
+            historyContainer.innerHTML = datiContinua.map((video, index) => {
+                const coverId = `cover-history-${index}`;
+                const badgeId = `durata-history-${index}`;
+                
+                // Lancia la magia
+                setTimeout(() => analizzaVideo(video.videoUrl, coverId, badgeId), 100);
+                
+                return `
+                <div class="history-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
+                    <div class="history-cover" id="${coverId}">
+                        <div class="play-overlay"></div>
+                        <span class="duration-badge" id="${badgeId}">--:--</span>
+                        <div class="progress-bar"><div class="progress-fill" style="width: ${video.progresso || 0}%;"></div></div>
+                    </div>
+                    <h4 class="history-title">${video.titolo}</h4>
+                    <p class="history-ep">${video.testoAggiuntivo || ''}</p>
+                </div>
+            `}).join('');
+        }
+
+        if (datiLezioni.length === 0) {
+            lezioniContainer.innerHTML = `<div class="no-results">Nessuna lezione trovata.</div>`;
+        } else {
+            lezioniContainer.innerHTML = datiLezioni.map((video, index) => {
+                const coverId = `cover-lezioni-${index}`;
+                const badgeId = `durata-lezioni-${index}`;
+                
+                // Lancia la magia
+                setTimeout(() => analizzaVideo(video.videoUrl, coverId, badgeId), 100);
+
+                return `
+                <div class="ranking-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
+                    <div class="rank-number">${index + 1}</div>
+                    <div class="rank-cover" id="${coverId}">
+                        <div class="play-overlay" style="width: 24px; height: 24px;"></div>
+                        <span class="duration-badge" id="${badgeId}" style="bottom: 4px; right: 4px;">--:--</span>
+                    </div>
+                    <div class="rank-info">
+                        <h4 class="rank-title">${video.titolo}</h4>
+                        <p class="rank-author">${video.autore || ''}</p>
+                        <span class="rank-views">${video.visualizzazioni || ''}</span>
+                    </div>
+                </div>
+            `}).join('');
+        }
+    }
+
+    async function caricaDati() {
+        try {
+            const response = await fetch('data.json');
+            videoData = await response.json(); 
+            renderVideoLists(videoData.continuaGuardare, videoData.lezioni); 
+        } catch (error) {
+            console.error("Errore caricamento JSON:", error);
+        }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase(); 
+        const filteredContinua = videoData.continuaGuardare.filter(video => 
+            video.titolo.toLowerCase().includes(query) || 
+            video.descrizione.toLowerCase().includes(query)
+        );
+        const filteredLezioni = videoData.lezioni.filter(video => 
+            video.titolo.toLowerCase().includes(query) || 
+            video.descrizione.toLowerCase().includes(query)
+        );
+        renderVideoLists(filteredContinua, filteredLezioni);
+    });
+
+    document.addEventListener('DOMContentLoaded', caricaDati);
+
     </script>
 </body>
 </html>
