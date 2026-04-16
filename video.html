@@ -3,238 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Vocabolario</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>EduApp - Lezioni</title>
     <style>
-          body {
-    font-family: Arial, sans-serif;
-    background-color: red;
-    color: #fff8dc;
-    padding: 20px;
-}
-.card {
-width: 300px; 
-border: 1px solid #eee; 
-border-radius: 12px; 
-padding: 18px; 
-margin: 30px auto; 
-box-shadow: 0 2px 8px rgba(0,0,0,0.09); text-align: center;
-color: black;
-background-color: white;
-}
-img {
-width:100%;
- border-radius: 8px;
-}
-button {
-padding: 8px 18px; 
-border: none; 
-background: #1877f2; 
-color: #fff;
- border-radius: 6px;
- cursor: pointer;
-}
-h3 {
-margin: 14px 0 8px;
-}
-#modal1, #modal2, #modal3, #modal4, #modal5, #modal6, #modal7, #modal8, #modal9, #modal10 {
-display:none; 
-position:fixed;
- z-index:1000; 
-left:0; top:0; 
-width:100vw; 
-height:100vh; background:rgba(0,0,0,0.7); 
-align-items:center; justify-content:center;
-}
+        :root {
+            --primary: #00dc64;
+            --bg-body: #f0f2f5;
+            --bg-surface: #ffffff;
+            --text-strong: #1a1a1a;
+            --text-muted: #737373;
+            --border: #e5e5e5;
+            --font-main: system-ui, -apple-system, sans-serif;
+            --app-width: 480px;
+        }
 
+        body { margin: 0; background-color: var(--bg-body); font-family: var(--font-main); display: flex; justify-content: center; color: var(--text-strong); }
+        .app { width: 100%; max-width: var(--app-width); background: var(--bg-surface); min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); padding-bottom: 70px; }
 
+        /* --- Header con Ricerca --- */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--bg-surface);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            gap: 15px;
+        }
 
+        .brand { font-size: 1.2rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; white-space: nowrap; }
+
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            background: var(--bg-body);
+            border-radius: 20px;
+            padding: 8px 12px;
+            align-items: center;
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            margin-left: 8px;
+            font-family: inherit;
+            color: var(--text-strong);
+        }
+
+        /* --- Player Integrato --- */
+        .player-section { padding: 16px 20px 0; background: var(--bg-surface); }
+        .video-container { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; position: relative; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .now-playing-info { padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+        .now-playing-title { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; }
+        .now-playing-desc { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- Sezioni --- */
+        .section { padding: 20px 0; border-bottom: 8px solid var(--bg-body); }
+        .section:last-child { border-bottom: none; }
+        .section-header { padding: 0 20px; margin-bottom: 16px; }
+        .section-title { margin: 0; font-size: 1.1rem; font-weight: 700; }
+
+        .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .play-overlay::after { content: ''; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent #ffffff; margin-left: 3px; }
+        .duration-badge { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.8); color: #fff; font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+
+        /* --- Orizzontale (Continua a guardare) --- */
+        .history-list { display: flex; gap: 16px; overflow-x: auto; padding: 0 20px 10px; scrollbar-width: none; }
+        .history-list::-webkit-scrollbar { display: none; }
+        .history-item { flex: 0 0 160px; cursor: pointer; }
+        .history-cover { width: 100%; aspect-ratio: 16 / 9; background-color: #e2e8f0; border-radius: 8px; margin-bottom: 8px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .progress-bar { position: absolute; bottom: 0; left: 0; height: 4px; background: rgba(255,255,255,0.3); width: 100%; }
+        .progress-fill { height: 100%; background: var(--primary); }
+        .history-title { margin: 0 0 4px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .history-ep { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
+
+        /* --- Verticale (Lezioni) --- */
+        .ranking-list { padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+        .ranking-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .rank-number { font-size: 1.2rem; font-weight: 900; color: var(--text-muted); width: 20px; text-align: center; }
+        .rank-cover { width: 100px; aspect-ratio: 16 / 9; background: #cbd5e1; border-radius: 6px; flex-shrink: 0; position: relative; background-size: cover; background-position: center; }
+        .rank-info { flex-grow: 1; overflow: hidden; }
+        .rank-title { margin: 0 0 4px; font-size: 0.95rem; font-weight: 600; }
+        .rank-author { margin: 0 0 4px; font-size: 0.8rem; color: var(--text-muted); }
+        .rank-views { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
+
+        /* --- Bottom Nav Aggiornata --- */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: var(--app-width); background: var(--bg-surface); display: flex; justify-content: space-around; padding: 12px 0 16px; border-top: 1px solid var(--border); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+        .nav-item.active { color: var(--text-strong); }
+        
+        /* Messaggio "Nessun risultato" */
+        .no-results { padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
     </style>
 </head>
 <body>
-<section class="bg-gradient-to-r from-red-600 to-blue-800 text-white py-20 shadow-2xl transition-all">
-  <div class="max-w-4xl mx-auto px-4 text-center">
-    <h1 class="text-5xl font-bold mb-6">Video</h1>
-    <p class="text-xl mb-8 opacity-90">Vocabolario</p>
 
-  </div>
-</section>
-    <!-- Card -->
-<div class="card">
-  <img src="img/famiglia.png" alt="Immagine card">
-  <h3>Famiglia</h3>
+    <div class="app">
+        <!-- Header con barra di ricerca -->
+        <header class="header">
+            <div class="brand">EDU APP</div>
+            <div class="search-container">
+                <span style="font-size: 1rem;">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cerca lezione...">
+            </div>
+        </header>
 
-<br>
-  <button data-modal="modal1">Guarda Video</button>
-</div>
-<div class="card">
-  <img src="img/animali.png" alt="Immagine card">
-  <h3>Animali</h3>
+        <!-- Player -->
+        <div class="player-section">
+            <div class="video-container">
+                <video id="mainPlayer" controls playsinline poster="https://placehold.co/800x450/2c3e50/ffffff?text=Seleziona+una+lezione">
+                    <source id="videoSource" src="" type="video/mp4">
+                </video>
+            </div>
+            <div class="now-playing-info">
+                <h2 class="now-playing-title" id="nowPlayingTitle">Benvenuto</h2>
+                <p class="now-playing-desc" id="nowPlayingDesc">Seleziona una lezione dalla lista per iniziare</p>
+            </div>
+        </div>
 
-<br>
-  <button data-modal="modal2">Guarda Video</button>
-</div>
+        <!-- Sezione 1: Continua a guardare -->
+        <section class="section" id="sectionHistory">
+            <div class="section-header">
+                <h3 class="section-title">Continua a guardare</h3>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </section>
 
-<div class="card">
-  <img src="img/viaggi.png" alt="Immagine card">
-  <h3>Viaggi</h3>
+        <!-- Sezione 2: Lezioni -->
+        <section class="section">
+            <div class="section-header">
+                <h3 class="section-title">Lezioni disponibili</h3>
+            </div>
+            <div class="ranking-list" id="lezioniList"></div>
+        </section>
 
-<br>
-  <button data-modal="modal3">Guarda Video</button>
-</div>
-<div class="card">
-  <img src="img/luoghi.png" alt="Immagine card">
-  <h3>Luoghi</h3>
+        <!-- Bottom Nav Aggiornata -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <span style="font-size: 1.2rem;">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span style="font-size: 1.2rem;">📖</span>
+                <span>Grammatica</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span style="font-size: 1.2rem;">✏️</span>
+                <span>Esercizi</span>
+            </a>
+        </nav>
+    </div>
 
-<br>
-  <button data-modal="modal4">Guarda Video</button>
-</div>
+    <script>
+        // Variabile globale per memorizzare i dati del JSON
+        let videoData = { continuaGuardare: [], lezioni: [] };
 
-<div class="card">
-  <img src="img/varie.png" alt="Immagine card">
-  <h3>Saluti e altro</h3>
+        function loadVideo(videoUrl, title, desc) {
+            const player = document.getElementById('mainPlayer');
+            document.getElementById('videoSource').src = videoUrl;
+            player.load();
+            document.getElementById('nowPlayingTitle').textContent = title;
+            document.getElementById('nowPlayingDesc').textContent = desc;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            player.play().catch(e => console.log("Autoplay attende utente", e));
+        }
 
-<br>
-  <button data-modal="modal5">Guarda Video</button>
-</div>
-<div class="card">
-  <img src="img/routine.png" alt="Immagine card">
-  <h3>Routine giornaliera</h3>
+        // Funzione per disegnare l'HTML in base agli array passati
+        function renderVideoLists(datiContinua, datiLezioni) {
+            const historyContainer = document.getElementById('historyList');
+            const lezioniContainer = document.getElementById('lezioniList');
+            const sectionHistory = document.getElementById('sectionHistory');
 
-<br>
-  <button data-modal="modal6">Guarda Video</button>
-</div>
+            // 1. Renderizza "Continua a guardare" (Nascondi la sezione se vuota durante la ricerca)
+            if (datiContinua.length === 0) {
+                sectionHistory.style.display = 'none';
+            } else {
+                sectionHistory.style.display = 'block';
+                historyContainer.innerHTML = datiContinua.map(video => `
+                    <div class="history-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
+                        <div class="history-cover" style="background-image: url('${video.coverUrl}');">
+                            <div class="play-overlay"></div>
+                            <span class="duration-badge">${video.durata}</span>
+                            <div class="progress-bar"><div class="progress-fill" style="width: ${video.progresso}%;"></div></div>
+                        </div>
+                        <h4 class="history-title">${video.titolo}</h4>
+                        <p class="history-ep">${video.testoAggiuntivo}</p>
+                    </div>
+                `).join('');
+            }
 
-<div class="card">
-  <img src="img/frutta.png" alt="Immagine card">
-  <h3>Frutta</h3>
+            // 2. Renderizza "Lezioni"
+            if (datiLezioni.length === 0) {
+                lezioniContainer.innerHTML = `<div class="no-results">Nessuna lezione trovata.</div>`;
+            } else {
+                lezioniContainer.innerHTML = datiLezioni.map((video, index) => `
+                    <div class="ranking-item" onclick="loadVideo('${video.videoUrl}', '${video.titolo}', '${video.descrizione}')">
+                        <div class="rank-number">${index + 1}</div>
+                        <div class="rank-cover" style="background-image: url('${video.coverUrl}');">
+                            <div class="play-overlay" style="width: 24px; height: 24px;"></div>
+                            <span class="duration-badge" style="bottom: 4px; right: 4px;">${video.durata}</span>
+                        </div>
+                        <div class="rank-info">
+                            <h4 class="rank-title">${video.titolo}</h4>
+                            <p class="rank-author">${video.autore}</p>
+                            <span class="rank-views">${video.visualizzazioni}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
 
-<br>
-  <button data-modal="modal7">Guarda Video</button>
-</div>
-<div class="card">
-  <img src="img/giorni.png" alt="Immagine card">
-  <h3>Giorni</h3>
+        // Recupera i dati dal JSON all'avvio
+        async function caricaDati() {
+            try {
+                const response = await fetch('data.json');
+                videoData = await response.json(); // Salva i dati nella variabile globale
+                renderVideoLists(videoData.continuaGuardare, videoData.lezioni); // Disegna tutto
+            } catch (error) {
+                console.error("Errore caricamento JSON:", error);
+            }
+        }
 
-<br>
-  <button data-modal="modal8">Guarda Video</button>
-</div>
+        // --- LOGICA DELLA RICERCA ---
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase(); // Testo digitato in minuscolo
+            
+            // Filtra l'array "continuaGuardare"
+            const filteredContinua = videoData.continuaGuardare.filter(video => 
+                video.titolo.toLowerCase().includes(query) || 
+                video.descrizione.toLowerCase().includes(query)
+            );
 
-<!-- Modal Video -->
-<div id="modal1" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/famiglia.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal2" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/animali.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal3" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/viaggi.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal4" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/luoghi.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal5" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/salutiealtro.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal6" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/routine.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal7" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/frutta.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
-<div id="modal8" class="modal">
-  <div style="background:#fff; border-radius:8px; max-width:90vw; padding:24px; margin:auto; position:relative;">
-    <span class="close" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer;">&times;</span>
-    <h2 style="margin-top:0;">Video nel Modal</h2>
-    <video controls style="width:100%; max-width:600px;">
-      <source src="video/giorni.mp4" type="video/mp4">
-      Il tuo browser non supporta il tag video.
-    </video>
-  </div>
-</div>
+            // Filtra l'array "lezioni"
+            const filteredLezioni = videoData.lezioni.filter(video => 
+                video.titolo.toLowerCase().includes(query) || 
+                video.descrizione.toLowerCase().includes(query)
+            );
 
-<footer class="bg-gradient-to-r from-red-600 to-blue-800 text-white py-5 shadow-2xl transition-all text-center">
+            // Ridisegna l'interfaccia con i risultati filtrati
+            renderVideoLists(filteredContinua, filteredLezioni);
+        });
 
-</footer>
-<script>
-// Apri il modal associato al pulsante
-document.querySelectorAll('button[data-modal]').forEach(button => {
-  button.addEventListener('click', () => {
-    const modalId = button.getAttribute('data-modal');
-    document.getElementById(modalId).style.display = 'flex';
-  });
-});
-
-// Chiudi il modal cliccando sulla "x"
-document.querySelectorAll('.modal .close').forEach(span => {
-  span.addEventListener('click', () => {
-    const modal = span.closest('.modal');
-    // Metti pausa al video dentro il modal
-    const video = modal.querySelector('video');
-    if(video) video.pause();
-    modal.style.display = 'none';
-  });
-});
-
-// Chiudi il modal cliccando fuori dal contenuto
-window.addEventListener('click', event => {
-  if(event.target.classList.contains('modal')) {
-    // Metti pausa al video dentro il modal
-    const video = event.target.querySelector('video');
-    if(video) video.pause();
-    event.target.style.display = 'none';
-  }
-});
-</script>
+        // Inizializza
+        document.addEventListener('DOMContentLoaded', caricaDati);
+    </script>
 </body>
 </html>
