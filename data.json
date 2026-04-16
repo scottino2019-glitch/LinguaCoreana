@@ -4,7 +4,6 @@
       "titolo": "Animali",
       "descrizione": "Impara i nomi degli animali",
       "videoUrl": "video/animali.mp4",
-      "coverUrl": "img/animali.png",
       "durata": "2:30",
       "progresso": 80,
       "testoAggiuntivo": "Quasi completato"
@@ -13,8 +12,7 @@
       "titolo": "La Famiglia",
       "descrizione": "I membri della famiglia",
       "videoUrl": "video/famiglia.mp4",
-      "coverUrl": "img/famiglia.png",
-      "durata": "3:15",
+       "durata": "3:15",
       "progresso": 40,
       "testoAggiuntivo": "A metà lezione"
     },
@@ -22,8 +20,7 @@
       "titolo": "Frutta e Cibo",
       "descrizione": "Vocabolario alimentare",
       "videoUrl": "video/frutta.mp4",
-      "coverUrl": "img/frutta.png",
-      "durata": "4:00",
+       "durata": "4:00",
       "progresso": 10,
       "testoAggiuntivo": "Appena iniziato"
     },
@@ -31,8 +28,7 @@
       "titolo": "Luoghi della Città",
       "descrizione": "Orientarsi in città",
       "videoUrl": "video/luoghi.mp4",
-      "coverUrl": "img/luoghi.png",
-      "durata": "5:20",
+       "durata": "5:20",
       "progresso": 60,
       "testoAggiuntivo": "A buon punto"
     },
@@ -40,7 +36,6 @@
       "titolo": "Routine Quotidiana",
       "descrizione": "Raccontare la propria giornata",
       "videoUrl": "video/routine.mp4",
-      "coverUrl": "img/routine.png",
       "durata": "3:45",
       "progresso": 25,
       "testoAggiuntivo": "Continua a guardare"
@@ -49,7 +44,6 @@
       "titolo": "Viaggi e Trasporti",
       "descrizione": "Mezzi e vacanze",
       "videoUrl": "video/viaggi.mp4",
-      "coverUrl": "img/viaggi.png",
       "durata": "4:10",
       "progresso": 50,
       "testoAggiuntivo": "A metà lezione"
@@ -60,8 +54,7 @@
       "titolo": "I Giorni della Settimana",
       "descrizione": "Impara a dire i giorni e il tempo",
       "videoUrl": "video/giorni.mp4",
-      "coverUrl": "img/giorni.png",
-      "durata": "3:00",
+       "durata": "3:00",
       "autore": "Lezione Base",
       "visualizzazioni": "Modulo 1"
     },
@@ -69,7 +62,6 @@
       "titolo": "Saluti e Presentazioni",
       "descrizione": "Impara a presentarti agli altri",
       "videoUrl": "video/salutiealtro.mp4",
-      "coverUrl": "img/varie.png",
       "durata": "2:45",
       "autore": "Lezione Base",
       "visualizzazioni": "Modulo 1"
