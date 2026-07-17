@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한성무선 - RETROVOX KOREA</title>
+  <meta name="description" content="한국어 복고풍 TV 및 프로그램 가이드.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            stone: {
+              750: '#34312e',
+              855: '#1a1816',
+              920: '#141210',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            newspaper: ['"Courier Prime"', 'serif'],
+            gothic: ['"Nanum Gothic"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Fonts CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      background-image: url('https://images.unsplash.com/photo-1648130129775-2837152df47d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwzfHxtYXR0b25pfGVufDB8fHx8MTc4NDIzMzc0N3ww&ixlib=rb-4.1.0&q=85');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    .retro-crt {
+      position: relative;
+      overflow: hidden;
+    }
+    .retro-crt::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 255, 0, 0.03));
+      z-index: 20;
+      background-size: 100% 3px, 4px 100%;
+      pointer-events: none;
+      opacity: 0.95;
+    }
+    
+    .retro-flicker {
+      animation: monitor-flicker 0.25s infinite;
+    }
+    @keyframes monitor-flicker {
+      0% { opacity: 0.96; }
+      50% { opacity: 1.0; }
+      100% { opacity: 0.97; }
+    }
+    
+    .aging-dust {
+      background-image: radial-gradient(rgba(0,0,0,0) 60%, rgba(139, 90, 43, 0.08) 100%),
+                        repeating-linear-gradient(45deg, rgba(82, 59, 34, 0.02) 0px, rgba(82, 59, 34, 0.02) 1px, transparent 1px, transparent 10px);
+    }
+    
+    .workbench-shelf {
+      background: linear-gradient(0deg, #0d0b0a 0%, #171412 15%, #241f1c 85%, #302a26 100%);
+      border-top: 5px solid #3c3430;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.7);
+    }
+    .device-shadow-drop {
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,0.7));
+    }
+    .wood-grain {
+      background: linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.5) 100%),
+                  repeating-linear-gradient(90deg, #1a0f06 0px, #1a0f06 2px, #2a180a 2px, #2a180a 10px, #331d0c 10px, #331d0c 15px, #120a03 15px, #120a03 30px);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -4px 10px rgba(0,0,0,0.8);
+    }
+    .screw-brass {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #fdba74 0%, #d97706 70%, #78350f 100%);
+      position: relative;
+      display: inline-block;
+    }
+    .screw-brass::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 10%; right: 10%;
+      height: 1px;
+      background-color: #451a03;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .font-koreanCalligraphy {
+      font-family: 'Nanum Myeongjo', serif;
+      font-weight: 800;
+    }
+  </style>
+</head>
+  
+<body class="min-h-screen flex flex-col items-center justify-start p-4 md:p-8 text-stone-300 antialiased overflow-y-auto">
+
+  <main class="max-w-xl w-full flex flex-col items-center justify-center z-10 relative mt-4">
+    
+    <!-- Intestazione vintage -->
+    <div class="mb-5 px-4 py-1.5 rounded bg-stone-950/90 border border-stone-800 text-[9px] font-mono tracking-[0.25em] text-stone-400 select-none shadow-md">
+      대한국무선학회 • RETROVOX KOREA SYSTEM v1.76
+    </div>
+
+    <!-- Sezione TV RETROVOX -->
+    <div class="device-shadow-drop w-full relative">
+      <!-- Piedini in legno -->
+      <div class="absolute -bottom-5 left-14 right-14 flex justify-between pointer-events-none select-none z-0">
+        <div class="w-5 h-8 bg-gradient-to-b from-stone-900 to-black border-b-2 border-black rounded-b-lg transform origin-top rotate-[20deg]"></div>
+        <div class="w-5 h-8 bg-gradient-to-b from-stone-900 to-black border-b-2 border-black rounded-b-lg transform origin-top -rotate-[20deg]"></div>
+      </div>
+
+      <!-- Fianchi laterali -->
+      <div class="absolute -left-4 top-4 bottom-4 w-5 rounded-l-xl border-l border-y border-black shadow-lg z-10 wood-grain"></div>
+      <div class="absolute -right-4 top-4 bottom-4 w-5 rounded-r-xl border-r border-y border-black shadow-lg z-10 wood-grain"></div>
+
+      <!-- Scocca in Legno -->
+      <div class="p-6 md:p-8 pb-10 rounded-[36px] border-[12px] flex flex-col md:flex-row gap-6 relative wood-grain" style="border-color: #1a100a;">
+        
+        <!-- Viti -->
+        <div class="absolute top-3 left-3 screw-brass z-20"></div>
+        <div class="absolute top-3 right-3 screw-brass z-20"></div>
+        <div class="absolute bottom-3 left-3 screw-brass z-20"></div>
+        <div class="absolute bottom-3 right-3 screw-brass z-20"></div>
+      
+        <!-- Antenne -->
+        <div class="absolute -top-28 left-1/4 select-none pointer-events-none flex gap-8">
+          <div class="w-1.5 h-32 bg-zinc-450 origin-bottom -rotate-12 rounded shadow"></div>
+          <div class="w-1.5 h-36 bg-zinc-450 origin-bottom rotate-12 rounded shadow"></div>
+        </div>
+
+        <!-- Schermo CRT -->
+        <div class="flex-1 bg-stone-950 rounded-[40px] p-3.5 border-4 border-stone-900 relative shadow-inner overflow-hidden">
+          <div class="absolute inset-0 rounded-[35px] border-[12px] border-stone-900/40 pointer-events-none z-35"></div>
+          
+          <div class="w-full aspect-[4/3] bg-zinc-900 rounded-[24px] overflow-hidden relative shadow-2xl retro-crt" id="screen">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center font-mono retro-flicker" id="tvDisplay">
+              <!-- Riproduttore nativo HTML5 -->
+            </div>
+            <!-- Riflessi sul vetro -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none z-30"></div>
+          </div>
+        </div>
+
+        <!-- Pannello Controlli -->
+        <div class="w-full md:w-32 flex flex-col justify-between items-center bg-stone-950/70 p-4 rounded-2xl border border-stone-900">
+          <div class="w-full text-center">
+            <span class="text-[10px] font-mono tracking-widest text-purple-400 block mb-3 font-bold">한성라디오</span>
+          </div>
+
+          <!-- Selettore Canali UHF -->
+          <div class="flex flex-col items-center my-3">
+            <span class="text-[8px] font-mono tracking-widest text-zinc-400 mb-1">UHF 채널</span>
+            <div class="relative w-14 h-14 cursor-pointer" onclick="nextChannel()">
+              <div id="chanDial" class="w-14 h-14 rounded-full border-4 border-zinc-950 bg-stone-900 flex items-center justify-center transition-all shadow-md" style="transform: rotate(0deg);">
+                <div class="w-1 h-3.5 bg-zinc-200 rounded-full -translate-y-3.5"></div>
+                <span class="absolute text-[9px] font-mono text-zinc-300 mt-1 font-bold select-none" id="chanNum">1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regolatori Effetti -->
+          <div class="flex gap-3 w-full justify-center my-2">
+            <div class="flex flex-col items-center">
+              <span class="text-[7px] font-mono text-zinc-500">색상 (TINT)</span>
+              <button class="w-7 h-7 rounded-full bg-zinc-800 border border-zinc-950 active:scale-90" onclick="adjustEffect('tint')"></button>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-[7px] font-mono text-zinc-500">주사선 (LINE)</span>
+              <button class="w-7 h-7 rounded-full bg-zinc-800 border border-zinc-950 active:scale-90" onclick="toggleScanlines()"></button>
+            </div>
+          </div>
+
+          <!-- Interruttore di Accensione -->
+          <div class="mt-4 flex flex-col items-center">
+            <span class="text-[8px] font-mono tracking-wider text-zinc-400 mb-1">전원 (POWER)</span>
+            <button id="powerSwitch" onclick="toggleTvPower()" class="px-4 py-2 bg-red-700 hover:bg-red-600 active:scale-95 text-stone-100 rounded border border-red-900 font-mono text-[10px] cursor-pointer font-bold select-none shadow">
+              OFF
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GIORNALE RETRÒ (TESTO PURAMENTE COREANO) -->
+    <div class="w-full bg-[#ebdcb9] border-2 border-[#ccbd96] text-stone-900 p-6 rounded-sm shadow-2xl font-newspaper relative mt-8 border-t-[6px] border-t-stone-850 aging-dust">
+
+      <!-- Testata del Giornale -->
+      <div class="border-b-4 border-stone-900 pb-2 mb-4 text-center relative">
+        <!-- Titolo corretto rigorosamente in HANGUL (Coreano) senza caratteri cinesi -->
+        <h1 class="text-4xl md:text-5xl font-koreanCalligraphy text-stone-950 tracking-wide mb-1 select-none">
+          한성무선일보
+        </h1>
+        <p class="text-[10px] tracking-[0.25em] text-stone-700 font-sans font-bold uppercase mb-2">
+          - THE HANSEONG WIRELESS DAILY -
+        </p>
+
+        <div class="flex justify-between text-[10px] md:text-xs font-mono px-2 border-t-2 border-stone-900 mt-1 pt-1 font-bold text-stone-800">
+          <span>제 947 호 (N. 947)</span>
+          <span>1976년 6월 14일</span>
+          <span>정가 50원 (50 WON)</span>
+        </div>
+      </div>
+
+      <!-- Guida Programmi TV Coreana (Senza orari, solo Canale, Titolo e Descrizione) -->
+      <div class="w-full text-stone-950">
+        <div class="bg-stone-950 text-[#ebdcb9] text-xs font-bold px-3 py-1.5 uppercase tracking-widest text-center mb-4 font-sans">
+          오늘의 방송 프로그램 ── GUIDA PROGRAMMI TV
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- CANALE 01 -->
+          <div id="guide-ch-1" class="border border-stone-400 p-3 rounded bg-[#f2e6ca]/60 transition-all">
+            <div class="border-b border-stone-900 pb-1 mb-2">
+              <span class="font-mono bg-stone-900 text-amber-400 px-2 py-0.5 rounded text-[10px] font-black">채널 01</span>
+            </div>
+            <div class="text-xs font-mono text-stone-800 space-y-1">
+              <div class="font-bold text-stone-950 text-sm">사랑스러운 달리기 선수 (Lovely Tunner)</div>
+              <p class="text-[11px] leading-relaxed text-stone-700">류선재는 성공한 가수이자 진정한 스타였지만, 연예계의 압박감에 무너져 자살을 택한다. 그의 죽음을 알게 된 한 열렬한 팬은 그를 구하기 위해 과거로 시간 여행을 떠난다.</p>
+            </div>
+          </div>
+
+          <!-- CANALE 02 -->
+          <div id="guide-ch-2" class="border border-stone-400 p-3 rounded bg-[#f2e6ca]/60 transition-all">
+            <div class="border-b border-stone-900 pb-1 mb-2">
+              <span class="font-mono bg-stone-900 text-amber-400 px-2 py-0.5 rounded text-[10px] font-black">채널 02</span>
+            </div>
+            <div class="text-xs font-mono text-stone-800 space-y-1">
+              <div class="font-bold text-stone-950 text-sm">택시 탑승 (Giro in Taxi)</div>
+              <p class="text-[11px] leading-relaxed text-stone-700">서울에서 택시를 타세요.</p>
+            </div>
+          </div>
+
+          <!-- CANALE 03 -->
+          <div id="guide-ch-3" class="border border-stone-400 p-3 rounded bg-[#f2e6ca]/60 transition-all">
+            <div class="border-b border-stone-900 pb-1 mb-2">
+              <span class="font-mono bg-stone-900 text-amber-400 px-2 py-0.5 rounded text-[10px] font-black">채널 03</span>
+            </div>
+            <div class="text-xs font-mono text-stone-800 space-y-1">
+              <div class="font-bold text-stone-950 text-sm">버스 탑승 (giro in autobus)</div>
+              <p class="text-[11px] leading-relaxed text-stone-700">버스 탑승, 요금 지불 및 안내 요청.</p>
+            </div>
+          </div>
+
+          <!-- CANALE 04 -->
+          <div id="guide-ch-4" class="border border-stone-400 p-3 rounded bg-[#f2e6ca]/60 transition-all">
+            <div class="border-b border-stone-900 pb-1 mb-2">
+              <span class="font-mono bg-stone-900 text-amber-400 px-2 py-0.5 rounded text-[10px] font-black">채널 04</span>
+            </div>
+            <div class="text-xs font-mono text-stone-800 space-y-1">
+              <div class="font-bold text-stone-950 text-sm">레스토랑에서 (Al ristorante)</div>
+              <p class="text-[11px] leading-relaxed text-stone-700">레스토랑에서 주문하세요.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Piè di pagina -->
+      <div class="border-t border-stone-400 mt-5 pt-3 grid grid-cols-2 text-[10px] text-stone-700 leading-tight">
+        <div class="pr-2 border-r border-stone-300">
+          <span class="font-bold">자동 동조 안내 (SINTONIZZAZIONE):</span> 우측 채널 다이얼을 회전시키면 종이 신문의 프로그램 가이드와 화면이 동기화됩니다.
+        </div>
+        <div class="pl-2 font-sans text-right text-[8.5px] uppercase tracking-wider self-center text-stone-600">
+          한성중앙공업제작소 ‧ 한성무선공사
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="absolute bottom-0 left-0 right-0 h-24 workbench-shelf z-5 pointer-events-none"></div>
+
+  <!-- JavaScript -->
+  <script>
+    let audioCtx = null;
+    let staticNode = null;
+    let staticGain = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playBeep(freq = 440, type = 'sine', duration = 0.1, gainVal = 0.1) {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(gainVal, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(now + duration);
+      } catch (e) { console.log(e); }
+    }
+
+    function setStaticNoise(vol) {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        if (vol > 0) {
+          if (!staticNode) {
+            const bufferSize = 4096;
+            staticNode = ctx.createScriptProcessor(bufferSize, 1, 1);
+            staticNode.onaudioprocess = (e) => {
+              const output = e.outputBuffer.getChannelData(0);
+              for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2.0 - 1.0;
+              }
+            };
+            staticGain = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1000, now);
+            staticNode.connect(filter);
+            filter.connect(staticGain);
+            staticGain.connect(ctx.destination);
+          }
+          staticGain.gain.linearRampToValueAtTime(vol * 0.08, now + 0.1);
+        } else if (staticNode) {
+          staticGain.gain.linearRampToValueAtTime(0, now + 0.1);
+        }
+      } catch (e) { console.log(e); }
+    }
+  
+    let tvOn = true;
+    let currChannel = 1;
+    let isScanline = true;
+    
+    // SOSTITUISCI QUESTI LINK CON I TUOI VIDEO/AUDIO (.mp4, .ogg, .mp3 ecc.)
+    const channelGigs = [
+      {
+        id: 1,
+        videoUrl: "TV/lovevly-runner.mp4"
+      },
+      {
+        id: 2,
+        videoUrl: "TV/autobus.mp4"
+      },
+      {
+        id: 3,
+        videoUrl: "TV/taxi.mp4"
+      },
+      {
+        id: 4,
+        videoUrl: "TV/ristorante.mp4"
+      }
+    ];
+
+    function highlightActiveGuideChannel() {
+      for (let i = 1; i <= 4; i++) {
+        const element = document.getElementById(`guide-ch-${i}`);
+        if (element) {
+          if (tvOn && currChannel === i) {
+            element.className = "border border-amber-500 p-3 rounded bg-stone-900 text-[#ebdcb9] shadow-inner transform scale-[1.02] transition-all duration-300";
+            element.querySelectorAll("span").forEach(el => {
+              if (el.classList.contains('text-stone-950') || el.classList.contains('text-stone-600')) {
+                el.style.color = '#f59e0b'; 
+              }
+            });
+            element.querySelectorAll("p, div.font-bold").forEach(el => el.style.color = '#ebdcb9');
+          } else {
+            element.className = "border border-stone-400 p-3 rounded bg-[#f2e6ca]/60 transition-all duration-300 opacity-60";
+            element.querySelectorAll("span").forEach(el => {
+              el.removeAttribute('style');
+            });
+            element.querySelectorAll("p, div.font-bold").forEach(el => el.removeAttribute('style'));
+          }
+        }
+      }
+    }
+
+    function toggleTvPower() {
+      tvOn = !tvOn;
+      const display = document.getElementById("tvDisplay");
+      const powerSwitch = document.getElementById("powerSwitch");
+      
+      if (tvOn) {
+        powerSwitch.innerText = "ON";
+        powerSwitch.className = "px-4 py-2 bg-green-700 hover:bg-green-600 active:scale-95 text-stone-100 rounded border border-green-900 font-mono text-[10px] cursor-pointer font-bold select-none shadow";
+        playBeep(600, "sine", 0.05, 0.2);
+        renderChannel();
+        setStaticNoise(0.05);
+      } else {
+        powerSwitch.innerText = "OFF";
+        powerSwitch.className = "px-4 py-2 bg-red-700 hover:bg-red-600 active:scale-95 text-stone-100 rounded border border-red-900 font-mono text-[10px] cursor-pointer font-bold select-none shadow";
+        playBeep(200, "sawtooth", 0.15, 0.3);
+        display.innerHTML = `<div class="flex flex-col items-center justify-center text-zinc-650 font-mono h-full bg-black w-full text-xs">
+          <span class="font-bold">전원 꺼짐</span>
+          <span class="text-[8px] text-zinc-800">UHF 다이얼을 돌려주십시오</span>
+        </div>`;
+        setStaticNoise(0);
+      }
+      highlightActiveGuideChannel();
+    }
+
+    function renderChannel() {
+      if (!tvOn) return;
+      const display = document.getElementById("tvDisplay");
+      const activeGen = channelGigs.find(c => c.id === currChannel) || channelGigs[0];
+      
+      display.innerHTML = `
+        <video 
+          class="w-full h-full object-cover" 
+          src="${activeGen.videoUrl}" 
+          autoplay 
+          loop 
+          muted 
+          controls>
+        </video>
+      `;
+      highlightActiveGuideChannel();
+    }
+
+    function nextChannel() {
+      if (!tvOn) return;
+      currChannel = currChannel + 1;
+      if (currChannel > 4) currChannel = 1;
+
+      playBeep(120, "triangle", 0.04, 0.25);
+      
+      const chanDial = document.getElementById("chanDial");
+      chanDial.style.transform = "rotate(" + ((currChannel - 1) * 90) + "deg)";
+      
+      const chanNum = document.getElementById("chanNum");
+      chanNum.innerText = currChannel;
+      
+      const display = document.getElementById("tvDisplay");
+      display.innerHTML = `<div class="w-full h-full bg-zinc-300 contrast-125 select-none animate-pulse flex items-center justify-center text-black font-mono font-bold text-xs">수신호 탐색중... (TUNING)</div>`;
+      
+      setStaticNoise(0.6);
+      
+      setTimeout(() => {
+        setStaticNoise(0.04);
+        renderChannel();
+      }, 400);
+    }
+
+    function toggleScanlines() {
+      const screen = document.getElementById("screen");
+      isScanline = !isScanline;
+      if (isScanline) {
+        screen.classList.add("retro-crt");
+      } else {
+        screen.classList.remove("retro-crt");
+      }
+      playBeep(880, "sine", 0.05, 0.15);
+    }
+
+    function adjustEffect(eff) {
+      playBeep(500, "sine", 0.05, 0.1);
+      const tvDisplay = document.getElementById("tvDisplay");
+      if (eff === 'tint') {
+        tvDisplay.style.filter = tvDisplay.style.filter === 'hue-rotate(90deg)' ? 'none' : 'hue-rotate(90deg)';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      highlightActiveGuideChannel();
+      toggleTvPower();
+    });
+  </script>
+</body>
+</html>
