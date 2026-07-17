@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -317,11 +318,11 @@
       const display = document.getElementById("tvDisplay");
       const activeGen = channelGigs.find(c => c.id === currChannel) || channelGigs[0];
       
-      // Sostituito object-cover con object-contain per mostrare il video intero senza tagli
+      // w-full h-full object-fill costringe il video a spalmarsi perfettamente su tutto lo schermo
       display.innerHTML = `
         <video 
           id="activeVideo"
-          class="w-full h-full object-contain" 
+          class="w-full h-full object-fill" 
           src="${activeGen.videoUrl}" 
           autoplay 
           loop 
