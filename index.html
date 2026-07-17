@@ -17,6 +17,7 @@
 
         body {
             font-family: "Yeon Sung", system-ui;
+            background: #020617; /* Sfondo scuro di base */
         }
 
         @keyframes pulse {
@@ -66,7 +67,7 @@
         }
         @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-5px) translateX(3px); } 50% { transform: translateY(-8px) translateX(0); } 75% { transform: translateY(-5px) translateX(-3px); } }
         .emoji-float { animation: float 2s ease-in-out infinite; display: inline-block; }
-        
+
         .gradient-text {
           background: linear-gradient(135deg, #ff0000 0%, #ff6b00 50%, #ffd700 100%);
           -webkit-background-clip: text;
@@ -74,11 +75,11 @@
           background-clip: text;
           display: inline-block;
         }
-        
+
         .animated-emoji {
           font-size: 72px;
         }
-        
+
         h1 {
           margin: 0;
           line-height: 1.2;
@@ -513,19 +514,41 @@
         @keyframes slideIn { from { transform: scale(0.9) translateY(-20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
 
-/* STILI PER AGGIUSTARE ROJI CON DIMENSIONI ESPLICITE */
+/* STILI PER AGGIUSTARE ROJI CON DIMENSIONI ESPLICITE ED EVITARE OVERLAY */
         #roji-container {
-            width: 380px;
-            height: 600px;
+            width: 85px;
+            height: 85px;
             max-width: 90vw;
             max-height: 85vh;
+            border-radius: 50%;
+            overflow: hidden;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2147483647;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
+
+        #roji-container:hover, #roji-container:focus-within, #roji-container.active {
+            width: 380px;
+            height: 600px;
+            border-radius: 20px;
+            border: 1px solid rgba(248, 250, 252, 0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+            background: #020617;
+        }
+
         @media (max-width: 480px) {
             #roji-container {
-                width: 320px;
-                height: 500px;
                 bottom: 12px;
                 right: 12px;
+            }
+            #roji-container:hover, #roji-container:focus-within, #roji-container.active {
+                width: 320px;
+                height: 500px;
             }
         }
 
@@ -558,22 +581,21 @@
     </style>
 </head>
 <body>
+
     <div class="hero-brutalist">
         <div class="brutalist-border">
             <h1 style="font-family: 'Yeon Sung', serif; font-size: 72px;">
                 <span class="animated-emoji emoji-float">🏯</span><span class="gradient-text">한국어</span><span class="animated-emoji emoji-float">🐅</span>
             </h1>
-            <div style="display: flex; gap: 0; justify-content: center; flex-wrap: wrap;">
-                <a href="#coreano">     
-                    <button class="btn">
-                        <span>☀️</span>
-                        <span>entra</span>
-                    </button>
+            <div style="display: flex; gap: 0; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <a href="#coreano" class="btn" style="text-decoration: none; font-size: 18px; padding: 14px 28px;">     
+                    <span>☀️</span>
+                    <span>entra</span>
                 </a>
             </div>
         </div>
     </div>
-    
+
     <section id="coreano">
         <div class="overlay-noise"></div>
 
@@ -907,13 +929,13 @@
                     <h3 style="font-family: 'Yeon Sung', serif; font-size: 1.5rem; color: #f9fafb; margin-bottom: 20px;">
                         Scrivimi, fammi sapere cosa ne pensi o che cosa vorresti trovare sul sito 🇰🇷
                     </h3>
-                    
+
                     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 25px;">
                         <!-- Email Button -->
                         <a href="mailto:linguacoreana2000@gmail.com" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(198, 12, 48, 0.15); border: 1px solid rgba(198, 12, 48, 0.4); border-radius: 12px; color: #f9fafb; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(198, 12, 48, 0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(198, 12, 48, 0.15)'; this.style.transform='translateY(0)'">
                             <span>📧</span> linguacoreana2000@gmail.com
                         </a>
-                        
+
                         <!-- Telegram Button -->
                         <a href="https://t.me/linguacoreana_200" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(0, 82, 164, 0.15); border: 1px solid rgba(0, 82, 164, 0.4); border-radius: 12px; color: #f9fafb; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(0, 82, 164, 0.3)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(0, 82, 164, 0.15)'; this.style.transform='translateY(0)'">
                             <span>✈️</span> Canale Telegram
@@ -927,8 +949,9 @@
             </footer>
         </div>
     </section>
+
 <!--roji-->
-<div id="roji-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 2147483647; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: auto;">
+<div id="roji-container">
   <iframe 
     id="roji-iframe"
     src="https://roji-tawny.vercel.app/" 
@@ -937,6 +960,7 @@
     allowtransparency="true">
   </iframe>
 </div>
+
 <!--modal-->
     <div id="vocabolario-modal" class="modal">
         <div class="modal-content">
@@ -949,5 +973,47 @@
                     title="Vocabolario Coreano"></iframe>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const anchors = document.querySelectorAll('a[href^="#"]');
+            anchors.forEach(anchor => {
+                const targetId = anchor.getAttribute('href');
+                // Salta i link del modale
+                if (targetId.startsWith('#vocabolario-modal')) return;
+                
+                const handleScroll = (e) => {
+                    if (targetId && targetId !== '#') {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            e.preventDefault();
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                            // Aggiorna l'URL hash senza forzare il salto improvviso del browser
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+                };
+
+                anchor.addEventListener('click', handleScroll);
+                anchor.addEventListener('touchstart', handleScroll, { passive: false });
+            });
+
+            // Gestione Roji Iframe Hover / Click per Mobile
+            const rojiContainer = document.getElementById('roji-container');
+            if (rojiContainer) {
+                // Tocco su mobile attiva l'assistente ed evita di bloccare la pagina
+                rojiContainer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    rojiContainer.classList.add('active');
+                });
+
+                // Chiudi Roji se si clicca fuori sul resto del body
+                document.addEventListener('click', (e) => {
+                    if (!rojiContainer.contains(e.target)) {
+                        rojiContainer.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
