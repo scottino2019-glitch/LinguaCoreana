@@ -128,7 +128,7 @@
           <div class="absolute inset-0 rounded-[28px] border-[6px] border-stone-900/40 pointer-events-none z-35"></div>
           
           <div class="w-full aspect-video bg-zinc-900 rounded-[20px] overflow-hidden relative shadow-2xl" id="screen">
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center font-mono w-full h-500" id="tvDisplay">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center font-mono w-full h-full" id="tvDisplay">
               <!-- Video iniettato da JavaScript -->
             </div>
             <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/5 pointer-events-none z-30"></div>
@@ -176,7 +176,7 @@
       </div>
     </div>
 
-    <!-- GIORNALE RETRÒ COMPLETO RIPRISTINATO -->
+    <!-- GIORNALE RETRÒ COMPLETO -->
     <div class="w-full bg-[#ebdcb9] border-2 border-[#ccbd96] text-stone-900 p-6 rounded-sm shadow-2xl font-newspaper relative mt-8 border-t-[6px] border-t-stone-850 aging-dust">
 
       <!-- Testata del Giornale -->
@@ -243,7 +243,7 @@
             </div>
             <div class="text-xs font-mono text-stone-800 space-y-1">
               <div class="font-bold text-stone-950 text-sm">레스토랑에서 (Al Ristorante)</div>
-              <p class="text-[11px] leading-relaxed text-stone-700">레스토rang에서 주문하세요.</p>
+              <p class="text-[11px] leading-relaxed text-stone-700">레스토랑에서 주문하세요.</p>
             </div>
           </div>
 
@@ -265,15 +265,14 @@
 
   <div class="absolute bottom-0 left-0 right-0 h-24 workbench-shelf z-5 pointer-events-none"></div>
 
-  <!-- Script Stabile Senza Funzioni Audio Nocive -->
   <script>
     let tvOn = true;
     let currChannel = 1;
     let isScanline = false;
     
     const channelGigs = [
-      { id: 1, videoUrl: "TV/lovevly-runner.mp4" },
-      { id: 2, videoUrl: "TV/autobus.mp4" },
+      { id: 1, videoUrl: "TV/lovely-runner.mp4" },
+      { id: 2, videoUrl: "TV/in-autobus.mp4" },
       { id: 3, videoUrl: "TV/taxi.mp4" },
       { id: 4, videoUrl: "TV/ristorante.mp4" }
     ];
@@ -300,7 +299,7 @@
       
       if (tvOn) {
         powerSwitch.innerText = "ON";
-        powerSwitch.className = "px-3 py-1.5 bg-green-700 hover:bg-green-600 text-stone-100 rounded border border-green-900 font-mono text-[9px] cursor-pointer font-bold select-none shadow animate-pulse";
+        powerSwitch.className = "px-3 py-1.5 bg-green-700 hover:bg-green-600 text-stone-100 rounded border border-green-900 font-mono text-[9px] cursor-pointer font-bold select-none shadow";
         renderChannel();
       } else {
         powerSwitch.innerText = "OFF";
@@ -318,11 +317,11 @@
       const display = document.getElementById("tvDisplay");
       const activeGen = channelGigs.find(c => c.id === currChannel) || channelGigs[0];
       
-      // Caricamento pulito del player nativo HTML5, senza manipolatori audio esterni
+      // Sostituito object-cover con object-contain per mostrare il video intero senza tagli
       display.innerHTML = `
         <video 
           id="activeVideo"
-          class="w-full h-full object-cover" 
+          class="w-full h-full object-contain" 
           src="${activeGen.videoUrl}" 
           autoplay 
           loop 
@@ -338,7 +337,6 @@
       currChannel = currChannel + 1;
       if (currChannel > 4) currChannel = 1;
       
-      // Animazione della manopola rotante
       const chanDial = document.getElementById("chanDial");
       if (chanDial) {
         chanDial.style.transform = "rotate(" + ((currChannel - 1) * 90) + "deg)";
@@ -369,7 +367,6 @@
       }
     }
 
-    // Avvio stabile con la TV accesa al caricamento
     window.addEventListener('DOMContentLoaded', () => {
       renderChannel();
     });
