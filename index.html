@@ -17,7 +17,11 @@
 
         body {
             font-family: "Yeon Sung", system-ui;
-            background: #020617; /* Sfondo scuro di base */
+            background:
+                radial-gradient(circle at 15% 15%, rgba(0, 82, 164, 0.45) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(198, 12, 48, 0.4) 0%, transparent 60%),
+                #020617;
+            position: relative;
         }
 
         @keyframes pulse {
@@ -40,6 +44,7 @@
             padding: 60px 20px;
             position: relative;
             overflow: hidden;
+            z-index: 3;
         }
 
         .hero-brutalist::before {
@@ -106,6 +111,7 @@
         box-sizing: border-box;
               margin: 0;
               padding: 0;
+              position: relative;
 
         min-height: 100vh;
               font-family:  "Yeon Sung", system-ui;
@@ -115,11 +121,9 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              background:
-                radial-gradient(circle at 10% 10%, #0052a4 0, #000000 45%),
-                radial-gradient(circle at 90% 90%, #c60c30 0, #000000 55%);
-              background-color: #020617;
+              background: transparent;
               overflow-x: hidden;
+              z-index: 2;
         }
         .overlay-noise {
               position: fixed;
@@ -134,7 +138,7 @@
 
         .page {
               position: relative;
-              z-index: 1;
+              z-index: 2;
               width: 100%;
               max-width: 1200px;
               padding: 24px 16px 32px;
@@ -581,6 +585,13 @@
     </style>
 </head>
 <body>
+
+    <!-- Sfondo con scritta gigante fixed (z-index: 1) -->
+    <div style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1; opacity: 0.08; overflow: hidden;">
+        <span style="font-family: 'Yeon Sung', cursive, serif; font-size: clamp(14rem, 38vw, 55rem); color: #ffffff; line-height: 1; transform: rotate(-12deg); user-select: none; white-space: nowrap;">
+            한국어
+        </span>
+    </div>
 
     <div class="hero-brutalist">
         <div class="brutalist-border">
