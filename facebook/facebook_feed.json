@@ -31,16 +31,7 @@
       "mutualFriends": "2 amici in comune"
     }
   ],
-  "notifications": [
-    {
-      "id": "n-1791395530815",
-      "avatar": "./profilo.webp",
-      "title": "Lingua CInese",
-      "text": " Ha pubblicato una nuova foto \"otto\"",
-      "timestamp": "Adesso",
-      "isUnread": true
-    }
-  ],
+  "notifications": [ ],
   "posts": [
     {
       "id": "post-1791998186940",
@@ -56,7 +47,7 @@
         "./image/basic.jpg/basic"
       ],
       "images": [
-        "./image/basic.jpg/basic"
+        "image/basic.jpg/basic"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -70,8 +61,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "./image/basic.jpg/basic",
-      "mediaUrl": "./image/basic.jpg/basic"
+      "imageUrl": "image/basic.jpg/basic",
+      "mediaUrl": "image/basic.jpg/basic"
     },
     {
       "id": "post-1791998141441",
@@ -84,10 +75,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "./image/casa.jpg/Casa"
+        "image/casa.jpg/Casa"
       ],
       "images": [
-        "./image/casa.jpg/Casa"
+        "image/casa.jpg/Casa"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -101,8 +92,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "./image/casa.jpg/Casa",
-      "mediaUrl": "./image/casa.jpg/Casa"
+      "imageUrl": "image/casa.jpg/Casa",
+      "mediaUrl": "image/casa.jpg/Casa"
     },
     {
       "id": "post-1791998112611",
@@ -115,10 +106,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "./image/angri.jpg/Angry"
+        "image/angri.jpg/Angry"
       ],
       "images": [
-        "./image/angri.jpg/Angry"
+        "image/angri.jpg/Angry"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -132,8 +123,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "./image/angri.jpg/Angry",
-      "mediaUrl": "./image/angri.jpg/Angry"
+      "imageUrl": "image/angri.jpg/Angry",
+      "mediaUrl": "image/angri.jpg/Angry"
     },
     {
       "id": "post-1791997448558",
