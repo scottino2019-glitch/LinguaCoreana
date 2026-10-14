@@ -1,0 +1,164 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-10-14T17:17:18.653Z",
+  "profile": {
+    "name": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
+    "category": "Video, reel, foto",
+    "isVerified": true,
+    "avatarUrl": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
+    "coverUrl": "https://images.unsplash.com/photo-1506816561089-5cc37b3aa9b0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwzfHxzZXVsfGVufDB8fHx8MTc5MTk5NjQ0OHww&ixlib=rb-4.1.0&q=85",
+    "friendsCount": "1 amici",
+    "mutualFriendsCount": "142 amici in comune",
+    "telegramUrl": "https://t.me/linguacoreana_200",
+    "intro": {
+      "bio": "🇰🇷 Grammatica, vocaboli, curiosità, KDrama,  Kpop ,video e tanto altro per imparare divertendosi la lingua coreana",
+      "work": "Alla scoperta della cultura e della lingua Coreana",
+      "education": "Scuola di LIngua Coreana",
+      "livesIn": "Corea",
+      "fromLocation": "Da Italia",
+      "relationshipStatus": "In una relazione",
+      "joinedDate": "Iscritto a Facebook da Maggio 2012",
+      "website": "https://linguacoreana.netlify.app/blog,html",
+      "followersCount": "12,450 persone seguono questo profilo"
+    },
+    "featuredPhotos": []
+  },
+  "friendsList": [
+    {
+      "id": "f-1786616305693",
+      "name": "Lingue",
+      "avatar": "https://images.unsplash.com/photo-1706403615881-d83dc2067c5d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxsaW5ndWV8ZW58MHx8fHwxNzg2NjE2Mjc0fDA&ixlib=rb-4.1.0&q=85",
+      "mutualFriends": "2 amici in comune"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n-1791395530815",
+      "avatar": "./profilo.webp",
+      "title": "Lingua CInese",
+      "text": " Ha pubblicato una nuova foto \"otto\"",
+      "timestamp": "Adesso",
+      "isUnread": true
+    }
+  ],
+  "posts": [
+    {
+      "id": "post-1791998186940",
+      "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
+      "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
+      "isVerified": true,
+      "timestamp": "Ora",
+      "privacy": "public",
+      "isPinned": false,
+      "type": "image",
+      "content": "",
+      "imageUrls": [
+        "./image/basic.jpg/basic"
+      ],
+      "images": [
+        "./image/basic.jpg/basic"
+      ],
+      "isEmbedIframe": false,
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "sharesCount": 0,
+      "comments": [],
+      "imageUrl": "./image/basic.jpg/basic",
+      "mediaUrl": "./image/basic.jpg/basic"
+    },
+    {
+      "id": "post-1791998141441",
+      "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
+      "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
+      "isVerified": true,
+      "timestamp": "Ora",
+      "privacy": "public",
+      "isPinned": false,
+      "type": "image",
+      "content": "",
+      "imageUrls": [
+        "./image/casa.jpg/Casa"
+      ],
+      "images": [
+        "./image/casa.jpg/Casa"
+      ],
+      "isEmbedIframe": false,
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "sharesCount": 0,
+      "comments": [],
+      "imageUrl": "./image/casa.jpg/Casa",
+      "mediaUrl": "./image/casa.jpg/Casa"
+    },
+    {
+      "id": "post-1791998112611",
+      "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
+      "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
+      "isVerified": true,
+      "timestamp": "Ora",
+      "privacy": "public",
+      "isPinned": false,
+      "type": "image",
+      "content": "",
+      "imageUrls": [
+        "./image/angri.jpg/Angry"
+      ],
+      "images": [
+        "./image/angri.jpg/Angry"
+      ],
+      "isEmbedIframe": false,
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "sharesCount": 0,
+      "comments": [],
+      "imageUrl": "./image/angri.jpg/Angry",
+      "mediaUrl": "./image/angri.jpg/Angry"
+    },
+    {
+      "id": "post-1791997448558",
+      "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
+      "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
+      "isVerified": true,
+      "timestamp": "Ora",
+      "privacy": "public",
+      "isPinned": false,
+      "type": "video",
+      "content": "This expression means “What are you doing?” but depending on the situation and tone of voice, it can also express surprise, confusion, or annoyance.\n\n📝 Let’s break it down!\n\n🔹 뭐 [mwo] = what\n🔹 하다 [hada] = to do\n🔹 는 거야 [neun geoya] = adds a sense of asking for an explanation or emphasizing curiosity about a situation\n\n💬 뭐 하는 거야? = What are you doing?\n\nYou can also say 뭐 하는 거예요? to sound more polite.\n\n💡 뭐 해? vs. 뭐 하는 거야?\n\n• 뭐 해? → What are you doing? (a simple, neutral question)\n• 뭐 하는 거야? → What are you doing? (often more emotional or emphatic)\n\nSave this reel and practice saying the expression out loud! 🐰",
+      "videoUrl": "https://www.youtube.com/embed/rjDE1WRPKP0",
+      "videoTitle": "Have you ever heard someone say “뭐 하는 거야?” in a K-drama? 🇰🇷",
+      "isEmbedIframe": true,
+      "reactions": {
+        "like": 1,
+        "love": 0,
+        "care": 0,
+        "haha": 0,
+        "wow": 0,
+        "sad": 0,
+        "angry": 0
+      },
+      "sharesCount": 0,
+      "comments": []
+    }
+  ]
+}
