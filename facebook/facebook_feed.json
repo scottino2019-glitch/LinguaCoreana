@@ -75,10 +75,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "./casa.jpg"
+        "./casa.jpeg"
       ],
       "images": [
-        "./casa.jpg"
+        "./casa.jpeg"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -92,8 +92,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "./casa.jpg",
-      "mediaUrl": "./casa.jpg"
+      "imageUrl": "./casa.jpeg",
+      "mediaUrl": "./casa.jpeg"
     },
     {
       "id": "post-1791999878372",
@@ -106,10 +106,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "./angri.lpg"
+        "./angri.jpg"
       ],
       "images": [
-        "./angri.lpg"
+        "./angri.jpg"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -123,8 +123,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "./angri.lpg",
-      "mediaUrl": "./angri.lpg"
+      "imageUrl": "./angri.jpg",
+      "mediaUrl": "./angri.jpg"
     },
     {
       "id": "post-1791997448558",
