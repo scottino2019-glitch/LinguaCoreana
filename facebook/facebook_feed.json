@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-10-14T17:17:18.653Z",
+  "updatedAt": "2026-10-14T17:38:34.211Z",
   "profile": {
     "name": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
     "category": "Video, reel, foto",
@@ -31,10 +31,19 @@
       "mutualFriends": "2 amici in comune"
     }
   ],
-  "notifications": [ ],
+  "notifications": [
+    {
+      "id": "n-1791395530815",
+      "avatar": "./profilo.webp",
+      "title": "Lingua CInese",
+      "text": " Ha pubblicato una nuova foto \"otto\"",
+      "timestamp": "Adesso",
+      "isUnread": true
+    }
+  ],
   "posts": [
     {
-      "id": "post-1791998186940",
+      "id": "post-1791999511660",
       "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
       "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
       "isVerified": true,
@@ -44,10 +53,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "./image/basic.jpg/basic"
+        "./angri.jpg/angri"
       ],
       "images": [
-        "image/basic.jpg/basic"
+        "./angri.jpg/angri"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -61,11 +70,11 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "image/basic.jpg/basic",
-      "mediaUrl": "image/basic.jpg/basic"
+      "imageUrl": "./angri.jpg/angri",
+      "mediaUrl": "./angri.jpg/angri"
     },
     {
-      "id": "post-1791998141441",
+      "id": "post-1791999473626",
       "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
       "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
       "isVerified": true,
@@ -75,10 +84,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "image/casa.jpg/Casa"
+        "./basic.jpg/basic"
       ],
       "images": [
-        "image/casa.jpg/Casa"
+        "./basic.jpg/basic"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -92,11 +101,11 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "image/casa.jpg/Casa",
-      "mediaUrl": "image/casa.jpg/Casa"
+      "imageUrl": "./basic.jpg/basic",
+      "mediaUrl": "./basic.jpg/basic"
     },
     {
-      "id": "post-1791998112611",
+      "id": "post-1791999448065",
       "authorName": "꒒ꀤꈤꁅꀎꍏ ꉓꂦꋪꏂꍏꈤꍏ",
       "authorAvatar": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4MDc1Mjd8MHwxfHNlYXJjaHwxfHxjb3JlYXxlbnwwfHx8fDE3OTE5OTY3OTZ8MA&ixlib=rb-4.1.0&q=85",
       "isVerified": true,
@@ -106,10 +115,10 @@
       "type": "image",
       "content": "",
       "imageUrls": [
-        "image/angri.jpg/Angry"
+        "./casa.jpg/casa.jpg"
       ],
       "images": [
-        "image/angri.jpg/Angry"
+        "./casa.jpg/casa.jpg"
       ],
       "isEmbedIframe": false,
       "reactions": {
@@ -123,8 +132,8 @@
       },
       "sharesCount": 0,
       "comments": [],
-      "imageUrl": "image/angri.jpg/Angry",
-      "mediaUrl": "image/angri.jpg/Angry"
+      "imageUrl": "./casa.jpg/casa.jpg",
+      "mediaUrl": "./casa.jpg/casa.jpg"
     },
     {
       "id": "post-1791997448558",
